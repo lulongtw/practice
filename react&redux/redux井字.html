@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>redux井字</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	  <script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+      .board{
+        width:300px;
+        height:300px;
+        position:relative;
+        border-radius: 10px;
+        border:2px solid black;
+        margin:10px auto;
+      }
+      .cell{
+        width:100px;
+        height:100px;
+        border:2px solid black;
+        display:inline-block;
+        box-sizing:border-box;
+        vertical-align:middle;
+        line-height:100px;
+        text-align:center;
+        font-size:30px;
+        transition:background-color 0.5s
+      }
+      .cell:hover{
+        background-color: rgb(194, 194, 194);
+      }
+      .svg{
+        width:300px;
+        height:300px;
+        top:0px;
+        left:0px;
+        position:absolute;
+      }
+      .ref{
+        width:100px;
+        height:40px;
+        border-radius:25px;
+        background-color: rgb(165, 165, 165);
+        line-height:40px;
+        text-align:center;
+        margin:20px auto;
+        cursor:pointer;
+        transition:background-color 0.5s;
+      }
+      .ref:hover{
+        background-color: rgb(133, 133, 133);
+      }
+      .result{
+        font-size:20px;
+        text-align:center;
+        margin:0 auto
+      }
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+  
+    <script type="text/babel">
+      class Svg extends React.Component{
+        constructor(props){
+          super(props)
+        }
+        render(){
+          let x1 = this.props.start%3
+          let y1 = Math.floor(this.props.start/3)
+          let x2 = this.props.end%3
+          let y2 = Math.floor(this.props.end/3)
+          return <svg className="svg"><line x1={x1*100+50} y1={y1*100+50} x2={x2*100+50} y2={y2*100+50} strokeWidth="10px" stroke="red"/></svg>
+        }
+      }
+      class Cell extends React.Component{
+        constructor(props){
+          super(props)
+        }
+        render(){
+          let text = ""
+          if (this.props.st==0){
+            text="O"
+          }else if (redux.store.getState().marks[this.props.index]==1){
+            text="X"
+          }
+          return <div className="cell" onClick={this.click.bind(this)}>{text}</div>
+        }
+        click(){
+          this.props.func(this.props.index)
+        }
+      }
+      class Board extends React.Component{
+        constructor(props){
+          super(props)
+          this.state=redux.store.getState()
+        }
+        render(){
+          let cells = []
+          for (let i=0;i<this.state.marks.length;i++){
+            cells.push(<Cell key={i} index={i} st={this.state.marks[i]} func={this.updt.bind(this)}/>)
+          }
+          if (this.state.winner==null){
+            return <div className="board">{cells}
+              <div className="ref" onClick={this.refresh.bind(this)}>refresh</div>
+              </div>
+          }else{
+            let res = this.state.winner.side     
+            /*
+            注意 react 限定return 只能包含在一個標籤之下 如下面 但這樣會變成巢狀
+            如果不想變成巢狀 也可以  用空標籤把這些標籤包~起來
+            <>
+            <div>a</div>
+            <div>b</div>
+            </>
+            */
+  
+            return <div className="board">{cells}
+              <Svg start={this.state.winner.start} end={this.state.winner.end}/>
+              <div className="ref" onClick={this.refresh.bind(this)}>refresh</div>
+              <div className="result">winner is {res} side!!</div>
+              </div>
+          }   
+        }
+        refresh(){
+          redux.store.dispatch({
+            type:"RFSH"
+          })
+        }
+        updt(idx){
+          redux.store.dispatch({
+            type:"CNG",
+            index:idx
+          })
+        }
+        componentDidMount(){
+          let uns = redux.store.subscribe(this.hndlr.bind(this))
+        }
+        componentWillUnmount(){
+          uns()
+        }
+        hndlr(){
+          this.setState(redux.store.getState())
+        }
+      }
+      let redux = {
+        store:null,
+        rdcr:function(st,ac){//此處獲取state都要用引入state的變數，此處為st(引入的第一個參數)
+          switch(ac.type){   //用沙小this.state和redux.store.getState().marks會！！報!!炸!!
+            case "CNG":
+              if (st.marks[ac.index]==-1 && st.winner==null){
+                st.marks[ac.index] = st.turn%2
+                st.turn++
+                return {
+                  turn:st.turn,
+                  marks:st.marks,
+                  winner:redux.check(st.marks)
+                }
+              }
+            case "RFSH":
+              return {
+                turn:0,
+                marks:[-1,-1,-1,-1,-1,-1,-1,-1,-1],
+                winner:null
+              }
+            default:
+              return st
+          }
+        },
+        check:function(mrks){
+          let sd
+          for (let x=0;x<3;x++){
+            if (mrks[x*3]!=-1 && mrks[x*3]==mrks[x*3+1] && mrks[x*3+1]==mrks[x*3+2]){
+              if (mrks[x*3]==0){
+                sd=true}
+              return {start:x*3 ,end:x*3+2 ,side:sd?"O":"X"}
+            }
+          }
+          for (let y=0;y<3;y++){
+            if (mrks[y]!=-1 && mrks[y]==mrks[y+3] && mrks[y+3]==mrks[y+6]){
+              if (mrks[x*3]==0){
+                sd=true}
+              return {start:y , end:y+6 , side:sd?"O":"X"}
+            }
+          }
+          if (mrks[0]!=-1 && mrks[0]== mrks[4] && mrks[4]==mrks[8]){
+            if (mrks[0]==0){
+                sd=true}
+            return {start:0 , end:8 , side:sd?"O":"X"}
+          }else if (mrks[2]!=-1 && mrks[2]==mrks[4] && mrks[4]==mrks[6]){
+            if (mrks[2]==0){
+                sd=true}
+            return {start:2 , end:6 , side:sd?"O":"X"}
+          } 
+          return null
+        }
+      }
+      window.addEventListener("load",()=>{
+        redux.store = Redux.createStore(redux.rdcr,{
+          turn:0,
+          marks:[-1,-1,-1,-1,-1,-1,-1,-1,-1],
+          winner:null
+        })
+        let con = document.getElementById("a")
+        let rt = ReactDOM.createRoot(con)
+        rt.render(<Board/>)
+      })
+
+      /*
+          <style>
+
+      .cell{
+        width:100px;height:100px;
+        line-height:100px;
+        border:1px solid black;
+        box-sizing: border-box;
+        text-align:center;
+        display:inline-block;
+        margin:0;
+        vertical-align: top;
+        .obard不用flex 和flex-wrap的話，就用inline-block害vertical-align
+        因為vertical-align是baseline對其  會有空白 = =  向上對其就不會了
+       
+      }
+      .board{
+        width:300px;height:300px;
+        border:1px solid black;
+        box-sizing: border-box;
+        position:relative;
+        margin:50px auto
+       為啥這邊不能border-box
+       不能啊  因為現在border是在width300外面，也就是說其實是302px
+       一但border-box後 border內縮 width變298 這樣就放不下了
+       
+      }
+      .svg{
+        width:300px;height:300px;
+        position:absolute;
+        top:0;left:0;
+      }
+    </style>
+</head>
+  <body>
+    <script type="text/babel">
+      let store = Redux.createStore(rdcr,{
+        count:0,
+        mrks:[-1,-1,-1,-1,-1,-1,-1,-1,-1],
+        winner:null
+      })
+      function rdcr(state,action){
+        switch (action.type){
+          case "CNG":
+            if (state.winner==null && state.mrks[action.idx]==-1){  //打成!=-1
+              state.mrks[action.idx] = state.count % 2
+        
+            }
+
+            let mks = state.mrks
+            for (let x = 0;x<3;x++){
+              if ((mks[x*3]!=-1 && mks[x*3] == mks[x*3+1]) && (mks[x*3+1]==mks[x*3+2])){
+                state.winner = {strt:x*3,end:x*3+2}  //打成{strt:x,end:x*3+2}
+              }
+            }
+            for (let y=0;y<3;y++){
+              if ((mks[y]!=-1 && mks[y] == mks[y+3]) && (mks[y+3]==mks[y+6])){
+                state.winner = {strt:y,end:y+6}
+              }
+            }
+            if ((mks[0]!= -1 && mks[0]==mks[4]) && (mks[4]==mks[8])){
+              state.winner = {strt:0,end:8}
+            }
+            if ((mks[2]!=-1 && mks[2]==mks[4]) && (mks[4]==mks[6])){
+              state.winner = {strt:2,end:6}
+            }
+            return {
+              count:state.count + 1,
+              mrks:state.mrks,
+              winner:state.winner
+            }
+          
+          default :
+            return state
+        }
+      } 
+
+
+
+      
+            class Svg extends React.Component{
+        constructor(){
+          super()
+        }
+        render(){
+          let strtx = (this.props.strt)%3*100 + 51
+          let strty = Math.floor(this.props.strt/3)*100 + 51
+          let endx = (this.props.end)%3*100 +51
+          let endy = Math.floor(this.props.end/3)*100 + 51
+          //沒加svg class
+          return <svg className="svg">
+              <line x1={strtx} y1={strty} x2={endx} y2={endy} stroke="red" strokeWidth="10"></line>
+            </svg>
+        }
+      }
+      
+
+      class Board extends React.Component{
+        constructor(){
+          super()
+          this.state = store.getState()
+        }
+        render(){
+          let lst = []
+          for (let i=0;i<this.state.mrks.length;i++){
+            lst.push(<Cell vfunc={this.func1} st={this.state.mrks[i]} index={i} key={i}/>)
+          }
+          if (this.state.winner==null){
+            return  <div className="board">{lst}</div>
+          }else{
+            return  <div className="board">{lst}
+              <Svg strt={this.state.winner.strt} end={this.state.winner.end}/>
+              </div>
+          }
+        }
+        func1(index){
+          store.dispatch({
+            type:"CNG",
+            idx:index
+          })
+        }
+        componentDidMount(){
+          store.subscribe(this.hndlr.bind(this))
+        }
+        hndlr(){
+          this.setState(store.getState())
+        }
+      }
+
+      class Cell extends React.Component{
+        constructor(){
+          super()
+        }
+        render(){
+          let text = ""
+          if (this.props.st==0){
+            text = "O"
+          }else if (this.props.st==1){
+            text = "X"
+          }
+          return <div className="cell" onClick={this.func.bind(this)}>{text}</div>
+        }
+        func(){
+          this.props.vfunc(this.props.index)
+        }
+      }
+
+      let a = document.createElement("div")
+      document.body.appendChild(a)//沒有append
+      let rt = ReactDOM.createRoot(a)
+      rt.render(<Board/>)
+
+      */
+    </script>
+  </body>
+</html>

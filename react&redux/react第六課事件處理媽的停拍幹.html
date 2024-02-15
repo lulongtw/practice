@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>first</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+      body{
+        background-color: black;
+      }
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+    <script type="text/babel">
+              let c = 0
+        let lst = ["red","blue","green","yellow","purple","orange"]
+      class Btn extends React.Component{
+        constructor(){
+          super()
+          this.state = {
+            color:"red",
+            color2:"black"
+          }
+        }
+        render(){
+          return (<div onMouseOver={this.over.bind(this)}//為什麼this.clickfunction   印為代表指向這個類別建立程式碼中的clickfunction
+                       onMouseOut={this.out.bind(this)}  //把this 綁定函式好辦事 
+                       onMouseMove={this.move.bind(this)} //函式後方不需要()喔 沒有要執行
+                       style={{color:this.state.color,
+                              fontSize:this.props.size,
+                              backgroundColor:this.state.color2
+                      }}
+          >媽的停拍幹</div>)
+        }
+        
+        over(e){//如果函式被指定為事件處理函式，那麼傳入的第一個參數將被作為事件物件
+          c++;
+          this.setState({color:lst[c%lst.length]})
+        }
+        out(e){//如果函式被指定為事件處理函式，那麼傳入的第一個參數將被作為事件物件
+          c++
+          this.setState({color:lst[c%lst.length]})
+        }
+        move(e){//如果函式被指定為事件處理函式，那麼傳入的第一個參數將被作為事件物件
+          c++;
+          this.setState({color:lst[c%lst.length],
+                         color2:lst[(c+1)%lst.length]
+          })
+        }
+      }
+
+      /*    這個變數都坐在裡面我覺得比較屌喔
+          <script type="text/babel">
+      class Fuck extends React.Component{
+        constructor(){
+          super()
+          this.state = {
+            lst:["black","red","green","blue","yellow"],
+            n:0
+          }
+        }
+        render(){   
+          return <div style={{color:this.state.lst[this.state.n%this.state.lst.length],fontSize:"50px"}} onMouseMove={this.fuck.bind(this)}>fuck</div>
+        }
+        fuck(){
+          this.setState((st,ps)=>{
+            st.n++
+            return {
+              ...st,
+              n:st.n
+            }
+          })
+        }
+      }
+      let con = document.getElementById("a")
+      let rt = ReactDOM.createRoot(con)
+      rt.render(<Fuck/>)
+
+      */
+      let btn = <Btn size="300px"/>
+      let con = document.getElementById("a")
+      let rt = ReactDOM.createRoot(con)
+      rt.render(btn)
+    </script>
+  </body>
+</html>

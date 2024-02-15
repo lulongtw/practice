@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>redux&react開關元件</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+      .off{
+        margin:50px;
+        width:150px;
+        height:50px;
+        background-color: rgb(165, 165, 165);
+        border-radius:30px;
+        transition:background-color 3s;
+        
+       
+      }
+      .on{
+        background-color: green;
+      }
+      .off>.btn{
+        width:55px;
+        height:55px;
+        background-color:rgb(58, 58, 58);
+        border-radius:35px;
+        transform: translate(10px,-2px);
+        transition: background-color 1s,transform 1s;
+        
+      }
+      .on>.btn{
+        transform: translate(85px,-2px);
+        background-color:greenyellow;
+        transition: background-color 1s,transform 1s;
+      }
+
+    </style>
+</head>
+  <body>
+	<div id="a">a</div>
+    <script type="text/babel">
+      class Btn extends React.Component{
+        constructor(props){
+          super(props)
+        }
+        render(){
+          return <div className="btn"></div>
+        }
+      }
+      class Switch extends React.Component{
+        constructor(props){
+          super(props)
+          this.state=store.getState()
+        }
+        render(){
+          return <div className={"off"+(this.state.lod?" on":"")} onClick={this.cng.bind(this)}><Btn/></div>
+        }
+        cng(){
+          store.dispatch({
+            type:"CNG"
+          })
+        }
+        componentDidMount(){
+          store.subscribe(this.hndlr.bind(this))
+        }
+        hndlr(){
+        
+          this.setState(store.getState())
+        }
+      }
+      let store
+      let redc = function(st,ac){
+        switch(ac.type){
+          case "CNG":
+            return {lod:!st.lod}
+          default:
+            return st
+        }
+      }
+      window.addEventListener("load",()=>{
+        store = Redux.createStore(redc,{lod:false})
+        let con = document.getElementById("a")
+        let rt = ReactDOM.createRoot(con)
+        rt.render(<Switch/>)
+      })  
+      /*  這是暴力toggle classlist的方法 比較醜 差別在onclick的cng裏面  
+
+		class Btn extends React.Component{
+			constructor(props){
+				super(props)
+			}
+			render(){
+				return <div className="btn"></div>
+			}
+		}
+		class Switch extends React.Component{
+			constructor(props){
+				super(props)
+				this.state = store.getState()
+			}
+			render(){
+				return <div className="off" onClick={this.cng.bind(this)}><Btn/></div>
+			}
+			cng(event){
+        conosle.log(this.state.lod)
+				if (this.state.lod){
+					//event.target.classList.toggle("off");注意target和currentTarget兩個差別 
+          //注意this.state.lod，如果把toggle on 和off 兩個互換，該div就會直接消失
+					event.currentTarget.classList.toggle("off")
+				} else {
+					//event.target.classList.toggle("on");注意這兩個差別
+					event.currentTarget.classList.toggle("on")
+				}
+				store.dispatch({
+					type: "CNG"
+				});
+			}
+
+			conponentDidMount(){
+				store.subscribe(this.hndlr.bind(this))
+			}
+			hndlr(){
+				this.setState(store.getState())
+			}
+		}
+		let store 
+		let redc = function(st,ac){
+			switch(ac.type){
+				case "CNG":
+					return {lod:!st.lod}
+				default :
+					return st
+			}
+		}
+		window.addEventListener("load",()=>{
+			store = Redux.createStore(redc,{lod:false})
+			let con = document.getElementById("a")
+			let rt = ReactDOM.createRoot(con)
+			rt.render(<Switch/>)
+		})
+   */
+    </script>
+  </body>
+</html>

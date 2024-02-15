@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>tictactoe井字</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      .cell{
+        width:100px;
+        height:100px;
+        font-size:60px;
+        box-sizing:border-box;
+        /*默認設定content-box中，width和height不包含padding,board，
+        所以一但增加border和padding 該元素在網頁上的版面就會增加padding和board的值
+        比如說長寬設定50 但增加board或padding為2 則該元素在版面上面積會是(50+2*2)*(50+2*2)
+        直接抄出父標籤的框框
+        但如果是border-box，則長寬可以包含padding和border的寬度，同上例子，則會標顯為(50)*(50)
+        但當如果padding和border總和超出長寬時，依然會溢出父標籤
+        例如padding為25，border為1時，在版面上呈現會是(25*2+1*2)*(25*2+1*2)=(52)*(52)
+        */
+        border:2px solid red;
+        /*
+        這邊用兩種方法讓ＯＸ置中，用line-height讓Y軸致中，用text-align讓x軸致中
+        注意 height和line-height一樣就有垂直置中的效果
+        */
+        line-height:100px;
+        text-align:center;
+        /*我 不 知 道 幹vertical-align是啥*/
+        vertical-align:middle;
+        display:inline-block;
+        transition:background-color 0.5s;
+      }
+      .board{
+        width:300px;
+        height:300px;
+        margin:50px auto;
+        border:2px solid blue;
+        position:relative;/*讓線段壓在遊戲盤上方*/
+      }
+      .board>.svvg{
+			position:absolute;
+      top:0px;left:0px;/*對準遊戲盤的左上角*/
+			width:300px;height:300px;/*svg的寬高 在svg內畫線*/
+      }
+
+		.hide{display:none;}
+
+      .cell:hover{/*這個比較簡單*/
+        background-color:rgb(126, 126, 126)
+      }
+      .cng{/*比較複雜*/
+        background-color: rgb(102, 102, 102);
+      }
+      .bck{/*比較複雜*/
+        background-color: white;
+      }
+    </style>
+</head>
+  <body>
+    <div id="a"></div>
+    <script type="text/babel">
+      /*一旦新增svg後 等同於整張棋盤被蓋住，無法觸發cell的onclick*/
+      class Line extends React.Component{
+        render(){
+          let x1 = this.props.start%3
+          let y1 = Math.floor(this.props.start/3)
+          let x2 = this.props.end%3
+          let y2 = Math.floor(this.props.end/3)
+          return <svg className="svvg"><line x1={x1*100+50} y1={y1*100+50} x2={x2*100+50} y2={y2*100+50} strokeWidth="20px" stroke="red"/></svg>
+        }
+      }
+      /*      
+      class Line extends React.Component{
+			render(){
+				let startX=this.props.start%3;
+				let startY=Math.floor(this.props.start/3);
+				let endX=this.props.end%3;
+				let endY=Math.floor(this.props.end/3);
+				return <svg className="line"><line x1={startX*100+50} y1={startY*100+50} x2={endX*100+50} y2={endY*100+50} stroke="red" strokeWidth="5" /></svg>;
+			}
+		}*/
+
+      class Cell extends React.Component{
+        constructor(props){
+          super(props)
+        }
+        render(){
+          let text = ""
+          if (this.props.st==0){
+            text="O"
+          }else if (this.props.st==1){
+            text="X"
+          }
+          return <div className="cell" /*onMouseOver={this.cng} onMouseOut={this.bck}*/ onClick={this.click.bind(this)}>{text}</div>
+        }
+        click(){
+          this.props.func(this.props.idx)
+        }
+        /*比較複雜*/
+        cng(event){
+          event.target.classList.add("cng");
+          event.target.classList.remove("bck")
+        }
+        /*比較複雜*/
+        bck(event){
+          event.target.classList.add("bck")
+          event.target.classList.remove("cng")
+        }
+
+      }
+      class Board extends React.Component{
+        constructor(props){
+          super(props)
+          this.state={
+            turn:0,
+            marks:[-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            winner:null,
+          }
+        }
+        render(){
+          let cells = []
+          for (let i=0;i<this.state.marks.length;i++){
+            cells.push(<Cell key={i} idx={i} st={this.state.marks[i]} func={this.updtmrk.bind(this)}/>)
+          }
+          if(this.state.winner===null){
+					  return <div className="board">{cells}</div>;
+				}else{
+					  return <div className="board">{cells}
+						<Line start={this.state.winner.start} end={this.state.winner.end} />
+					</div>;
+				}
+        }
+        updtmrk(index){
+          let idx = this.state.marks[index]
+          if (idx==-1 && this.state.winner==null){
+            /*注意 更改state不可援引this.state 要用prest變數*/
+            this.setState((prest)=>{
+              prest.marks[index]=prest.turn%2
+              prest.turn++
+              return {
+                turn:prest.turn,
+                marks:prest.marks,
+                winner:this.check(prest.marks)
+              }
+            })
+          }
+        }
+        check(mks){
+          for (let x=0;x<3;x++){
+            if (mks[x*3]!=-1 && mks[x*3]==mks[x*3+1] && mks[x*3+1]==mks[x*3+2]){
+              return {start:x*3 , end:x*3+2}
+            }
+          }
+          for (let y=0;y<3;y++){
+            if (mks[y]!=-1 && mks[y]==mks[y+3] && mks[y+3]==mks[y+6]){
+              return {start:y , end:y+6}
+            }
+          }
+          if (mks[0]!=-1 && mks[0]==mks[4] && mks[4]==mks[8]){
+            return {start:0 , end:8}
+          }else if (mks[2]!=-1 && mks[4]==mks[2] && mks[4]==mks[6]){
+            return {start:2 , end:6}
+          }
+          return null
+        }
+      }
+      let con = document.getElementById("a")
+      let rt = ReactDOM.createRoot(con)
+      rt.render(<Board/>)
+    </script>
+  </body>
+</html>

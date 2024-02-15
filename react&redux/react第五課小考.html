@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>first</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+      .aa{
+        font-style: italic;
+      }
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+    <script type="text/babel">
+      /*
+      搞事了各位  
+      用JSX寫入元素與屬性  加上在生命週期內加入interval更新狀態
+      */
+      class Son extends React.Component{
+        constructor(props){
+          super(props)
+        }
+        render(){
+          return <div className={this.props.cls} style={{color:this.props.clr,fontSize:this.props.num*10}}>我愛{this.props.num}條柴</div>
+        }//逐一建立每個Son  注意在style內部是物件 分隔是用物件的, 不是css的;  有變數都用{}包裹
+      }
+
+      class Dad extends React.Component{
+        constructor(){
+          super()
+          this.state={//建立state
+            level:2,
+            sleep:3
+          }
+        }
+        render(){
+          let clrlst = ["blue","red","green"] //建立色彩lst讓之後步進i去挑色
+          let lst = []//未來放son的地方
+          for (let i=1;i<this.state.level;i++){
+            lst.push(<Son cls={this.props.class} clr={clrlst[i%clrlst.length]} num={i} key={i}/>)//將 賦予屬性後的son元件放入lst中
+          }
+          return <div>{lst}</div> 
+        }
+        componentDidMount(){
+
+          let sex = window.setInterval(()=>{//建立window.setInterval(()=>{},秒數) 並let 變數方便之後銷毀
+            this.setState((st,ps)=>{  //this.setState((目前狀態,目前屬性)=>{返回狀態})
+              if (st.level>=10){
+                return st.level  //不管怎樣的情況，一定要返回狀態
+              }else{
+                return {
+                  level:st.level+1  //以物件形式返回狀態
+                }
+              }
+            })
+          },500) //每半秒執行一次
+        }
+        componentWillUnmount(){
+          window.clearInterval(sex)
+        }
+      }
+      
+      let dad = <Dad class="aa"/>
+      let con = document.getElementById("a")
+      let rt = ReactDOM.createRoot(con)
+      rt.render(dad)
+    </script>
+  </body>
+</html>

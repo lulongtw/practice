@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>first</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+  <hr>
+  <div id="b"></div>
+    <script>
+      /*
+      這課要來更新狀態state
+      ponpon說過props不變 state可變  這課透過window.setTimeout設置時間過幾秒後狀態改變
+      this.setState()語法  ()內部必須要返回一個物件
+      this.setState({狀態名:新數值})
+      如果新狀態要從舊狀態步進
+      this.setState(  (目前狀態,目前屬性)  =>  {return {狀態名:目前狀態.狀態名+1}}  )
+      */
+    class Htag extends React.Component{//這邊跟以前一樣
+      constructor(){
+        super()
+      }
+      render(){
+        return React.createElement("h"+this.props.lv,null,`我愛${this.props.lv}條財`)//不能用key當props喔
+      }
+    }
+    class Div extends React.Component{
+      constructor(){
+        super()
+        this.state={//這邊才不一樣，愛幾條才的多寡是從state決定的  因為下面回圈使用state.level作為範圍
+          level:3
+        }
+      }
+      render(){
+        let lst = []
+        let level = this.state.level
+        for (let i=1;i<level;i++){
+          lst.push(React.createElement(Htag,{lv:i,key:i}))
+        }
+        return React.createElement("div",null,lst)
+      }/////////////////以上除了建立state 並以state作為步進範圍  其他都一樣////////////////////
+
+      componentDidMount(){  //生命週期  提早講了  請看蓬蓬筆記  代表當這個元件上車後
+        /*
+        下方意思是兩秒後，更動狀態將level+1
+        更動狀態必須使用this.setState 而不是this.state  this.state是建立狀態用  this.setState是更新狀態用
+        語法為  this.setState((目前狀態,目前屬性)=>{return 新狀態})  內部是一個函式 導入目前狀態和目前屬性 並以箭頭函式處理
+        注意 新狀態也必須以物件形式表示
+        */
+        let sex = window.setTimeout(()=>{ //必須用箭頭函式，才能用this這個字
+          this.setState((currentState,currentProps)=>(
+            {
+              level:currentState.level+1  //返回一個物件
+            }
+          ))
+        },2000)//在元件mount後兩秒
+      }
+
+      componentWillUnmount(){ //當元素被卸載時，也要將js 時間函式移除
+        clearTimeout(sex) //移除sec時間函式 還是什麼東西的
+      }
+    }
+    let div = React.createElement(Div)
+    let con = document.getElementById("a")
+    let rt = ReactDOM.createRoot(con)
+    rt.render(div)
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>redux和react混合實作</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+
+    </style>
+</head>
+  <body>
+	<div id="a">a</div>
+    <script type="text/babel">
+      /*
+      這節課是讓react和redux合作，並將狀態改變的工作交給redux
+      要做出對文字按一下產生狀態改變，然後對狀態改變進行回應，產生更多文字
+      */
+      class Head extends React.Component{
+        constructor(props){
+          super(props)
+        }
+        render(){
+          return <li onClick={this.cng.bind(this)}>MY HeadList {this.props.num}</li>
+        }
+        //dispatch寫在哪都無所謂，但是hndlr要this.setState一樣要在this.state定義的地方
+        //否則狀態改了 setState不到正確的地方
+        cng(){//將派送行動物件作在click中
+          store.dispatch({//對store這個redux發送行動物件
+            type:"CNG",
+            max:10
+          })
+        }
+      }
+      class List extends React.Component{
+        constructor(props){
+          super(props)
+          this.state=store.getState()//react不管狀態，只針對狀態改變進行自身改變，也就是下方的for迴圈
+        }
+        render(){
+          let lst = []
+          for (let i=0;i<this.state.max;i++){
+            lst.push(<Head key ={i} num={i}/>)
+          }
+          return <div>{lst}</div>
+        }
+        componentDidMount(){//這部分是最難懂的，主要將redux和react串接起來，
+          //這部分是說，當元件安裝好後，store這個狀態儲存空間 註冊通知處理函式hndlr
+          store.subscribe(this.hndlr.bind(this))
+        }
+        hndlr = function(){//然後這個hndlr將改變好的state用setState將react的狀態改變
+          this.setState(store.getState())
+        }
+      }
+
+      let store
+      let reducer = function(state,action){//reducer接收到click後dispatch來的行動物件開始動作
+        switch(action.type){
+          case "CNG":
+            return {max:state.max + action.max}//type符合，開始對狀態改動
+          default:
+            return state
+        }
+      }
+      window.addEventListener("load",()=>{
+        store = Redux.createStore(reducer,{max:3})//建立redux狀態儲存空間
+        let con = document.getElementById("a")
+        let rt = ReactDOM.createRoot(con)
+        rt.render(<List/>)
+      })
+
+
+      /*    這是單純react 沒有redux的程式碼
+            class Head extends React.Component{
+        constructor(props){
+          super(props)
+        }
+        render(){
+          return <li onClick={this.cng.bind(this)}>MY HeadList {this.props.num}</li>
+        }
+        cng(){
+          this.props.func()
+          
+        }
+      }
+      class List extends React.Component{
+        constructor(props){
+          super(props)
+          this.state={
+            max:3
+          }
+        }
+        render(){
+          let lst = []
+          for (let i=0;i<this.state.max;i++){
+            lst.push(<Head key ={i} num={i} func={this.cngst.bind(this)}/>)
+          }
+          return <div>{lst}</div>
+        }
+        cngst(){
+          console.log(this.state.max)
+          this.setState((prest)=>{
+            prest.max+=5
+            return {max:prest.max}
+          })
+        }
+
+      }
+      window.addEventListener("load",()=>{
+        let con = document.getElementById("a")
+        let rt = ReactDOM.createRoot(con)
+        rt.render(<List/>)
+      })
+      */
+    </script>
+  </body>
+</html>

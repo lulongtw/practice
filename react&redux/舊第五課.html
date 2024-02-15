@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>react巢狀interval動state生命週期</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<style>
+		.aa{
+			text-align:center;
+			margin:0 auto;
+			font-weight:bold
+		}
+		.bb{
+
+			display:flex;
+			justify-content:center;
+			align-items:center;
+		}
+	</style>
+</head>
+  <body>
+	<div class="bb">
+		<div id="me"></div>
+	</div>
+	
+    <script type="text/babel">
+
+		let lst = ["red","blue","green"]
+		class Btm extends React.Component{
+			constructor(props){
+				super(props)
+			}
+			render(){
+				return <div className="aa" style={{color:this.props.clr,fontSize:this.props.fz}}>我愛{this.props.c}條柴</div>
+				//return <div>哈哈{this.props.c}</div>
+			}
+		}
+
+		class Mid extends React.Component{
+			constructor(props){
+				super(props)
+				this.state = {level:5}
+			}
+			render(){
+				let elm
+				let elms = []
+				let sp = parseInt(this.props.space)
+				let st = parseInt(this.props.strt)
+				for (let i=sp;i<this.state.level;i+=sp){
+					elm = React.createElement(Btm,{c:i,key:i,clr:lst[i%lst.length],fz:i*10})
+					elms.push(elm)
+				}
+				return React.createElement("div",null,elms)
+			}
+			
+			componentDidMount(){
+				this.sex = window.setInterval(()=>{
+					this.setState((nowst,nowps)=>{
+						if (this.state.level>20){
+							return nowst.level
+						}else{
+							return {level:nowst.level+1}
+						}
+					})
+				},1000)
+			}
+            /*兩種寫法  
+            上面是蓬蓬寫法直接每半秒執行this.setState 滿等烙跑 
+            下面是帥哥寫法  每半秒檢查level是否滿等 滿等執行this.setState
+            這邊都會被迷惑 window.setInteval(a函式,k秒)是個函式
+            表示每k秒都會執行一次a函式
+            a函式在這編可以表示為function(){} or ()=>(a) or ()=>{return a}
+                                標準           返回a         返回a 如果沒有return 執行內部程式
+            ///////
+            this.setState((目前狀態,目前屬性)=>(改後狀態))
+
+            componentDidMount(){ 
+                this.sex = window.setInterval(()=>{
+                    if (this.state.level==this.props.end){
+                        clearInterval(this.sex)
+                    }else{
+                        this.setState((nowst,nowps)=>({level:nowst.level+1}))
+                    }
+                },500)
+            }            
+            */
+           /*            
+           一樣的東西 只是不用箭頭函式 用普通函式   
+            componentDidMount(){
+                this.sex = window.setInterval(function(){ //用普通函式表示
+                    if (this.state.level==6){             //這樣this就不見 要在外部指定this
+                        clearInterval(this.sex)
+                    }else{
+                        this.setState((nowst,nowps)=>({level:nowst.level+1}))
+                    }
+                }.bind(this),500)//所以在這邊指定this為this
+            }
+
+           */
+            componentWillUnmount() {//組建移除時 interval仍然在 所以要做這個
+                // 在组件卸载时清除定时器，以防止内存泄漏
+                clearInterval(this.sex);
+            }
+		}
+
+		let s = <Mid strt="2" space="1"/>//注意這邊使用jsx 所以屬性回傳到class mid內是str型態 必須轉成int才能動
+        // let s = React.createElement(Mid,{strt:2,space:1})
+		let con = document.getElementById("me")
+		let rt = ReactDOM.createRoot(con)
+		rt.render(s)
+
+    </script>
+  </body>
+</html>

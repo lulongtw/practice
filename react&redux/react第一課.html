@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>react第一課</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+      .board{
+        width:300px;
+        height:300px;
+        position:relative;
+        border-radius: 10px;
+        border:2px solid black;
+        margin:10px auto;
+      }
+      .cell{
+        width:100px;
+        height:100px;
+        border:2px solid black;
+        display:inline-block;
+        box-sizing:border-box;
+        vertical-align:middle;
+        line-height:100px;
+        text-align:center;
+        font-size:30px;
+        transition:background-color 0.5s
+      }
+      .cell:hover{
+        background-color: rgb(194, 194, 194);
+      }
+      .svg{
+        width:300px;
+        height:300px;
+        top:0px;
+        left:0px;
+        position:absolute;
+      }
+      .ref{
+        width:100px;
+        height:40px;
+        border-radius:25px;
+        background-color: rgb(165, 165, 165);
+        line-height:40px;
+        text-align:center;
+        margin:20px auto;
+        cursor:pointer;
+        transition:background-color 0.5s;
+      }
+      .ref:hover{
+        background-color: rgb(133, 133, 133);
+      }
+      .result{
+        font-size:20px;
+        text-align:center;
+        margin:0 auto
+      }
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+  <div id="b"></div>
+    <script>
+      /*
+      第一課  建立基本html元件
+      因為react是js套件，所以製作單位把react做成js裡面的一個類別class
+      每個react元件都是繼承父類別製作而成，但是在create時不必加new
+      */
+      class Test extends React.Component{ 
+        constructor(){//類別建構式  
+          super()
+        }
+        render(){  //必須有render(){}詳細時啥我也不知道  重點是這是出生地
+          return React.createElement("div",null,"發財拉")// 就是建立<div>發財拉</div>中間那個是放屬性的地方  null代表沒有
+        }//返回一個react元件  元件有分兩種 原生html 與 自定義react元件
+          //此處是一個html元件
+      }
+
+
+      let test = React.createElement(Test)//建立變數給react復職
+      let container = document.getElementById("a") //在html抓取一個容器
+      let root = ReactDOM.createRoot(container) // 把容器變成root
+      root.render(test)  //在root render react元件
+
+      /*
+      第二課 建立有屬性的react元件
+      */
+      class Color extends React.Component {
+        constructor(props) {
+          super(props);
+        }
+
+        render() {
+          //注意  要傳入屬性給react元件，必須包裹成物件形式，不僅react元件的屬性是物件形式 連屬性內部也是物件形式
+          //注意  要傳入屬性給react元件，必須包裹成物件形式，不僅react元件的屬性是物件形式 連屬性內部也是物件形式
+          //注意  要傳入屬性給react元件，必須包裹成物件形式，不僅react元件的屬性是物件形式 連屬性內部也是物件形式
+          const divStyle = {  //style做成物件傳入react元件
+            backgroundColor: this.props.color,
+            fontSize :this.props.size
+          };
+                                              //物件形式表達屬性
+          return React.createElement("div", { style: divStyle }, "有顏色");//這個div有屬性 <div style="...">有顏色</div>
+
+
+        }
+      }
+
+    let color = React.createElement(Color,{color:"red",size:"3rem"})//在class名稱後加上物件類別的屬性傳入react
+    let con = document.getElementById("b")
+    let rt = ReactDOM.createRoot(con)
+    rt.render(color)
+
+    </script>
+  </body>
+</html>

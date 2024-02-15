@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>react表單</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+
+    </style>
+</head>
+  <body>
+    <div style="display:flex;justify-content:center;align-items:center;">
+        <div id="me" style="text-align:center"></div>
+    </div>
+    
+    <script type="text/babel">
+
+    class Myhead extends React.Component{
+        constructor(props){
+            super(props) 
+            this.state={
+                name:"",
+                gender:"female",
+                story:""
+            } 
+        }
+        render(){//在form 內部有submit屬性的input 按下去時網頁會重新整理
+                    //使用onSubmit 註冊表單事件送出事件
+            return <form onSubmit={this.onSubmitHandler.bind(this)}>
+                Name: <input type="text" value={this.state.name} placeholder="名字" onChange={this.handlernamecng.bind(this)}/>
+                <br/>
+                Gender: <select value={this.state.gender} onChange={this.handlergendercng.bind(this)}>
+                            <option value="male">男</option><option value="female">女</option>
+                    </select>
+                <br/>
+                Story: <textarea value={this.state.story} placeholder="故事" onChange={this.handlerstorycng.bind(this)}></textarea>
+                <input type="submit" value="我要送出"/>
+                </form>                 //此value代表送出按鈕上的字
+        }
+        onSubmitHandler(e){
+            e.preventDefault()//但加了這個函式就不會重新整理
+            console.log("name "+ this.state.name)
+            console.log("gender "+ this.state.gender)
+            console.log("story " + this.state.story)
+        }
+        handlernamecng(e){
+            this.setState({name:e.currentTarget.value})//J3小
+            //this.setState({name:e.value})
+            //console.log(this.state.name)
+        }
+        handlergendercng(e){
+            this.setState({gender:e.currentTarget.value})
+            //console.log(this.state.gender)
+        }
+        handlerstorycng(e){
+            this.setState({story:e.currentTarget.value})
+        }
+
+    }
+        let s = <Myhead/>
+        let con = document.getElementById("me")
+        let rt = ReactDOM.createRoot(con)
+        rt.render(s)
+    </script>
+  </body>
+</html>

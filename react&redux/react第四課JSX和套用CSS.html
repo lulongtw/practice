@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>first</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+      .aa{
+        font-size:3rem;
+      }
+      .bb{
+        font-style: italic;
+      }
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+    <script type="text/babel">
+      /*
+      先看彭彭jsx筆記
+      這課要上jsx和babel
+      jsx 要在script加上"text/babel"
+      jsx語法只是為了代替React.createElement這個語法，但是瀏覽器看不懂，所以要在家上babel套件
+      jsx讓建立元件像寫html 只是是在js裡面寫的html css名稱還是要照js語法 ex font-size => fontSize
+      注意  在建立元件時  使用動態變數 必須用{}包裹   在而style則是以物件形式表示 要用{{}}包裹 恩克的肚包肉包兩層
+      ex  class={xxx}    style={{color:red}}
+          xxx是動態變數，如果是直接指定class "aa"就不用{}
+        另外只有html元件能使用style喔
+      */
+     class Mama extends React.Component{
+      constructor(){
+        super()
+      }
+      render(){
+        return <div className={this.props.class} style={{color:this.props.color}}>我愛{this.props.num}號阿婆</div>
+      } //等同於  React.createElement("div",{className:this.props.class , style:{color:this.props.color}},`我愛${this.props.num}號阿婆`)
+     }
+     class Mamas extends React.Component{
+      constructor(){
+        super()
+      }
+      render(){//來解釋一下這邊  return後加上()包裹是因為內容太長不好看要分行
+        //用div包裹是因為只能return單一元素，被包裹在內不算，也就是說拿掉div就有兩個mama 打妹
+        //這邊疑惑為什麼這邊class用爽爽上面用className  因為這邊只是傳入屬性的變數而已
+        //這些屬性變數要怎麼還是要看在建立物件時，把這些屬性變數賦職到哪些東西上  也就是說  這邊的變數都可以亂打 只是要跟之後怎麼用想好
+        return ( <div>
+          <Mama class="aa" color="blue" num="2"/>
+          <Mama class="bb" color="red" num="1"/>
+          </div>
+        )//簡單的說 Mama是自定義react元件  要什麼鬼屬性都可以 但這些鬼屬性始終會匯入 class Mama內部 建立 html元件  
+         //而html元件是沒有這些鬼屬性的  html那行就是再將這些亂編的鬼屬性變數變成真正可以用的東西
+      }
+     }
+     let mamas = <Mamas/>
+     let con = document.getElementById("a")
+     let rt = ReactDOM.createRoot(con)
+     rt.render(mamas)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>first</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+
+    <style>
+      .bigon{
+        width: 200px;
+        height:100px;
+        background-color: green;
+        border-radius: 100%;
+        margin:30px auto;
+        padding:15px;
+        box-sizing:border-box;
+      }
+      .bigon>div{
+        width:70px;height:70px;
+        border-radius:70px;
+        background-color: greenyellow;
+        transition:transform 0.5s
+      }
+      .bigoff{
+        
+        background-color: grey;
+      }
+      .bigoff>div{
+        background-color: black;
+        transform:translate(100px,0px)
+      }
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+    <script type="text/babel">
+
+      class Small extends React.Component{
+        constructor(){
+          super()
+          this.state={
+            on:true
+          }
+        }
+        render(){
+          /*
+          必須let時賦值 或是在class外部let cls
+          不然會不知道為啥消失雞掰  下面錯誤
+          let cls
+          if(this.state.on){
+            cls = "bigon"
+          }else{
+            cls = " bigoff"
+          }
+          */
+
+          let cls = "bigon"
+          if (!this.state.on){
+            cls+=" bigoff" //要記得空白喔 = =
+          }
+     
+          return <div onClick={this.func.bind(this)} className={cls}>
+            <div></div>
+            </div>
+        }
+        func(e){
+          this.setState({on:!this.state.on},()=>{
+            console.log(this.state)//要這樣才看得到正確的state
+          })
+         
+        }
+        }
+        /*
+        func(e){ //chat老師說這樣是非同步 所以看不到印出真正的state 看到是舊的
+          this.setState((st)=>({on:false}))
+          console.log(this.state)
+        }
+        */
+   
+      let small = <Small/>
+      let con = document.getElementById("a")
+      let rt = ReactDOM.createRoot(con)
+      rt.render(small)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>first</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+    <script type="text/babel">
+      /*
+      基本和另一堂react表單一樣
+      但這邊取得各個value比較聰明，是在建立每行input的onchange時，就將變數傳入程式內，
+      所以不必像另一棚一樣要每個input編另一個程式
+      但是 在引入參數時，跟我想的不太一樣，直接看下方cng函式
+      */
+      class Form extends React.Component{
+        constructor(){
+          super()
+          this.state={
+            name:"",
+            gender:"male",
+            story:""
+          }
+        }
+        render(){
+          return (
+            <form onSubmit={this.onsubmit.bind(this)}>
+              <label htmlFor="name">
+                Name:
+                <input 
+                onChange={this.cng("name").bind(this)} 
+                type="text" 
+                name="name" 
+                id="name" 
+                placeholder="name"
+                //value={this.state.name}
+                />
+                </label>
+              <label htmlFor="gender">
+                Gender:
+                <select 
+                onChange={this.cng("gender").bind(this)} 
+                name="gender" 
+                id="gender"
+                //value={this.state.gender}
+                >
+                  <option value="male">male</option>
+                  <option value="female">female</option>
+                </select>
+                </label>
+                <label htmlFor="area">
+                  <textarea 
+                  onChange={this.cng("story").bind(this)} 
+                  //value={this.state.story}
+                  ></textarea>
+                  </label>
+                  <button type="submit">Submit</button>
+              </form>
+          )
+        }
+
+        cng(key){  //什麼！！返回一個事件函式！想不到吧  我也不知道怎麼搞到事件處理器的反正就這樣
+          return (e)=>{  //用e取得currentTarget的value  得到value後setState 注意  非固定資料的變數要[]
+            let val = e.currentTarget.value
+            this.setState({[key]:val})   
+          }
+        }
+
+
+
+        onsubmit(e){
+          e.preventDefault()
+          let obj = this.state
+          for (let key in obj){
+            console.log(key,obj[key])
+          }
+     
+        }
+      }
+      let s = <Form/>
+        let con = document.getElementById("a")
+        let rt = ReactDOM.createRoot(con)
+        rt.render(s)
+    </script>
+  </body>
+</html>

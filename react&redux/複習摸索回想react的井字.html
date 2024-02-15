@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>複習莫索迴響的react tictactoe</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+      *{
+        box-sizing:border-box;
+      }
+      .svg{
+        width:300px;height:300px;
+        position:absolute
+      }
+      .space{
+        width:100px;height:100px;
+        line-height:100px;text-align:center;
+        border:1px solid black;
+
+      }
+      .grid{
+        width:300px;height:300px;
+        display:flex;
+        flex-wrap:wrap;
+
+      }
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+    <script type="text/babel">
+      class Svg extends React.Component{
+        constructor(props){
+          super(props)
+        }
+        render(){
+          let strt = parseInt(this.props.strt)
+          let end = parseInt(this.props.end)
+          let strtx = 100*(strt%3)+50
+          let strty = Math.floor(strt/3)*100+50
+          let endx = 100*(end%3)+50
+          let endy = Math.floor(end/3)*100+50
+          return <svg className="svg">
+            <line x1={strtx} y1={strty} x2={endx} y2={endy} stroke="red" strokeWidth="5px"></line></svg>
+        }
+      }
+
+      class Space extends React.Component{
+        constructor(props){
+          super(props)
+        }
+        render(){
+          let text = ""
+          if (this.props.cnt==0){
+            text = "O"
+          }else if (this.props.cnt==1){
+            text = "X"
+          }
+          return <div className="space" onClick={this.click.bind(this)}>{text}</div>
+        }                                             //this來this去 this都是指這個space元件 沒有要傳東西進去
+        click(e){
+          this.props.func(this.props.index)
+        }
+      }
+      class Grid extends React.Component{
+        constructor(props){
+          super(props)
+          this.state = {
+            count:0,
+            map:[-1,-1,-1,-1,-1,-1,-1,-1,-1],
+            winner:null
+          }
+        }
+        render(){
+          let lst = []
+          for (let i=0;i<this.state.map.length;i++){
+            lst.push(<Space cnt={this.state.map[i]} index={i} func={this.cng.bind(this)} key={i}/>)
+          }                                                              //this來this去 this都是指這個grid元件
+          if (this.state.winner == null){
+            return <div className="grid">{lst}</div>
+          }else{
+            return <div className="grid">
+              <Svg strt={this.state.winner.strt} end={this.state.winner.end}/>
+              {lst}</div>
+          }
+          
+        }
+        cng(index){
+          if (this.state.winner==null&&this.state.map[index]==-1){
+            this.setState((st,ps)=>{
+              st.map[index] = st.count%2
+              return {
+                map:st.map,
+                count:st.count+1,//不能只有count 要st.count 不然會undefined   
+                //不能st.count++ 會先使用 st.count 的值，然後再遞增，可能會導致不正確的數字
+                //史上最大謎題
+//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題
+//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題
+//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題//史上最大謎題
+                winner:this.ck()//結果這個沒有bind(this) 也沒有在參數傳入this.state.map 為什麼在ck內部可以使用this.state = =
+              }
+            })
+          }
+        }
+        ck(){
+          let mp = this.state.map
+          for (let x=0;x<3;x++){
+            if ( (mp[x*3]!=-1 && mp[x*3] == mp[x*3+1]) && (mp[x*3+1] == mp[x*3+2])){
+              return {strt:x,end:x*3+2}//為什麼直接return svg  後記: 沒有要return svg啊= =
+            }
+          }
+          for (let y=0;y<3;y++){
+            if ((mp[y]!=-1 && mp[y]==mp[y+3]) && (mp[y+3]==mp[y+6])){
+              return {strt:y,end:y+6}
+            }
+          }
+          if ((mp[0]!=-1 && mp[0]==mp[4]) && (mp[4]==mp[8])){
+            return {strt:0,end:8}
+          }
+          if ((mp[2]!=-1 && mp[2]==mp[4]) && (mp[4]==mp[6])){
+            return {strt:2,end:6}
+          }
+          return null
+        }
+      }
+      let grid = <Grid/>
+      let con = document.getElementById("a")
+      let rt = ReactDOM.createRoot(con)
+      rt.render(grid)
+
+    </script>
+  </body>
+</html>

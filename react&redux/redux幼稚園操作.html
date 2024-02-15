@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>redux幼稚園操作</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+
+    </style>
+</head>
+  <body>
+	<div id="a">a</div>
+    <script type="text/babel">
+		let a = document.getElementById("a")
+		let store 
+		let rdcr = function(state,action){
+		/*
+		第0步 建立狀態處理函式
+		reducer狀態處理器有兩個參數
+		目前狀態物件state 以及 接收到的行動物件action
+		無論狀態是否改變，都依定要回傳狀態物件，回傳的狀態物件會完全取代舊狀態物件
+		*/
+		/*
+		switch是一種條件語句，組成內容有 檢查對象 case和defaule
+		檢查對象就是switch後方括弧內的東西，
+		當下方case和檢查對象相符時，執行該行case內部程式，
+		一個switch內部可以有多個case對對象進行檢查
+		最後，如果所有case都不成立，執行default下方程式
+		*/
+			switch(action.type){
+				case "UPDATE_SWITCH":
+					return {toggle:!state.toggle}//更新狀態
+				default://一定要dafault一定要dafault一定要dafault一定要dafault一定要dafault一定要dafault一定要dafault
+					return state
+			}
+		}
+		let handler = function(){
+			//一但狀態改變，handle函式就會被呼叫
+			let state = store.getState()
+			a.textContent = state.toggle?"跳出區拉":"我又跳進來拉"
+		
+			
+		}
+		window.addEventListener("load",()=>{
+
+			//第1步:先建立狀態儲存空間，必須先建立狀態處理器reducer，以及初始狀態物件
+			//但建立狀態儲存空間時，必須先let reducer
+			store=Redux.createStore(rdcr,{toggle:false})
+
+			//註冊回應狀態改變的函式handler 一但狀態改變，handle函式就會被呼叫
+			//而註冊回應改變狀態函式時，該程式也會回傳一個取消註冊的函式，有夠不嚴謹
+			let unsubscribe = store.subscribe(handler)
+			//unsubscribe()//將對應的狀態改變函式取消
+
+			a.addEventListener("click",()=>{
+			//當click時，建立action行動物件並派送給狀態處理空間store的狀態處理函式rdcr
+			//行動物件必須提供type屬性代表行動是啥
+				store.dispatch({//這行鬼東西傳了action.type給reducer
+					type:"UPDATE_SWITCH"//action type習慣用大寫
+				})
+				console.log(store.getState())
+			
+				/*
+				let state = store.getState()
+				if (state.toggle){
+					a.textContent="true"
+				}else{
+					a.textContent="false"
+				}*/
+
+			})
+			
+		})
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>react第二課巢狀</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+  <hr>
+  <div id="b"></div>
+  <hr>
+  <div id="c"></div>
+    <script>
+      /*
+      這課是展示react的巢狀結構
+      用for迴圈建立多個元件再一次建立
+      */
+      class Mid extends React.Component{
+        constructor(){
+          super()
+      }
+      render(){
+        let lst = []//建立空list 這是要放子元素的容器
+        let count = this.props.count//用屬性導入要放幾個子元素
+        for (let i=1;i<count;i++){//用迴圈
+          lst.push(React.createElement("h"+i,{key:i},`我愛${i}條柴`))//建立子元素並放進lst中
+        } //這邊要為每個子元素導入獨一無二的key react規則
+
+        return React.createElement("div",null,lst)//再將充滿子元件的元件建立
+      }
+    }
+    let mid = React.createElement(Mid,{count:6})
+    let con = document.getElementById("a")
+    let rt = ReactDOM.createRoot(con)
+    rt.render(mid)
+
+    /*
+    這課要將上邊分成兩個class來做
+    */
+    class Div extends React.Component{
+      constructor(){
+        super()
+      }
+      render(){
+        let lst = []
+        let count = this.props.count
+        for (let i=1;i<count;i++){ //此前都跟上面一樣
+          lst.push(React.createElement(Htag,{level:i,key:i}))//這邊不一樣  這邊是push自製元件 並以物件形式傳入屬性
+        }
+        return React.createElement("div",null,lst)
+      }
+    }
+
+    class Htag extends React.Component{
+      constructor(){
+        super()
+      }
+      render(){
+        return React.createElement("h"+this.props.level,null,`我愛${this.props.level}條財`)
+      }
+    }
+
+    let div = React.createElement(Div,{count:6})//以物件形式傳入屬性
+    let con1 = document.getElementById("b")
+    let rt1 = ReactDOM.createRoot(con1)
+    rt1.render(div)
+
+
+    </script>
+  </body>
+</html>
