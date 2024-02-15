@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>前端工程專題scroll bar</title> 
+        <style>
+            .box{
+                border:2px solid red;
+                width:200px;
+                height:80px;
+                overflow:scroll;
+            }
+        </style>
+    </head>
+    <body> 
+        <input type="text" onchange="writee(this)" >
+        <div class="box" id="dad">
+
+        </div>
+       <script>
+            let dad = document.getElementById("dad")
+            
+            function writee(elm){
+                let val = elm.value
+                val = parseInt(val)
+                dad.innerHTML=""//清空dad內所有的標籤和內文 如果是dad.textContext=""則會留下一堆<div>標籤
+                console.log(dad)
+                let res
+                for (let i=0;i<val;i++){
+                    res = document.createElement("div")
+                    res.textContent = `this is line ${i+1}` //比innerHTML更安全因為innerHTML可直接在window插入標籤
+                    dad.appendChild(res)
+                }
+            }
+
+            window.setInterval(down,5)            
+            function down(){
+                dad.scrollTop++
+            }
+        </script>
+    </body>
+</html>
+

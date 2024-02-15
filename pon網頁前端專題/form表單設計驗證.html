@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>form表單設計驗證</title> 
+        <style>
+            /**/
+            form{ /*標籤選擇器選取form標籤*/
+                line-height:2.5;/*設定表單內部行距 意思是2.5倍字體高*/
+            }
+            div>input, div>select{/* > 透過街程式選擇器選擇div下方的input ,逗號表示input和select都套用此樣式*/
+                padding:5px 10px;/*讓內容跟邊緣有空間 前面是上下 後面是左右 左右都潰寬一點*/
+                border:1px solid black;
+                border-radius:10px;
+            }
+            div>.ok{ /*父標籤div下的子標籤的class ok*/
+                color:red
+            }
+        /*    父標籤>  子標籤:通過驗證的狀態下  的同一階層的下一標籤  的ok class */
+               div >        input:valid             +           .ok{ 
+                display:inline;
+                animation:blink 1s
+            }
+            div>input:invalid+.ok{
+                display:none;
+            }
+            @keyframes blink{
+                0%{opacity:0}
+                100%{opacity:1}
+            }
+            @keyframes reblink{ /*我不會做 應該要用js做?*/
+                0%{opacity:1}
+                100%{opacity:0}
+            }
+        </style>
+    </head>
+    <body> 
+        <h3>註冊帳號</h3><!---->
+        <form onsubmit="alert('sonla')"><!--為啥只能單引號-->
+            <div>帳號 : <input placeholder="輸入拉" type="text" required pattern="[0-9a-zA-z]{4,12}">  <!--pattern正規表示式regular expression-->
+                <span class="ok">ok</span>
+            </div><!--requried偵測值value是否有更動 在更動前都不會送出-->
+            <div>密碼 : <input type="text" required pattern="[0-9a-zA-z]{2,15}">
+                <span class="ok">ok</span>
+            </div>
+            <div>電郵 : <input type="email" required><!--email檢查是否符合email格式 是email-->
+                <span class="ok">ok</span>
+            </div>
+            <div>電話 : <input type="text" pattern="[0-9]{8,12}"></div>
+            <div>性別 : 
+                <input type="radio" name="gender" id="male" value="male" required> <!--同一個name裡必要有一個值變動才required-->
+                <label for="male">男</label>
+                <input type="radio" name="gender" id="female" value="female" required>
+                <label for="female">女</label>
+            </div>
+            <div>生日
+                <select required>
+                    <option value="">出生年</option>
+                    <option value="1980">1980</option>
+                    <option value="1990">1990</option>
+                    <option value="2000" >2000</option>
+                </select>
+            </div>
+            <br>
+            <input type="submit" value="送咨">
+         </form>
+       <script>
+
+        </script>
+    </body>
+</html>
+
