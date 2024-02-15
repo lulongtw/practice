@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/33d145f0f9.js" crossorigin="anonymous"></script>
+  <title>first</title>
+  <style>
+    /*用padding-top就不用scroll-margin-top??*/
+    @import 'https://fonts.googleapis.com/css?family=Lato:400,700';
+    *{
+      padding:0;
+      margin:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth
+    }
+    body{
+      font-family: 'Lato', sans-serif;
+      background-color: rgb(235, 235, 235);
+    }
+    a{
+      color:black;
+      text-decoration: none;
+    }
+    #header{
+      box-sizing:border-box;/*為了設邊邊把padding加回來*/
+      padding:20px;
+      position:fixed;
+      background-color: rgb(235, 235, 235);
+   
+      width:100%;
+      display:grid;
+      grid-template-columns:400px 1fr;
+      align-items:center;
+   
+    }
+    img{
+      grid-column:1;
+      width:87%;
+      display:block;
+      margin:0 auto;
+  
+    }
+    #navs{
+
+      grid-column:2;
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      margin-right:15px;
+    }
+    .nav{
+      font-size:1.1rem;
+      margin:0 20px;
+      flex:0 0 10%
+    }
+    main{
+      padding-top:70px;
+      width:min(80%,720px);
+      margin:0 auto;
+    }
+    form{
+      width:min(100%,500px);
+      margin:20px auto;
+      display:grid;/*純粹for gap*/
+      grid-template-columns:1fr;
+      gap:20px;
+    }
+    #title{
+      font-size:2em;
+      font-weight:800;
+      text-align:center;
+    }
+    input[type="email"]{
+      width:250px;
+      height:30px;
+      padding:5px;
+      margin:0 auto;
+      display:block
+    }
+    input[type="submit"]{
+      display:block;
+      width:150px;
+      height:30px;
+      background-color: goldenrod;
+      text-align:center;
+      margin:0 auto;
+    }
+    #features{
+      margin:50px 0;
+    }
+    .feat{
+      display:flex;
+      align-items:center;
+      margin:30px 0;
+    }
+    .destitle{
+      font-size:2em;
+      font-weight:800;
+    }
+    i{
+      flex:0 0 100px;/*flem下的子元素會彈性喔  因為這些圖片都不一樣大 所以要固定*/
+      font-size:3.5rem;
+      margin-right:30px;
+    }
+
+    iframe{
+      width:80%;
+      margin:20px auto;
+      display:block;
+      height:300px;/*要手動設height??*/
+
+    }
+    #pricing{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:10px;
+    }
+    .price{
+      border:1px solid black;
+      display:grid;/*只是為了gap*/
+      grid-template-columns:1fr;
+      gap:20px;
+    }
+    .price>*{
+      text-align:center;
+    }
+    .price.a{
+      grid-column:1
+    }
+    .price.b{
+      grid-column:2
+    }
+    .price.c{
+      grid-column:3
+    }
+    .pctitle{
+      height:30px;
+      line-height:30px;
+      background-color: gray;
+    }
+    .pctitle,.pcmoney{
+      font-weight: 800;
+    }
+    .pccntn{
+      width:50%;
+      margin:0 auto;
+    }
+    .btn{
+      height:30px;
+      line-height:30px;
+      background-color: goldenrod;
+      width:50%;
+      margin:0 auto;
+      margin-bottom:20px;
+    }
+    footer{
+      margin-top:20px;
+      width:min(720px,100%);
+      background-color: grey;
+      text-align:right;
+      padding:20px/*想致中?? padding超快*/
+    }
+    #tpc{
+      display:flex;
+    
+      justify-content: flex-end;
+     
+    }
+    .noname{
+      width:20%;
+    }
+    #cpr{
+      height:30px;
+      line-height:30px;
+    }
+    #features,#video,#pricing{
+        scroll-margin-top:80px;
+      }
+    @media only screen and (max-width:720px){
+      #navs{
+        flex-direction:column;
+        justify-content: center;
+        align-items:center;
+        gap:5px;
+      }
+      #navs{
+        margin:0;
+      }
+      .nav{
+        text-align:center;
+        width:40%; 
+      
+      }
+      #pricing{
+        grid-template-columns:1fr;
+      }
+      #pricing>*{
+        grid-column:1;
+        width:300px;
+        margin:0 auto;
+      }
+      main{
+        padding-top:100px;
+      }
+      #features,#video,#pricing{
+        scroll-margin-top:130px;
+      }
+    }
+    @media only screen and (max-width:600px){
+      #header{
+        grid-template-columns:1fr;
+   
+      }
+      #header>*{
+        grid-column:1;
+
+      }
+      main{
+        padding-top:150px;
+      }
+      .feat{
+        flex-direction:column;
+        text-align:center;
+      }
+      i{
+        margin:0;
+      }
+      #features,#video,#pricing{
+        scroll-margin-top:170px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <img id="header-img" src="https://cdn.freecodecamp.org/testable-projects-fcc/images/product-landing-page-logo.png" alt="original trombones">
+    <div id="navs">
+      <div class="nav"><a href="#features">features</a></div>
+      <div class="nav"><a href="#video">video</a></div>
+      <div class="nav"><a href="#pricing">pricing</a></div>
+    </div>
+  </div>
+  <main>
+
+    <form action="https://www.google.com" mode="GET">
+      <div id="title">Handcrafted, home-made masterpieces</div>
+      <input type="email" id="email" name="email" placeholder="enter@email" required>
+      <input type="submit" value="GET STARTED">
+    </form>
+
+    <div id="features">
+
+      <div class="feat">
+        <i class="fa-solid fa-fire"></i>
+        <div class="des">
+          <div class="destitle">Premium Materials</div>
+          <div class="descntn">Our trombones use the shiniest brass which is sourced locally. This will increase the longevity of your purchase.</div>
+        </div>
+      </div>
+
+      <div class="feat">
+        <i class="fa-solid fa-truck"></i>
+        <div class="des">
+          <div class="destitle">Fast Shipping</div>
+          <div class="descntn">We make sure you recieve your trombone as soon as we have finished making it. We also provide free returns if you are not satisfied.</div>
+        </div>
+      </div>
+
+      <div class="feat">
+        <i class="fa-solid fa-thumbs-up"></i>
+        <div class="des">
+          <div class="destitle">Quality Assurance</div>
+          <div class="descntn">For every purchase you make, we will ensure there are no damages or faults and we will check and test the pitch of your instrument.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <figuare>
+      <figcaptin></figcaptin>
+      <iframe id="video" src="https://www.youtube.com/embed/y8Yv4pnO7qc" frameborder="0" allowfullscreen></iframe>
+    </figuare>
+
+    <div id="pricing">
+
+      <div class="price a">
+        <div class="pctitle">TENOR TROMBONE</div>
+        <div class="pcmoney">$600</div>
+        <div class="pccntn">Lorem ipsum.
+          Lorem ipsum.
+          Lorem ipsum dolor.
+          Lorem ipsum.</div>
+        <div class="btn">SELECT</div>
+      </div>
+
+      <div class="price b">
+        <div class="pctitle">BASS TROMBONE</div>
+        <div class="pcmoney">$900</div>
+        <div class="pccntn">Lorem ipsum.
+          Lorem ipsum.
+          Lorem ipsum dolor.
+          Lorem ipsum.</div>
+        <div class="btn">SELECT</div>
+      </div>
+
+      <div class="price c">
+        <div class="pctitle">VALVE TROMBONE</div>
+        <div class="pcmoney">$1200</div>
+        <div class="pccntn">Lorem ipsum.
+          Lorem ipsum.
+          Lorem ipsum dolor.
+          Lorem ipsum.</div>
+        <div class="btn">SELECT</div>
+      </div>
+    </div>
+
+    <footer>
+      <div id="tpc">
+        <div class="noname">terms</div>
+        <div class="noname">privacy</div>
+        <div class="noname">contact</div>
+      </div>
+      <div id="cpr">Copyright 2016, Original Trombones</div>
+    </footer>
+
+  </main>
+  
+</body>
+</html>
+
+<!--
+
+
+
+https://www.youtube.com/embed/y8Yv4pnO7qc
+-->

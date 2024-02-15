@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>position以及css虛擬階層</title> 
+        <style>
+            .psn{
+                position:absolute;top:100px;left:100px;
+                /*絕對定位會追溯父標籤”們“ 離自己最親近的父標籤作為定位   距離上方及左邊   可以用絕對定位來決定標籤 不會影響到其他標籤*/
+                
+                position:relative;top:100px;left:100px;
+                /*以該標籤在html的位置為基準來位移  相較於abs rela原始位置仍然會被佔有 所以適用小區塊位移 看下方老公公*/
+                
+                position:fixed;top:20%;left:50%; /*可以用趴數*/
+                background-color: aqua;
+                width:100px;
+                height:100px;
+            }
+            .gon{
+                /*小移動 老公公二次方*/
+                position:relative;top:-5px;left:0px;
+            }
+
+
+
+
+            div.wala{
+            /* 在class選擇器.wala前方加div 表示有wala的div才套用 非div但有wala class不套用*/
+            /*不會套用wala*/ 
+                background-color: aqua;
+            }
+            .wala{
+                background-color: red;
+            }
+
+
+            /*階層選擇器 搭配其他選擇器使用*/
+            /*
+            空白和>都是階層選擇棄
+            前後兩邊可以加class選擇棄或標籤選擇器或什麼鬼選擇棄
+            都是可以加的
+            ex:
+            .one div or dic .one....
+            */
+            .one div{
+                /*中間空白代表往下透到底
+                 父標籤的class是one的子標籤是div 套用此css*/
+                background-color: greenyellow;
+            }
+            .two div{
+                background-color: aquamarine;
+            }
+            div>span{
+                /*父標籤含以上是div的span標籤 套用此css*/
+                /*據說>只會選到親一層而不會往下透 但實際上span孫也透到了 我也不知道為啥*/
+                background-color: rgb(255, 0, 0);
+            }
+            div>span+.money{
+                /*父標籤是div的span標籤的緊鄰下一個有money class的標籤*/
+                background-color: yellow;
+            }
+
+
+            .btn:hover{
+                /*虛擬選擇器  hover當mouseover時 引入此css*/
+                background-color: blue;
+            }
+
+            input:focus{
+                background-color: gold;
+            }
+
+
+
+            
+        </style>
+    </head>
+    <body>
+
+        <span>老公公<span class="gon">2</span></span>
+
+        <h3 class="one">
+            <div>.one div</div>
+        </h3>
+
+        <h3 class="two">
+            <div>.two div</div>
+        </h3>
+        <div>div父
+            <span>span子<span>span孫</span></span>
+        </div>
+
+        <div>div父
+            <span>span子</span><span class="money">span子</span>
+        </div>
+
+
+        <br><br><br>
+        <div class="wala">老婆婆</div>
+        <span class="wala">老太太</span>
+        <br>
+        <button class="btn">按我</button>
+        <br>
+        <input type="text" placeholder="輸入">
+    </body>
+</html>
+

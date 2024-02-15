@@ -1,0 +1,633 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>肥狗小畫家</title> 
+        <style>
+            .btn{
+                margin:10px;
+                border:2px solid rgb(83, 83, 83);
+                background-color: grey;
+                box-shadow:5px 5px 3px rgb(144, 144, 144);
+                color:rgb(255, 255, 255);
+                border-radius:10px;
+                padding:8px 5px;
+            }
+            .clr{
+                width:50px;
+                height:50px;
+            }
+        </style>
+    </head>
+    <body> 
+        <!--下面有全script寫的拉爽拉-->
+        <div style="text-align:center">！！肥狗小畫家！！</div>
+        <div style="display:flex;justify-content:center;align-items:center">
+            <div class="btn" onclick="btmcircle()">圓形</div>
+            <div class="btn" onclick="btmrect()">矩形</div>
+            <div class="btn" onclick="btmline()">直線</div>
+            <div class="btn" onclick="btmpointer()">多邊形的點</div>
+            <div class="btn" onclick="count()">多邊形上色</div>
+            <div class="btn" onclick="btmpen()">畫筆</div>          
+            <div class="btn" onclick="btmerase()">橡皮擦</div>
+        </div>
+        <div style="display:flex;justify-content:center;align-items:center;border:2px solid black;width:400px;margin:0 auto">
+            <div class="clr" style="background-color: black;" onclick="chsclr(this)"></div>
+            <div class="clr" style="background-color: red;" onclick="chsclr(this)"></div>
+            <div class="clr" style="background-color: orange;" onclick="chsclr(this)"></div>
+            <div class="clr" style="background-color: yellow;" onclick="chsclr(this)"></div>
+            <div class="clr" style="background-color: rgb(23, 176, 23);" onclick="chsclr(this)"></div>
+            <div class="clr" style="background-color: blue;" onclick="chsclr(this)"></div>
+            <div class="clr" style="background-color: rgb(247, 0, 222);" onclick="chsclr(this)"></div>
+            <div class="clr" style="background-color: white;" onclick="chsclr(this)"></div>
+        </div>
+        <div style="display:flex;justify-content:center;align-items:center;margin:10 5 5 5">
+            <div id="setting"></div>
+        </div>
+        <div style="display:flex;justify-content:center;align-items:center">
+        <svg id="svg" width="600" height="600" style="border:2px solid black;margin:5px;"></svg>
+        </div>
+       <script>
+            let color = "black"
+            let svg
+            let setg = document.getElementById("setting")
+            setg.innerHTML = "<div style='height:29px'></div>"
+            window.onload=function(){
+                svg=document.getElementById("svg")
+            }
+            let move
+            function drawpic(pictype,attrs){
+                let element = document.createElementNS("http://www.w3.org/2000/svg",pictype)
+                for (let name in attrs){
+                    element.setAttribute(name,attrs[name])
+                }
+                return element
+            }
+            /*let r = 15
+            function setr(e){
+                r = e.value
+                }*/
+            let r 
+            let circlee
+            function btmcircle(){
+                svg.removeEventListener("mousedown",move)
+                svg.addEventListener("mousedown",circle)
+                //setg.innerHTML = `半徑是 <input type='text' placeholder='${r}' onchange=setr(this) style='padding:5px 10px;border-radius:5px;width:70px';>`
+                setg.innerHTML = "<div style='height:29px'></div>"
+                move = circle //不用()是因為如果加了()就會執行了拉 circle是代表該函式的變數
+                function circle(elm){ //如果此函式被定義為事件處理函式 那麼第一個參數則會成會事件物件的傳入參數
+                    r=1
+                    let x = elm.clientX    //所以這個地方不能是this,this代表svg 但elm代表事件物件 透過事件物件才能取得事件的資料(按下去的座標)
+                    let y = elm.clientY
+                    let bd = svg.getBoundingClientRect()
+                    x = x - bd.left
+                    y = y - bd.top
+                    circlee = drawpic("circle",{
+                        "cx":x,
+                        "cy":y,
+                        "r":r,
+                        "fill":color
+                        })       
+                    document.addEventListener("mousemove",makeR)//document和svg的差別是一旦超出匡外 svg就會當機 所以用document比較好
+                    document.addEventListener("mouseup",drop)
+                    function makeR(e){
+                        let newx = e.clientX - bd.left
+                        let newy = e.clientY - bd.top
+                        r = Math.sqrt((newx - x)*(newx - x) + (newy - y)*(newy - y))
+                        circlee.setAttribute("r",r)
+                    }
+                    function drop(){
+                        document.removeEventListener("mousemove",makeR)
+                        
+                    }
+                    svg.appendChild(circlee)
+                }
+            }
+            let width
+            let height
+            function btmrect(){
+                svg.removeEventListener("mousedown",move)
+                svg.addEventListener("mousedown",rectacle)
+                setg.innerHTML="<div style='height:29px'></div>"
+                move = rectacle
+                function rectacle(elm){
+                    width = 1
+                    height= 1
+                    let x = elm.clientX
+                    let y = elm.clientY
+                    let bd = svg.getBoundingClientRect()
+                    x = x - bd.left
+                    y = y - bd.top
+                    let rect = drawpic("rect",{
+                            "x":x,
+                            "y":y,
+                            "width":width,
+                            "height":height,
+                            "fill":color,
+                        })
+                    document.addEventListener("mousemove",drag)
+                    document.addEventListener("mouseup",drop)
+                    function drag(e){//新drag gpt555
+                        let newX = e.clientX - bd.left//確認圖形對角線的點
+                        let newY = e.clientY - bd.top
+                        let rnewx = Math.min(x,newX)//以最小的當最左上角 因為最左上角等於是最小的
+                        let rnewy = Math.min(y,newY)
+                        width = Math.abs(x - newX)//用互為對角線的座標去處理得出寬高
+                        height = Math.abs(y - newY)
+                        rect.setAttribute("x",rnewx)
+                        rect.setAttribute("y",rnewy)
+                        rect.setAttribute("width",width)
+                        rect.setAttribute("height",height)
+                    }
+                    function drop(){
+                        document.removeEventListener("mousemove",drag)
+                        //svg.appendChild(rect) 放這邊只會最後才出現
+                    }
+                    svg.appendChild(rect) //放在這會找不到rect 因為rect在最裡面的函式drag 但必須放在這 因為在mousemove裏面append會直接塗上去拉
+                }
+            }
+
+        /*  下方btmrect的附屬function錯的drag(e) 不知哪裡錯
+            function drag(e){
+                width = Math.abs(e.clientX - bd.left - x)
+                height = Math.abs(e.clientY - bd.top - y)
+                if (x< (e.clientX - bd.left) && y > (e.clientY - bd.top)){
+                    y = e.clientY - bd.top
+                }//還有大概兩個else if沒寫 但第一個就錯了就不寫了 這是來表示最終點被拉到哪邊 來重設起始點"x","y" 我想破腦還是不知哪裡錯
+                rect = drawpic("rect",{
+                    "x":x,
+                    "y":y,
+                    "width":width,
+                    "height":height,
+                    "fill":color,
+                })   
+                svg.appendChild(rect)//放在這才會出現連續圖形
+            }
+            */
+            /*
+            let width
+            let height
+            function btmrect(){
+                svg.removeEventListener("mousedown",move)
+                svg.addEventListener("mousedown",rectacle)
+                setg.innerHTML="<div style='height:29px'></div>"
+                move = rectacle
+                function rectacle(elm){
+                    let x = elm.clientX
+                    let y = elm.clientY
+                    let bd = svg.getBoundingClientRect()
+                    x = x - bd.left
+                    y = y - bd.top
+                    svg.addEventListener("mousemove",drag)
+                    svg.addEventListener("mouseup",drop)
+                    function drag(e){//新drag gpt555
+                        let newX = e.clientX - bd.left//確認圖形對角線的點
+                        let newY = e.clientY - bd.top
+                        let rnewx = Math.min(x,newX)//以最小的當最左上角 因為最左上角等於是最小的
+                        let rnewy = Math.min(y,newY)
+                        width = Math.abs(x - newX)//用互為對角線的座標去處理得出寬高
+                        height = Math.abs(y - newY)
+                        rect = drawpic("rect",{
+                            "x":rnewx,
+                            "y":rnewy,
+                            "width":width,
+                            "height":height,
+                            "fill":color,
+                        })
+                        svg.appendChild(rect)
+                    }
+                    function drop(){
+                        svg.removeEventListener("mousemove",drag)
+                        //svg.appendChild(rect) 放這邊只會最後才出現
+                    }
+                    //svg.appendChild(rect) //放在這會找不到rect 因為rect在最裡面的函式drag 但必須放在這 因為在mousemove裏面append會直接塗上去拉
+                }
+            }
+            */
+
+
+            //let c 
+            let points = ""
+            let stp = "off"
+            function count(){
+                if (stp=="off"){
+                    stp="on"
+                }else if (stp=="on"){
+                    stp="off"
+                }
+                if (stp=="on"){
+                    let polygon = drawpic("polygon",{
+                        "points":points,
+                        "fill":color,
+                    })
+                    svg.appendChild(polygon)
+                    stp="off"
+                    points=""
+                }
+                
+            }
+            function btmpointer(){
+                svg.removeEventListener("mousedown",move)
+                svg.addEventListener("mousedown",pointer)
+                setg.innerHTML = "<div style='height:29px'></div>"
+                move = pointer               
+                function pointer(elm){
+                    let x = elm.clientX
+                    let y = elm.clientY
+                    let bd = svg.getBoundingClientRect()
+                    x = x - bd.left
+                    y = y - bd.top
+                    points+=`${x} ${y} `
+                    //console.log(points)
+                    //console.log(stp)
+                }
+            }
+            let linestroke = 15
+            function sets(e){
+                linestroke = e.value
+            }
+            function btmline(){
+                svg.removeEventListener("mousedown",move)
+                svg.addEventListener("mousedown",line)
+                setg.innerHTML = `線的寬度 <input type='text' placeholder='${linestroke}' onchange=sets(this) style='padding:5px 10px;border-radius:5px;width:70px'>`
+                move = line
+                function line(elm){
+                    if (isNaN(linestroke)){
+                        alert("要輸入數字的拉，汪！")
+                    }else{
+                        let x = elm.clientX
+                        let y = elm.clientY
+                        let bd = this.getBoundingClientRect()
+                        x = x - bd.left
+                        y = y - bd.top
+                        let line = drawpic("line",{
+                            "x1":x,
+                            "y1":y,
+                            "x2":x,
+                            "y2":y,
+                            "stroke":color,
+                            "stroke-width":linestroke
+                            })
+                        document.addEventListener("mousemove",draw)
+                        document.addEventListener("mouseup",drop)
+                        function draw(e){
+                            line.setAttribute("x2",e.clientX-bd.left)
+                            line.setAttribute("y2",e.clientY-bd.top)
+                        }
+                        function drop(){
+                            document.removeEventListener("mousemove",draw)
+                        }
+                        svg.appendChild(line)
+                    }
+                }
+            }
+
+            let er = 20
+            function seter(elm){
+                er = elm.value
+            }
+            function btmerase(){
+                //c = "on"
+                svg.removeEventListener("mousedown",move)
+                svg.addEventListener("mousedown",erase)
+                setg.innerHTML = `皮擦大小 <input type='text' placeholder='${er}' onchange=seter(this) style='padding:5px 10px;border-radius:5px;width:70px'>`
+                move = erase
+                function erase(elm){
+                    if (isNaN(er)){
+                        alert("就跟你說要數字，汪！")
+                    }else{
+                        let x = elm.clientX
+                        let y = elm.clientY
+                        let bd = svg.getBoundingClientRect()
+                        x = x - bd.left
+                        y = y - bd.top
+                        let eras = drawpic("circle",{
+                            "cx":x,
+                            "cy":y,
+                            "r":er,
+                            "fill":"white"
+                        })
+                        svg.addEventListener("mousemove",erase)
+                        svg.addEventListener("mouseup",drop)
+                        function drop(){
+                            svg.removeEventListener("mousemove",erase)
+                        }
+                        svg.append(eras)
+                    }
+
+                }
+            }
+            let penr = 20
+            function setpen(elm){
+                penr = elm.value
+            }
+            function btmpen(){
+                svg.removeEventListener("mousedown",move)
+                svg.addEventListener("mousedown",pentrk)
+                setg.innerHTML = `筆畫粗細 <input type='text' placeholder='${er}' onchange=setpen(this) style='padding:5px 10px;border-radius:5px;width:70px'>`
+                move = pentrk
+                function pentrk(elm){
+                    if (isNaN(penr)) {
+                        alert("數字講幾遍")
+                    }else{
+                    let x = elm.clientX
+                    let y = elm.clientY
+                    let bd = svg.getBoundingClientRect()
+                    x = x - bd.left
+                    y = y - bd.top
+                    let pen = drawpic("circle",{
+                        "cx":x,
+                        "cy":y,
+                        "r":penr,
+                        "fill":color
+                    })
+                    
+                    svg.appendChild(pen)//兩邊down和move都要append 因為是兩個不同element
+                    document.addEventListener("mousemove",penstrt)
+                    document.addEventListener("mouseup",drop)
+                    function penstrt(e){//必須設立新的npen element
+                        //如果單純對上層舊元素pen設定屬性，並不會append上去 只是會連續改動pen而已
+                        let npen = document.createElementNS("http://www.w3.org/2000/svg","circle")
+                        npen.setAttribute("cx",e.clientX-bd.left)
+                        npen.setAttribute("cy",e.clientY-bd.top)
+                        npen.setAttribute("r",penr)
+                        npen.setAttribute("fill",color)
+                        svg.appendChild(npen)//兩邊down和move都要append 因為是兩個不同element
+                        
+                    }
+                    function drop(){
+                        document.removeEventListener("mousemove",penstrt)
+                    }
+                    
+            }
+        }
+    }
+            function chsclr(elm){
+                let styles = window.getComputedStyle(elm)
+                color = styles.getPropertyValue("background-color")
+                
+            }
+
+        </script>
+        <!-- 全部script拉爽拉全部script拉爽拉全部script拉爽拉全部script拉爽拉全部script拉爽拉全部script拉爽拉
+    <script>
+        let move
+        let wrap = document.createElement("div")
+        wrap.classList.add("wrap")
+        let reqs = document.createElement("input")
+        reqs.type = "text"
+        reqs.style.display = "none"
+        reqs.placeholder = 10;
+        reqs.addEventListener("change",reqst)
+        let size
+        function reqst(){
+            size = parseInt(this.value)
+            console.log(size)
+        }
+        document.body.appendChild(reqs)
+
+        /*原神btn*/
+        let circlebtn = document.createElement("div")
+        circlebtn.textContent = "原神"
+        circlebtn.classList.add("btn")
+        circlebtn.addEventListener("click",circle)
+        wrap.appendChild(circlebtn)
+
+        /*矩形btn*/
+        let rectbtn = document.createElement("div")
+        rectbtn.textContent = "矩形"
+        rectbtn.classList.add("btn")
+        rectbtn.addEventListener("click",rectangle)
+        wrap.appendChild(rectbtn)
+
+        /*直線btn*/
+        let linebtn = document.createElement("div")
+        linebtn.textContent = "直線"
+        linebtn.classList.add("btn")
+        linebtn.addEventListener("click",linela)
+        wrap.appendChild(linebtn)
+
+        /*polygon*/
+        let polybtn = document.createElement("div")
+        polybtn.textContent = "poly"
+        polybtn.classList.add("btn")
+        polybtn.addEventListener("click",polyy)
+        wrap.appendChild(polybtn)
+        let gonbtn = document.createElement("div")
+        gonbtn.textContent = "gon"
+        gonbtn.classList.add("btn")
+        gonbtn.addEventListener("click",gonn)
+        wrap.appendChild(gonbtn)
+
+        /*pen*/
+        let penbtn = document.createElement("div")
+        penbtn.textContent = "pen"
+        penbtn.classList.add("btn")
+        penbtn.addEventListener("click",penn)
+        wrap.appendChild(penbtn)
+
+
+        /*以下舉行*/
+        function rectangle(){
+            svg.removeEventListener("mousedown",move)
+            move = drawrect
+            svg.addEventListener("mousedown",move)
+            reqs.style.display = "none"
+        }
+        function drawrect(elm){
+            let x = elm.clientX
+            let y = elm.clientY
+            let bd = this.getBoundingClientRect()
+            x = x - bd.left - 2
+            y = y - bd.top - 2
+            let rect = drawpic("rect",{
+                "x":x,
+                "y":y,
+                "width":0,
+                "height":0,
+                "fill":"red"
+            })
+            svg.appendChild(rect)
+            document.addEventListener("mousemove",drag)
+            document.addEventListener("mouseup",drop)
+            function drag(e){
+                let endx = e.clientX - bd.left - 2;
+                let endy = e.clientY - bd.top - 2;
+                rect.setAttribute("x",Math.min(x,endx))
+                rect.setAttribute("y",Math.min(y,endy))
+                rect.setAttribute("width",Math.abs(x-endx))
+                rect.setAttribute("height",Math.abs(y-endy))
+            }
+            function drop(){
+                document.removeEventListener("mousemove",drag)
+                document.removeEventListener("mouseup",drop)
+            }
+        }
+        /*以上矩形*/
+
+
+
+        /*以下直線*/
+        function linela(){
+            svg.removeEventListener("mousedown",move)
+            move = drawline
+            svg.addEventListener("mousedown",move)
+            reqs.style.display="block"
+        }
+
+        function drawline(elm){
+           
+            let x = getxy(elm).x
+            let y = getxy(elm).y
+            let line = drawpic("line",{
+                "x1":x,
+                "y1":y,
+                "x2":x,
+                "y2":y,
+                "stroke-width":size,
+                "stroke":"red"
+            })
+            svg.appendChild(line)
+            document.addEventListener("mousemove",drag)
+            document.addEventListener("mouseup",drop)
+            function drag(e){
+                let endx = getxy(e).x
+                let endy = getxy(e).y
+                line.setAttribute("x2",endx)
+                line.setAttribute("y2",endy)
+            }
+            function drop(){
+            document.removeEventListener("mousemove",drag)
+            document.removeEventListener("mouseup",drop)
+            
+        }
+        }
+
+        /*以上直線*/
+
+
+        /*以下poly*/
+        let points = ""
+        function polyy(){
+            reqs.style.display = "none"
+            svg.removeEventListener("mousedown",move)
+            move = getpoly
+            svg.addEventListener("mousedown",move)
+        }
+        function getpoly(elm){
+            let x = getxy(elm).x
+            let y = getxy(elm).y
+            points+=`${x} ${y} `
+        }
+        function gonn(){
+            let polygon = drawpic("polygon",{
+                "points":points,
+                "fill":"red",
+                "stroke":"blue"
+            })
+            svg.appendChild(polygon)
+            points = ""
+        }
+
+
+        /*以上poly*/
+
+
+        /*以下pen*/
+        function penn(){
+            svg.removeEventListener("mousedown",move)
+            move = drawpen
+            svg.addEventListener("mousedown",move)
+            reqs.style.display = "block"
+            size = 5
+        }
+        function drawpen(elm){
+            let x = getxy(elm).x;
+            let y = getxy(elm).y;
+            let pen = drawpic("circle",{
+                "cx":x,
+                "cy":y,
+                "r":size,
+                "fill":"blue"
+            })
+            svg.appendChild(pen)
+            svg.addEventListener("mousemove",drawpen)
+            svg.addEventListener("mouseup",drop)
+            function drop(){
+                svg.removeEventListener("mousemove",drawpen)
+                svg.removeEventListener("mouseup",drop)
+            }
+        }
+        /*以上pen*/
+
+        /*以下原神*/
+        let r
+        function circle(){
+            reqs.style.display = "none"
+            svg.removeEventListener("mousedown",move)
+            svg.addEventListener("mousedown",drawcircle)
+            move = drawcircle
+        }
+        function drawcircle(elm){
+            r=1
+            let x = getxy(elm).x
+            let y = getxy(elm).y
+            let cir = drawpic("circle",{
+                "cx":x,
+                "cy":y,
+                "r":r,
+                "fill":"red",
+            })
+            svg.appendChild(cir)
+            document.addEventListener("mousemove",drag)
+            document.addEventListener("mouseup",drop)
+            function drag(e){
+                let endx = getxy(e).x
+                let endy = getxy(e).y
+                r = Math.sqrt(Math.pow((x-endx),2)+Math.pow((endy-y),2))
+                cir.setAttribute("r", r)
+            }
+            function drop(){
+                document.removeEventListener("mousemove",drag)
+                document.removeEventListener("mouseup",drop)
+            }
+        }
+        /*以上原神*/
+
+
+
+
+        function getxy(tar){
+            let xx = tar.clientX
+            let yy = tar.clientY
+            let bd = svg.getBoundingClientRect()
+            return {
+                x:xx - bd.left - 2,
+                y:yy - bd.top - 2
+            }
+        }
+
+
+        function drawpic(name,attrs){
+            let element = document.createElementNS("http://www.w3.org/2000/svg",name)
+            for (let key in attrs){
+                element.setAttribute(key,attrs[key])
+            }
+            return element
+        }
+
+        let svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+        svg.setAttribute("width",500)
+        svg.setAttribute("height",500)
+        svg.style.border = "2px solid black"
+
+
+        document.body.appendChild(wrap)
+        document.body.appendChild(svg)
+    </script>
+
+        -->
+    </body>
+</html>
+

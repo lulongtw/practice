@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>canvas 檔案輸入輸出</title> 
+        <style>
+            .butm{
+                background-color: antiquewhite;
+                border:5px solid black;
+                opacity:0.5;
+                padding:70px 20px 70px 20px;
+                margin:10px;
+                width:70px;
+                text-align:center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="butm" >風雲變色</div>
+        <input type="file" onchange="loadfile(this)"><!--使用者選取檔案後 會觸發onchange事件-->//
+        <button onclick="saveFile()">save</button>
+        <a id="dwn"></a>
+        <canvas id="cvs" height="600" width="600" style="border:5px solid black"></canvas>
+        <script>
+            let ctx
+            let cvs
+            window.onload=function(){
+                cvs=document.getElementById("cvs")  //錯好多次 重複let
+                ctx=cvs.getContext("2d")
+            }
+            function loadfile(input){
+                let file = input.files[0]//用onchange偵測使用者選取了檔案執行此函式 選取檔案也改變了值 並let files被選取的檔案附值
+                let src = URL.createObjectURL(file)//將取得的圖片取得url  一直打錯//
+                //let img = new Image() //建立img標籤 搞頭更少
+                let img = document.createElement("img") //也是建立img標籤 但搞頭更多
+                img.src=src//將該img連結到該檔案
+                img.onload=function(){
+                    ctx.drawImage(this,0,0,this.width,this.height)
+                }
+            }
+
+            function saveFile(){
+                let link = document.getElementById("dwn")//取得超連結物件
+                link.download="imgsetname.jpg" //用.download屬性 讓超連結標籤可以下載東西  //打成link.download(fego.jpg)
+                                               //下載後的預設檔案名稱 
+                link.href=cvs.toDataURL("image/jpeg")// 將linf的超連結 設為 cvs的輸出//
+                // 注意是cvs  設定超連結的網址 指定影像輸出格式 //忘了.href 和 cvs.
+                link.click()//用函式主動觸發點擊事件
+            }
+
+            let btms = document.getElementsByClassName("butm")
+            let btm = btms[0]
+            btm.addEventListener("click",()=>{
+                let pixels=ctx.getImageData(0,0,cvs.width,cvs.height)//
+                let data = pixels.data
+                for (let i=0;i<data.length;i+=4){ //錯i+=4
+                    data[i]=255-data[i]
+                    data[i+1]=255-data[i+1]
+                    data[i+2]=255-data[i+2]
+                }
+                ctx.putImageData(pixels,0,0)
+            })
+/*
+             全用script寫拉 全用script寫拉 全用script寫拉 全用script寫拉 全用script寫拉 全用script寫拉 全用script寫拉全用script寫拉
+    let cvs = document.createElement("canvas")
+    let ctx = cvs.getContext("2d")
+    cvs.width = "500"
+    cvs.height = "500"
+    cvs.style.border = "1px solid black"
+
+    let upbtn = document.createElement("input")
+    upbtn.type = "file"
+    upbtn.style.width = "100px"
+    upbtn.style.height = "100px"
+    upbtn.textContent = "upload"
+    upbtn.addEventListener("change",()=>{
+      let file = upbtn.files[0]
+      let img = document.createElement("img")
+      let src = URL.createObjectURL(file)
+      img.src = src
+      img.onload = function(){
+        ctx.drawImage(this,0,0,300,200)
+      }
+    })
+
+    let cngbtn = document.createElement("button")
+    cngbtn.style.display = "block"
+    cngbtn.style.width = "100px"
+    cngbtn.style.height = "100px"
+    cngbtn.textContent = "upload"
+    cngbtn.addEventListener("click",()=>{
+      let pixels = ctx.getImageData(0,0,cvs.width,cvs.height)
+      let data = pixels.data
+      for (let i=0;i<data.length;i+=4){
+        data[i] = 255 - data[i];
+        data[i+1] = 255 - data[i+1];
+        data[i+2] = 255 - data[i+2];
+      }
+      ctx.putImageData(pixels,0,0)
+    })
+
+    let link = document.createElement("a")
+
+    let savbtn = document.createElement("button")
+    savbtn.style.width = "100px"
+    savbtn.style.height = "100px"
+    savbtn.textContent = "sav"
+    savbtn.addEventListener("click",()=>{
+      link.download = "wala.jpg"
+      link.href = cvs.toDataURL()
+      link.click()
+    })
+
+
+    document.body.appendChild(cvs)
+    document.body.appendChild(upbtn)
+    document.body.appendChild(cngbtn)
+    document.body.appendChild(savbtn)
+
+*/
+
+        </script>
+    </body>
+</html>

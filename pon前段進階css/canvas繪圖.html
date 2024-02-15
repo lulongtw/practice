@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>cavas繪圖</title> 
+        <style></style>
+    </head>
+    <body>
+        <!-- 指定canvas大小直接在標籤指定 不須跑道style內-->
+        <canvas id="cvs" width="800" height="600" style="border:1px solid black"></canvas>
+        <script>
+            window.onload=function(){//據說這是讓電腦馬上開啟canvas??
+            let cvs = document.getElementById("cvs")
+            let ctx=cvs.getContext("2d")//要在canvas上繪圖不是用canvas物件 而是context物件
+            //填滿
+            ctx.fillRect(50,50,100,100);//前面個是起始座標 後面兩個是rect的長寬
+            ctx.fillStyle="red";//每個fill樣式是影響到該行程式以下的fill程式
+            ctx.globalAlpha=0.5;//透明與否 此樣式是影響到該行程式以下的所有fill和stroke程式
+            ctx.fillRect(200,200,30,30)
+            //描邊
+            ctx.strokeRect(500,100,100,100)
+            ctx.strokeStyle="blue"
+            ctx.strokeRect(300,100,50,50)
+            //路徑 path
+            ctx.beginPath()//首先跟電腦講要建立路徑
+            ctx.moveTo(300,150)//首先建立起始點
+            ctx.lineTo(300,300)//開始畫線
+            ctx.lineTo(350,150)
+            ctx.closePath()//宣告關閉不畫線了
+            ctx.stroke()//針對剛剛的路徑去描邊
+            ctx.fill()//針對剛剛路徑去填滿
+            }
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>css3基本動畫</title> 
+        <style>
+            .effect{
+                animation:blink 1s infinite;/*增加動畫屬性  內容是動畫名 時長 無限play*/
+                /*
+                animation是四個參數的合體
+                animation-name 
+                animation-duration
+                animation-timing-function:linear;（可以不用）
+                animation-iteration-count
+                的合體
+                這四個屬性可以個別設置
+
+                animation-timing-function:linear;
+                這個是決定動畫在迭代中如何開始結束
+                linear是線性，開始結束都樣速度
+                alternate是開始結束慢
+                還有其他選自不給我跑出來雞掰
+                */
+                animation-timing-function:alternate;
+                
+            }
+
+            @keyframes blink{ /*建立動畫 blink為動畫名*/
+                0%{color:red} /*在幾趴的時候{指定css樣式}*/
+                50%{color:blue}
+                100%{color:red}
+            }
+        </style>
+    </head>
+    <body>
+        <div id="hi">hello world</div>
+        <button onclick="start()">start</button>
+        <div>
+            <button onclick="stop()">stop</button>
+        </div>
+          <script>
+            function start(){
+                let hi = document.getElementById("hi")
+                hi.classList.add("effect")//將class加入目標div
+            }
+            function stop(){
+                let hi = document.getElementById("hi")
+                hi.classList.remove("effect")//將class移出目標div
+            }
+            /*
+            全script
+     
+    let hi = document.createElement("div")
+    hi.textContent = "hello world"
+    let strt = document.createElement("button")
+    strt.textContent = "start"
+    strt.addEventListener("click",()=>{
+      hi.style.animation = "cng 3s linear infinite"
+    })
+    let stp = document.createElement("button")
+    stp.textContent = "stop"
+    stp.addEventListener("click",()=>{
+      hi.style.animation = ""
+    })
+
+
+    document.body.appendChild(hi)
+    document.body.appendChild(strt)
+    document.body.appendChild(stp)
+
+            */
+        </script>
+
+    </body>
+</html>

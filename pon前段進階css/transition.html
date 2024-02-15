@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>transition</title> 
+        <style>
+            .box{
+                width:100px;
+                height:100px;
+                background-color: red;
+                opacity:0.5;
+                transition:opacity 1s,background-color 1s;
+                /*transiton監控後方屬性 一旦js對該屬性設定 自行漸變處理 */
+                /*  他媽給我注意  transition內部如果有兩個以上的css 就以逗號,分開
+                如果沒有要新增要漸變的css 就不要再加逗號, 會直接發呆幹*/
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box" id="box"></div>
+        <script>
+            let box = document.getElementById("box")
+            box.addEventListener("mouseover",()=>{
+                box.style.opacity=1
+                box.style.backgroundColor="black"
+            })
+            box.addEventListener("mouseout",function(){
+                box.style.opacity=0.5
+                box.style.backgroundColor="red"
+            })
+        </script>
+    </body>
+</html>

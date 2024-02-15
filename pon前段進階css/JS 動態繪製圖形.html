@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>JS 動態繪製圖形</title> 
+        <style>
+        </style>
+    </head>
+    <body> 
+        <svg id="svg" width="600" height="600" style="border:5px solid green"></svg>
+       <script>
+        let svg 
+        window.onload=function(){  //可能是會有lag問題導致其餘指令出不來 所以要求window開好後在執行svg內的指令
+                                   //注意所有有關svg的指令到要在此onload內執行 否則找不到
+                                   //function的話因為會hoisting飛昇 所以沒關係
+            svg=document.getElementById("svg") //注意不能let
+            let line = document.createElementNS("http://www.w3.org/2000/svg","line") //首先  製造line此element 所有的svg標籤都要用這種方式
+                                                    //一般的標籤建立是 let img = document.createElement("img")
+            line.setAttribute("x1",50) //設定屬性 
+            line.setAttribute("y1",50)  //因為svg元素不是一班html 是xml殺小  不能line.y1 = "500" 命名屬性
+            line.setAttribute("x2",100)
+            line.setAttribute("y2",100)
+            line.setAttribute("stroke","black")
+            line.setAttribute("stroke-width","30")
+            svg.appendChild(line)//把line標籤變成svg的子標籤
+            let circle = createpic("circle",{  //執行function
+                "cx":200,
+                "cy":200,
+                "r":50,
+                "stroke":"green",
+                "stroke-width":20,
+                "fill":"none",
+            })
+            svg.appendChild(circle)
+        }
+        function createpic(picname,attrs){    //picname是svg的子標籤type attrs是各種屬性以json呈現
+            let element = document.createElementNS("http://www.w3.org/2000/svg",picname)
+            for (let name in attrs){
+                element.setAttribute(name,attrs[name]) 
+            }
+            return element //返回變數
+        }
+       </script>  
+    </body>
+</html>
+

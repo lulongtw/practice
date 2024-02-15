@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>svg向量繪圖 </title> 
+        <style>
+        </style>
+    </head>
+    <body> 
+        <svg width="600" height="600" style="border:10px solid black">
+            <line x1="200" y1="100" x2="100" y2="100" stroke="red" stroke-width="2"></line>
+            <!--line 用x1y1 x2y2 設定線段兩頭-->
+            <circle cx="100" cy="100" r="50" stroke="green" fill="none"></circle> 
+            <!--circle用 cxcy設定圓心 r 設定半徑-->
+            <rect x="150" y="150" width="50" height="50" fill="yellow" stroke="black" stroke-width="10px"></rect>
+            <!--rect用xy設定起始點 width height設定寬高-->
+            <polygon points="300 300 250 350 350 350 400 450 " stroke="blue" fill="none"></polygon>
+            <!--polygon用points設定多邊形-->
+            <text x="0" y="200" font-size="100" fill="none" stroke="red">hellow</text>
+            <!--text一樣可以打字 用xy設定起始點 不一樣是在fontsize不用打px-->
+            <!--共同的屬性名稱是 fill stroke stroke-width fill="none"是透明-->
+        </svg>
+       <script>
+       </script>  
+    </body>
+</html>
+

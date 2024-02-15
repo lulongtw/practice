@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>svg操作介面</title> 
+        <style>
+        </style>
+    </head>
+    <body> 
+        <svg id="svg" width="600" height="600" style="border:5px solid green">
+        </svg>
+      
+       <script>
+        let svg
+        window.onload=function(){
+            svg = document.getElementById("svg")
+            svg.addEventListener("mousedown",line)//首先，在svg註冊mousedown事件 並賦予line函式
+        }
+
+        function line(elm){ //說明line函式
+            let x = elm.clientX  //每次點擊都重新抓到使用者xy座標
+            let y = elm.clientY
+            let bounding = this.getBoundingClientRect() //取得此編框的資訊 有上右下左寬高等等 可以console.log看
+            x = x - bounding.left -5 //減去border寬度 否則會比實際指摽更右下
+            y = y - bounding.top -5  //減去border寬度 否則會比實際指摽更右下
+            let line = addpic("line",{ //取得座標了  可以開始畫圖
+                "x1":x,
+                "y1":y,
+                "x2":x,     //但畫到一半的同時 我們還需要終點座標 於是在下方47,48行註冊滑鼠移動及放開事件
+                "y2":y,
+                "stroke":"red",  //stroke是必要元素 沒stroke程式可以跑 但我們看不到線
+                "stroke-width":5
+            })
+            svg.appendChild(line)//這個append在down才會出現連續移動圖形 如果放在drop只會出現最終圖形
+            //注意 append必須放在down內 這樣才會有模擬效果 否則放在move內會每個move都append  如果放在down外面會沒有模擬效果
+            //說明滑鼠移動作的事
+            function drag(e){ //要另外設置參數 因為這個參數是追蹤mousemove的座標
+                line.setAttribute("x2",e.clientX-bounding.left) //可以試試把e換成elm(上層的變數)試試看
+                line.setAttribute("y2",e.clientY-bounding.top)
+            }
+            //說明滑鼠放開做的事
+            function drop(){
+                document.removeEventListener("mousemove",drag)
+            
+            }
+            document.addEventListener("mousemove",drag)//註冊移動事件  要用document設 如果用svg設 一旦超出svg會烙賽
+            document.addEventListener("mouseup",drop)//註冊放開 也就是結束事件
+         }  //注意 此行以上都是屬於function line(elm)的範圍 此函式必須處理
+            //ㄧ 按下 取得 xy實際座標 (實際在svg上的座標必須以 整體網頁座標 減去 border的座標 和 border的線寬得出)
+            //二 開始畫圖之圖形屬性
+            //三畫到一半 還缺少終點屬性 所以直接在document上註冊mousemove事件以及mouseup事件 紀錄x2y2以及把mousemove事件消除
+            
+
+        function addpic(pictype,attrs){
+            let element = document.createElementNS("http://www.w3.org/2000/svg",pictype)
+            for (let name in attrs){
+                element.setAttribute(name,attrs[name])
+            }
+            return element
+        }
+
+
+        /*
+            let svg
+            window.onload=function(){
+                svg=document.getElementById("svg")
+                svg.addEventListener("click",square)
+            }
+            function square(e){
+                let x=e.clientX
+                let y = e.clientY
+                let bounding = this.getBoundingClientRect()
+                x = x-bounding.left
+                y = y-bounding.top
+                let rect = addpic("rect",{
+                    "x":x,
+                    "y":y,
+                    "width":10,
+                    "height":10,
+                    "fill":"black"
+                })
+                svg.appendChild(rect)
+            }
+            function addpic(pictype,attrs){
+                let element = document.createElementNS("http://www.w3.org/2000/svg",pictype)
+                for (let name in attrs){
+                    element.setAttribute(name,attrs[name])
+                }
+                return element
+            }
+        */
+       </script>  
+    </body>
+</html>
+

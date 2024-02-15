@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>transform-origin</title>
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: lightblue;
+      margin: 50px;
+      transition: transform 1s ease-in-out;
+    }
+
+    .center-origin {
+      transform-origin: center center;
+      /*以中心為旋轉點*/
+    }
+
+    .top-left-origin {
+      transform-origin: 50% 100%;
+      /*兩項參數分別是left 和top
+      所以目前設100%就是右下
+      */
+    }
+
+    /* Hover效果，應用rotate變換 */
+    .box:hover {
+      transform: rotate(45deg);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box center-origin">Center Origin</div>
+
+  <div class="box top-left-origin">left top Origin</div>
+
+</body>
+</html>

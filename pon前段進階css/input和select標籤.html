@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>input和select標籤</title> 
+        <style>
+        </style>
+    </head>
+    <body>
+        <!--input主要有 text,radio,checkbox file 等屬性
+    
+        radio是單選題 每個有radio屬性的input如果有一樣的name 那就代表那些input只能選其中一個
+            而radio的input通常跟隨一個label標籤 標示該input的value  label的for屬性能和有相同id的input連動
+        checkbox是多選題 後面也會跟著label
+        file是讓使用者上傳資料
+        text輸入資料 資料就是值value
+        
+        select標籤是選單 下面跟隨option一堆選項
+        -->
+        <input type="radio" id="male" name="gender" value="male" onchange="cng(this)">
+        <label for="male">Male</label>
+
+        <input type="radio" id="female" name="gender" value="female" onchange="cng(this)">
+        <label for="female">Female</label>
+
+        <input type="radio" id="gaga" name="gender" value="gaga" onchange="cng(this)">
+        <label for="male">gaga</label>
+        <br><br>
+
+
+
+        <input type="checkbox" id="subscribe" name="subscribe" value="yes">
+        <label for="subscribe">Subscribe to newsletter</label>
+        <br><br>
+
+
+          <input type="file" id="fileInput" name="fileInput">
+          <br>
+
+          <input type="text" id="input" placeholder="Enter yourf username" onchange="print(this)">
+          <br>
+          <input type="text" value="hafafa" id="keke">
+          <br><br>
+
+
+          <select id="country" name="country">
+            <option value="usa">United States</option>
+            <option value="canada">Canada</option>
+            <option value="uk">United Kingdom</option>
+          </select>
+
+         <script>
+            //這是想跟radio type的input互動 所以在三個radio input中加了onchange()
+            //一有變動就啟動函式
+            function cng(elm){
+                if (elm.value=="male"){
+                    console.log("ok")
+                }else if (elm.value=="female"){
+                    console.log("nice")
+                }else if (elm.value=="gaga"){
+                    console.log("gaga")
+                }
+            }
+
+            //證明輸入的東西就是value
+            function print(ele){
+                console.log(ele.value)
+            }
+            //證明輸入的東西就是value
+            let utada = document.getElementById("keke")
+            console.log(utada.value)
+        </script>
+    </body>
+</html>

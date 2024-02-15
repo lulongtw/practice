@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/33d145f0f9.js" crossorigin="anonymous"></script>
+  <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:200i,300,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Raleway:700&display=swap"
+      rel="stylesheet"
+    />
+  <title>myprofile</title>
+ <style>
+    *{
+      padding:0;
+      margin:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+    }
+    body{
+      margin:0;
+      height:100vh;
+      background-color: rgb(38, 39, 51);
+      font-family: 'Poppins', sans-serif;
+    }
+    #navbar{
+      position:fixed;
+      top:0px;/*為啥*/
+      /*
+      margin-top:-20px;
+      */
+      width:100vw;
+      text-align:right;
+      height:70px;
+      line-height:70px;
+      background-color: rgb(202, 0, 71);
+      z-index:1
+    }
+    #navbar>a{
+      margin:0 30px;
+      color:antiquewhite;
+      font-size:1.3rem;
+      text-decoration:none; 
+    }
+    #brick{
+      width:100vw;
+      height:70px;
+    }
+    section:not(#projects,#navbar){
+      width:100vw;height:calc(100vh - 70px);
+    }
+
+    #welcome-section{
+      width:100vw;height:100vh;
+      text-align:center;
+      display:flex;
+      place-items:center;
+      flex-direction: column;
+      scroll-margin-top:70px;
+    }
+
+    #welcome-section>*{
+     width:80%;
+     position:relative;
+     top:calc(50vh - 100px);
+    }
+    h1{
+      display:block;
+      font-size:3.3rem;
+      color:white;
+    }
+
+    #welcome-section>div{
+      font-size:1.7rem;
+      color: rgb(202, 0, 71);
+      font-style: italic;
+    }
+    #projects{
+      width:100vw;
+      background-color: rgb(39, 43, 74);
+      padding-top:10px;
+      padding-bottom:50px;
+      scroll-margin-top:70px;
+    }
+    #p-title{
+      width:min(90%,700px);
+      font-size:2.3rem;
+      font-weight:800;
+      color:white;
+      margin: 30px auto;
+      text-align:center;
+      border-bottom:1px solid white;
+
+  
+    }
+    #rowcol{
+      margin:0 auto;
+      margin-top:50px;
+      width:95%;
+      padding:10px;
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:30px;
+     
+    }
+    .project-tile.a,.project-tile.d{
+      grid-column:1
+    }
+    .project-tile.b,.project-tile.e{
+      grid-column:2
+    }
+    .project-tile.c,.project-tile.f{
+      grid-column:3
+    }
+
+    .project-tile{
+      background-color: rgb(39, 39, 49);
+      width:100%;
+    }
+
+    img{
+      display:block;
+      object-fit:contain;
+      margin:0 auto; 
+      width:100%;
+    
+    }
+    #rowcol a{
+      display:block;
+      text-align:center;
+      text-decoration: none;
+      color:white;
+      line-height:60px;
+      font-size:1.3rem;
+    }
+
+    /*
+        a span::before{
+      content: "<";
+      opacity: 0;
+    }
+    a span::after{
+      content:"/>";
+      opacity:1;
+    }
+    a span:hover{
+      color:red;
+    }
+    */
+    .ninja{
+      opacity:0;
+      transition:opacity 0.3s;
+      color:goldenrod;
+      font-size:1.2rem
+    }
+    #profile-link{
+      display:block;
+      width:300px;
+      font-size:1.3rem;
+      background-color:rgb(39, 39, 49);
+      padding:10px 0;
+      color:white;
+      margin:auto;
+      margin-top:50px;
+      text-align:center;
+      text-decoration:none;
+      
+    }
+    @media only screen and (max-width:1000px){
+      #rowcol{
+        grid-template-columns:1fr 1fr;
+      }
+      .project-tile.a,.project-tile.c,.project-tile.e{
+      grid-column:1
+      }
+      .project-tile.b,.project-tile.d,.project-tile.f{
+        grid-column:2
+      }
+    } 
+   /*
+    why??為啥沒有通通縮進1fr裡面
+    為啥直接指定.project-tile不行????
+   */
+    @media only screen and (max-width:720px){
+      #rowcol{
+        grid-template-columns: 1fr;
+      }
+      .project-tile.b,.project-tile.d,.project-tile.f{
+        grid-column:1
+      }
+    }
+
+
+
+    
+        #cntt{
+      scroll-margin-top:70px;
+      /*
+           3小為什麼有border整個跑掉
+      印為沒overflowhieedn啊  #lets的margin跑出去了
+      但有overflow scrollmargin-top沒用了= = 是怎樣
+      */
+      
+      
+        }
+    
+
+    #cntt>div{
+      width:min(90%,800px);
+      text-align:center;
+      /*margin:auto  這邊設auto下面margin會沒用*/
+      color:white;
+    }
+    #lets{
+      margin:0 auto;
+      /*
+      margin-top:calc(50vh - 170px);
+      */
+      padding-top:calc(50vh - 170px);
+      font-size:3rem;
+      font-weight:800;
+      text-align:center;
+      
+    }
+    #how{
+      margin:0 auto;
+      margin-top:2rem;/*上下也要分喔*/
+      font-style: italic;
+    }
+    #ways{
+      margin:0 auto;
+      margin-top:2rem;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content: center;/*幹這邊也不能place-items*/
+      align-items:center;
+      font-size:1.3rem;
+      color:white;
+    }
+    .way{
+      margin:20px 20px;
+      transition:transform 0.5s
+    }
+    .way:hover{
+      animation:jump 0.3s linear infinite
+    }
+    @keyframes jump{
+      0%{
+        transform:translate(0px,0px)
+      }
+      25%{
+        transform:translate(0px,-5px)
+      }
+      50%{
+        transform:translate(0px,0px)
+      }
+      75%{
+        transform:translate(0px,5px)
+      }
+      100%{
+        transform:translate(0px,0px)
+      }
+    }
+    #ways>a{
+      text-decoration: none;
+      color:white;
+    }
+
+    /*
+        footer{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+    }
+    footer>div{
+      text-align:center;
+      width:80%;
+      margin:2rem auto;
+      font-size:1rem;
+      color:white;
+    }
+    */
+    footer{
+      display:flex;
+      place-items:center;
+      font-size:1.2rem;
+      color:white;
+      
+    }
+    footer>div{
+      margin:2rem auto;
+      text-align:center;
+    }
+
+
+   .cng{
+    opacity:1;
+   }
+
+
+
+  </style>>
+</head>
+<body>
+  <section id="navbar">
+    <a href="#welcome-section">About</a>
+    <a href="#projects">Work</a>
+    <a href="#cntt">Contact</a>
+  </section>
+  <div id="brick"></div>
+  <main>
+    <section id="welcome-section">
+      <h1 >Hey I am Lulong</h1>
+      <div>a web developer</div>
+    </section>
+    <section id="projects">
+      <div id="p-title">These are some of my projects</div>
+      
+
+      
+      <div id="rowcol">
+        <div class="project-tile a"><a href="https://lulongtw.github.io/test/formtest.html" target="_blank"><img src="https://lulongtw.github.io/test/form.png"><span><span class="ninja">&lt;</span> survey form <span class="ninja">&#47;&gt;</span></span></a></div>
+        <div class="project-tile b"><a href="https://lulongtw.github.io/test/productlanding.html" target="_blank"><img src="https://lulongtw.github.io/test/lading.png"><span><span class="ninja">&lt;</span> project landing <span class="ninja">&#47;&gt;</span></span></a></div>
+        <div class="project-tile c"><a href="https://lulongtw.github.io/test/tictactoe.html" target="_blank"><img src="https://lulongtw.github.io/test/tictactoe.png"><span><span class="ninja">&lt;</span> tictactoe by React <span class="ninja">&#47;&gt;</span></span></a></div>
+        <div class="project-tile d"><a href="https://lulongtw.github.io/test/wavepenguin.html" target="_blank"><img src="https://lulongtw.github.io/test/css.png"><span><span class="ninja">&lt;</span> CSS penguin <span class="ninja">&#47;&gt;</span></span></a></div>
+        <div class="project-tile e"><a href="https://lulongtw.github.io/test/smallpainter.html" target="_blank"><img src="https://lulongtw.github.io/test/painter.png"><span><span class="ninja">&lt;</span> svg painter <span class="ninja">&#47;&gt;</span></span></a></div>
+        <div class="project-tile f"><a href="https://lulongtw.github.io/test/balancesheet.html" target="_blank"><img src="https://lulongtw.github.io/test/balancesheet.png"><span><span class="ninja">&lt;</span> blance sheet <span class="ninja">&#47;&gt;</span></span></a></div>
+      </div>
+      <div>
+        <a id="profile-link" href="https://lulongtw.github.io/test/category.html" target="_blank">Show all &gt;</a>
+      </div>
+    </section>
+    <section id="cntt">
+      <div id="lets">Let's work together...</div>
+      <div id="how">How do you take your coffee?</div>
+      <div id="ways">
+        <a href="https://www.facebook.com/zuck/?locale=zh_TW"><div class="way"><i class="fa-brands fa-facebook"></i>Facebook</div></a>
+        <a href="https://twitter.com/elonmusk" target="_blank"><div class="way"><i class="fa-brands fa-twitter"></i>Twitter</div></a>
+        <a href="https://github.com/lulongtw/test" target="_blank"><div class="way"><i class="fa-brands fa-github"></i>GitHub</div></a>
+        <a href="mailto:lulongyoyo@gmail.com" target="_blank"><div class="way"><i class="fa-regular fa-envelope"></i>Email</div></a>
+        <a href="tel:+886-972-503841" target="_blank"><div class="way"><i class="fa-solid fa-mobile-screen-button"></i>Call Me Maybe</div></a>
+      </div>
+     
+    </section>
+    <footer>
+      <div>This is a real frofile but to test.<br>Looks Simple but takes a rookie like me a night to finish.</div>
+      <div>Create By L.Chen</div>
+    </footer>
+  </main>
+  <script>
+
+    window.onload = function(){
+      let tiles = document.getElementsByClassName("project-tile");
+      for (let i=0;i<tiles.length;i++){
+        tiles[i].addEventListener("mouseover",func.bind(tiles[i]))
+        tiles[i].addEventListener("mouseout",func.bind(tiles[i]))
+      }
+    }
+    function func(){
+      let ninjas = this.getElementsByClassName("ninja")
+      for (let i=0;i<ninjas.length;i++){
+        ninjas[i].classList.toggle("cng")
+      }
+    }
+
+
+
+  /*
+
+
+      window.addEventListener("load",()=>{
+      let tiles = document.getElementsByClassName("project-tile")
+      for (let i=0;i<tiles.length;i++){
+        tiles[i].addEventListener("mouseout",()=>{
+          let ninjas = tiles[i].getElementsByClassName("ninja")
+          for (let j=0;j<ninjas.length;j++){
+            ninjas[j].style.opacity=0
+          }
+        })
+        tiles[i].addEventListener("mouseover",()=>{
+          let ninjas = tiles[i].getElementsByClassName("ninja")
+          for(let j=0;j<ninjas.length;j++){
+            ninjas[j].style.opacity=1
+          }
+        }) 
+      }
+    })
+        // 因為#lets家了margin-top要致中，蛋margin會突出#cntt，等把#cntt的border拿掉後，
+        //(幹其實改border顏色就天下太平)(所以border有overflow的功能?????)
+        //#lets的margin突出導致下方版面大亂，為了整理版面就在#cntt加overflow，
+        //蛋overflow也會擋margin-scroll-top;所以最後解決事#lets改padding-top;
+        //下方是 #lets margin #cntt overflow 情況下js硬改
+      document.querySelector('#navbar a[href="#cntt"]').addEventListener("click", (event) => {
+        event.preventDefault(); // 阻止錨點標籤的默認行為
+        const contactSection = document.getElementById("cntt");
+        const navbarHeight = document.getElementById("navbar").offsetHeight;
+        const offset = contactSection.offsetTop - navbarHeight;
+        window.scrollTo({ top: offset, behavior: "smooth" });
+      });
+  */
+
+  </script>
+
+  
+</body>
+</html>

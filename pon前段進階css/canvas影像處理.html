@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>canvas影像處理</title> 
+        <style>
+            .buttom{
+                background-color: antiquewhite;
+                width:100px;
+                padding:20px;
+                text-align:center;
+                border:3px solid black;
+                margin:10px 0px 10px 0px
+            }
+        </style>
+    </head>
+    <body>
+        <div class="buttom" id="butm">按我</div>
+        <div onclick="hehe()">我拉</div>
+        <canvas id="cvs" height="600" width="600" style="border:5px solid black"></canvas>
+        <script>
+            let cvs //重點要先宣告為全域變數 如不先宣告function會找不到ctx
+            let ctx
+            window.onload=function(){
+                 cvs=document.getElementById("cvs")
+                 ctx=cvs.getContext("2d")
+                //載入影像
+                let img = new Image()//js內建物件 相當於img標籤
+                img.src="data:image/jpeg;base64,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"
+                //^^設定img來源  要本地文件喔
+                //要本地文件喔
+                //要本地文件喔
+                //要本地文件喔
+                //要本地文件喔
+                //要本地文件喔
+                img.onload=function(){//意思是當img load好之後 執行下面指令   因為抓img會一段時間 對電腦來說太久 會直接跳過  就沒辦法畫
+                    //呼叫drawimage方法把影像畫進去
+                    ctx.drawImage(this,0,0,img.width,img.height)
+                    //            (圖檔,x座標,y座標,寬度,高度) 意思是在哪裡(x,y)畫什麼(this)畫成什麼寬高(width,height)
+                }
+                
+            }
+
+            function hehe(){
+                let pixels=ctx.getImageData(0,0,cvs.width,cvs.height)//抓處每個像素的資訊
+                                        // x座標,y座標,寬度,高度  照這邊填入就是cvs上全部資訊
+                //pixels目前是imageData物件
+                console.log(pixels)
+                let data=pixels.data//因為我們只是要改動他的顏色 所以只需要取得顏色的資訊
+                //一個像素佔據4個資料 分別是r g b a
+                for (let i=0;i<data.length;i+=4){
+                    data[i]=255-data[i]//r
+                    data[i+1]=255-data[i+1]//g
+                    data[i+2]=255-data[i+2]//b
+                }
+                ctx.putImageData(pixels,0,0)//把資訊放入,等同在哪裡(x,y)放入什麼(pixels) 可以試試把0,0改成100,100
+
+            }
+            
+
+            let btm = document.getElementById("butm")
+            btm.addEventListener("click",()=>{
+                let pixels=ctx.getImageData(0,0,cvs.width,cvs.height)
+                let data=pixels.data
+                for (let i=0;i<data.length;i+=4){
+                    data[i]=255-data[i]
+                    data[i+1]=255-data[i+1]
+                    data[i+2]=255-data[i+2]
+                }
+                ctx.putImageData(pixels,0,0)
+            })
+
+
+        </script>
+    </body>
+</html>

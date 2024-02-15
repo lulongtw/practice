@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>css線性轉換:translate,scale,rotate,skew</title> 
+        <style>
+            .bluebox{
+                width:50px;
+                height:50px;
+                background-color: blue;
+                margin:10px;
+            }
+            .yellowbox{
+                width:50px;
+                height:50px;
+                background-color: yellow;
+                margin:10px;
+                transform:translate(50px,50px);
+                transition:transform 1s;
+                box-shadow:20px 20px 5px red;
+            }
+   
+        </style>
+    </head>
+    <body> 
+        <div class="bluebox" style="transform:skew(0deg,20deg)"></div>
+        <div class="bluebox" style="transform:skew(20deg,0deg)"></div>
+        <div class="yellowbox" id="yellowbox" onclick="cng(this)"></div>
+        <br><br><br><br><br><br>
+        <div class="bluebox" style="height:20px;margin:0px;transform:skew(-45deg,0deg)translate(10px,0px)"></div>
+        <div class="bluebox" style="background-color: blueviolet;margin:0px;display:inline-block"></div><div class="bluebox" style="width:20px;background-color: aquamarine;margin:0px;display:inline-block;transform:skew(0deg,-45deg)translate(0px,-10px)"></div>
+        <script>
+            let c = 0
+            let ybox = document.getElementById("yellowbox")
+            function cng(elm){
+                c++
+                let styles = window.getComputedStyle(elm)
+                let transformValue = styles.getPropertyValue("transform")
+                elm.style.transform=`${transformValue} rotate(${c*5}deg)`//{transformValue}是為了保留transform其他效果
+                //這個函式目的只是要旋轉而已  但這個元素transform還有其他效果  為了保留所以前面要加上transformValue  因為transfom表示是transform:skew(-45deg,0deg)translate(10px,0px)
+            }
+        </script>    
+    </body>
+</html>
