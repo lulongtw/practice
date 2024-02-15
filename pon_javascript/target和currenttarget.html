@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>first</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
+	<script src="https://unpkg.com/@reduxjs/toolkit/dist/redux-toolkit.umd.js"></script>
+    <style>
+
+    </style>
+</head>
+  <body>
+	<div id="a"></div>
+    <script type="text/babel">
+      /*
+      target是目前觸發事件的目標
+      currentTarget是綁定觸發事件的目標
+      下面例子是我點在li上  觸發事件 target是li 但currentTarget是綁定onclick的ul
+      */
+class Example extends React.Component {
+  handleClick = (event) => {
+    console.log('currentTarget id:', event.currentTarget.id);
+    console.log('target id:', event.target.id);
+  };
+
+  render() {
+    return (
+      <ul id="ul" onClick={this.handleClick}>
+        <li id="item-1">Item 1</li>
+        <li id="item-2">Item 2</li>
+        <li id="item-3">Item 3</li>
+      </ul>
+    );
+  }
+}
+
+let form = <Example/>
+      let con = document.getElementById("a")
+      let rt = ReactDOM.createRoot(con)
+      rt.render(form)
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+        類別和建構函式一樣  都是拿來建立物件  連在建立物件時長得幾乎一樣 只是方法不同
+        但類別可以有子類別
+        function Car(clr){ //此為建構函式
+            this.color = clr
+            this.run = (spd)=>{
+                this.speed = spd;
+                console.log(`the ${this.color} car runs at ${this.speed}`)
+            }
+        }
+        let car = new Car("red")
+        car.run(100)
+
+        */
+        class Car {
+            //建構式，透過此類別建立的物件都會先經過此建構事
+            //建構式的參數可在建立物件時傳入
+            //可以傳入多個參數
+            constructor(color,wheel){ //此處是在建立物件時，物件會經歷過的建構式
+                this.color = color    //所以在建立物件時，必須傳入上述兩項參數
+                this.wheel = wheel
+                this.speed = 0
+            }
+            //給物件建立函式
+            run(spd){
+                this.speed = spd
+                console.log(`the ${this.color}  car with ${this.wheel} runs at ${this.speed}`)
+            }
+            stop(){
+                this.speed = 0;
+                console.log(`the ${this.color} car with ${this.wheel} stops`)
+            }
+        }
+        let car1 = new Car("red",3)//此處傳入給建構式的參數
+        car1.run(100)
+        car1.stop()
+
+        //建立子類別
+        class Ecar extends Car {
+            constructor(color,wheel,btry){ //建構式要傳入父類別定的參數,如需要也要加入子類別參數
+                super(color,wheel)//說明哪些參數是繼承父類別的
+                this.battery = btry
+            }
+            run(){//與父類別同名的函式會覆蓋
+                console.log(`the ${this.color} car with batt ${this.battery} `)
+            }
+        }
+        let tsla = new Ecar("white",4,90)
+ 
+        tsla.run()
+
+
+        /*下面是簡易練習*/
+        /*下面是簡易練習*/
+        /*下面是簡易練習*/
+        /*下面是簡易練習*/
+        /*下面是簡易練習*/
+
+
+        class Bike {
+            constructor(color){
+                this.color = color
+                this.speed = 0
+            }
+            run(spd){
+                this.speed = spd
+                console.log(`the ${this.color} bike runs at ${this.speed}`)
+            }
+        }
+        class Ebike extends Bike{
+            constructor(color,batt){
+                super(color)
+                this.batt = batt
+            }
+            run(spd){
+                this.speed = spd
+                console.log(`the ${this.color} bike with  batt ${this.batt} runs at ${this.speed}`)
+            }
+        }
+        let ebike1 = new Ebike("green",300)
+        ebike1.run(199)
+    </script>
+</body>
+</html>

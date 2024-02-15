@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="a">dsadsad</div>
+  <div id="b"></div>
+  <script type="module" src="./src/main.js">
+    let b = document.getElementById("b")
+    let a = document.getElementById("a")
+    b.innerHTML = a.innerHTML
+  </script>
+</body>
+</html>

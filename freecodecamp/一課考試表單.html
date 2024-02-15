@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+    
+    <title>survey-form.freecodecamp.rocks</title>
+    <style>
+     body{
+      font-family:  'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      color:white;
+      background-image:url(https://cdn.freecodecamp.org/testable-projects-fcc/images/survey-form-background.jpeg);
+      background-size:cover; /* 這個值會將背景圖片放大或縮小，以完全覆蓋背景區域 */
+      background-position: center; /* 將背景圖片置中 */
+      background-attachment: fixed; /* 將背景圖片固定 */
+      height: 100vh; /* 設定body的高度為視窗高度，確保背景圖片填滿整個視窗 */
+      margin: 0; /* 移除body的預設外邊距，確保背景圖片從視窗的左上角開始顯示 */
+    }
+    input:focus{
+      border:2px solid rgb(252, 170, 255);
+      outline:none;
+    }
+    #bk{
+      margin:0px;
+      background-color:rgba(200,0,200,0.5);
+      display:inline-block;
+      position:absolute;
+      width:100vw;
+      height:auto;
+    }
+    form{
+      position:relative;
+      background-color:rgba(0,0,20,0.7);
+      padding:3em 3em 3em 2.5em;
+      width:80vw;
+      font-size:20px;
+      min-width:300px;
+      max-width:650px;
+      margin:0 auto;
+    }
+    #title{
+      width:100%;
+      text-align:center;
+      /*padding:1.3em 1.5em 0.2em 0.5em; 不能亂用padding 用margin*/
+      position:relative;
+      margin:1.5em auto 0.5em auto;
+    }
+    span{
+      font-size:0.7em;
+    }
+    #description{
+      width:80%;
+      font-size:1.2em;
+      font-weight: lighter;
+      font-family:Verdana, sans-serif;
+      font-style:italic;
+      text-align:center;
+      padding:0 0 2em 0;
+      position:relative;
+      margin:0 auto;
+    }
+    form>input,textarea,label,select{
+      display:block;
+    }    
+    input[type=text],input[type=email],input[type=number],select,textarea{
+    
+      margin:0 auto;
+      width:100%;
+      height:2em;
+      border-radius:5px;
+      /*不能用padding處理input text的字  如果太靠邊用空白  用padding會往右邊擠
+        這邊直接在textContent加空白解決‘
+      */
+      font-size:17px;
+      margin:0.3em 0px 1.7em 0px;
+    }
+    select{
+      padding-left:10px;
+    }
+
+    #would>div,input{
+      margin:0em 0px 1em 0px;
+    }
+    #would>label{
+      margin:0.5em 0.1em;
+    }
+    select{
+      width:102%;
+      color:rgb(95, 95, 95)
+    }
+
+    input[type=radio]{
+      appearance: none; /* 移除radio預設樣式 */
+      -webkit-appearance: none; /* 移除預設樣式（用於某些WebKit瀏覽器） */
+      /*移除樣事後啥都沒有，要重新搞*/
+      width:20px;
+      height:20px;
+      border-radius: 50%; 
+      border: 2px solid #710073;
+      vertical-align:middle;
+      margin:0 3px;
+    }
+    input[type="radio"]:checked {
+      background-color: #bb00be; /* 設定背景顏色 */
+      /* border-color: #4caf50;  設定邊框顏色，如果需要的話 */
+    }
+    input[type=checkbox]{
+      appearance:none;
+      -webkit-appearance:none;
+      width:20px;height:20px;
+      border: 2px solid #710073;
+
+      transform:translate(0px,8px)
+    
+    }
+    input[type=checkbox]:checked{
+      background-color: #bb00be;
+    }
+
+    #would{
+      margin-top:1.6em;
+      margin-bottom:1.5em;
+    }
+    input[type=checkbox]{
+      width:1.3em;
+      height:1.3em;
+      margin:0 1em 1em 0.8em;
+    }
+
+    #what{
+      margin:1.7em 0 1em 0
+    }
+
+    #last{
+      margin:1em 0 0.7em 0
+    }
+    textarea{
+      width:100%;
+      height:4em;
+      padding:0.7em 0 ;
+      margin-bottom:2em;
+      font-size:0.8em;
+      outline:none;
+    }
+    textarea:focus{
+      border: 2px solid rgb(252, 170, 255);
+    }
+    input[type=submit]{
+      width:100%;
+      height:2em;
+      background-color:rgb(111, 90, 248);
+      border:none;
+      border-radius: 5px;
+      font-size:1em;
+      color:rgb(251, 255, 211);
+    }
+    label{
+      margin:0 0 0.3em 0;
+      display:flex;
+      align-items:center;
+    }
+    </style>
+  </head>
+  <body>
+    <!--填選時的編筐狀態 ，select 1st option調成不能選，-->
+    <div id="bk">
+    <h1 id="title">freeCodeCamp Survey Form</h1>
+    <p id="description">Thank you for taking the time to help us improve the platform</p>
+    
+    <form id="survey-form">
+      <section class="person">
+        <!--?????????表單中的名字、郵箱和數字輸入框需有對應的包含描述輸入框用途的 label 元素，id 應分別爲 id="name-label"、id="email-label" 和 id="number-label"-->
+        <label id="name-label" for="name">Name</label>
+        <input class="npt" type="text" placeholder="  Enter your name" id="name" name="name" required/>
+        
+
+        <label id="email-label" for="email">Email</label>
+        <input class="npt" type="email" placeholder="  Enter your email" id="email" name="email" required/>
+        
+        <!--如果你輸入了格式不正確的郵箱，你將會看見 HTML5 驗證錯誤信息-->
+        
+        <label for="number" id="number-label">Age<span>(optinal)</span></label>
+        <input class="npt" type="number" placeholder="  Age" min="10" max="99" id="number" name="number"/>
+        
+
+        <div class="ques">Which option best describes your current role?</div>
+        <select id="dropdown" required>
+          <option value="" disabled selected>select current role</option><!--????要調成不能選-->
+          <option value="Student">Student</option>
+          <option value="Full Time Job">Full Time Job</option>
+          <option value="Full Time Learner">Full Time Learner</option>
+          <option value="Prefer Not To Say">Prefer No to Say</option>
+          <option value="Other">Other</option>
+        </select>
+        <div id="would">
+        <div class="ques">Would you recommend freeCodeCamp to a friend?</div>
+        <label for=""><input class="npt" type="radio" id="definitely" name="rcmdtofrnd" value="definitely" checked />   Definitely</label>
+        <label for="maybe"><input class="npt" type="radio" id="maybe" name="rcmdtofrnd" value="maybe" />   Maybe</label>
+        <label for="notsure"><input class="npt" type="radio" id="notsure" name="rcmdtofrnd" value="notsure"/>   Not       Sure</label>
+        </div>
+    </section>
+    
+    <section class="">
+      <div class="ques">What is your favorite feature of freeCodeCamp?</div>
+      <select required>
+        <option value="" disabled selected>select an option</option>
+        <option value="Challenges">Challenges</option>
+        <option value="Projects">Projects</option>
+        <option value="Community">Community</option>
+        <option value="Open Source">Open Source</option>
+      </select>
+
+      <div id="what">What would you like to see improved?<span>(Check all that apply)</span></div>
+      <label for="frontendprojects"><input id="frontendprojects" type="checkbox" value="frontendprojects"/>Front-end Projects</label>
+      <label for="backendprojects"><input type="checkbox" id="backendprojects" value="backendprojects"/>Back-end Projects</label>
+      <label for="datavisulization"><input type="checkbox" id="datavisulization" value="datavisualization"/>Data Visualization</label>
+      <label for="challenges"><input type="checkbox" id="challenges" value="challenges"/>Challenges</label>
+      <label for="opensoursecommunity"><input type="checkbox" id="opensoursecommunity" value="opensourcecommunity"/>Open Source Community</label>
+      <label for="gitterhelproom"><input type="checkbox" id="gitterhelproom" value="gitterhelprooms"/>Gitter help rooms</label>
+      <label for="videos"><input type="checkbox" id="videos" value="videos"/>Videos</label>
+      <label for="citymeetups"><input type="checkbox" id="citymeetups" value="citymeetups"/>City Meetups</label>
+      <label for="wiki"><input type="checkbox" id="wiki" value="wiki"/>Wiki</label>
+      <label for="fourm"><input type="checkbox" id="fourm" value="forum"/>Forum</label>
+      <label for="additionalcourses"><input type="checkbox" id="additionalcourses" value="additionalcourses"/>Additional Courses</label>
+    </section>
+    <section>
+      <div id="last">Any comments or suggestions?</div>
+      <textarea placeholder=" Enter your comment here...." name="comments"></textarea>
+      <input id="submit" type="submit" value="submit"></input>
+    
+    </section>
+    
+    </form>
+  </div>
+  </body>
+</html>

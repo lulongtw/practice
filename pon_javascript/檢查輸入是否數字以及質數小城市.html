@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .c{
+      width:100px;height:100px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <script>
+
+   /*************檢查輸入是否是數字******************************/
+    /*
+    這就是為什麼不能用typeof跟number檢查
+    因為typeof"只能"檢查
+    Number直接把所有東西變number!!
+
+        let ans = prompt("input","")
+    while (!(typeof(Number(ans))=="number")){
+      ans = prompt("input","")
+    }
+    console.log(ans)
+    console.log((Number(ans)))
+    */
+
+
+/*    正確寫法
+    let ans = prompt("input","")
+
+    while (ans==null || ans==""){
+      ans = prompt("inputnum","")
+    }
+
+    for (let i=0;i<ans.length;i++){//防止69gg這種型態   因為parseInt會讀成69
+      while (isNaN(parseInt(ans[i]))){
+        ans = prompt("inputnum","")
+        while (ans==null || ans==""){
+          ans = prompt("inputnum","")
+         }
+      }
+    }
+
+    console.log(parseInt(ans))
+*/
+
+/*************檢查prime******************************/
+let n = 30;
+for (let i=2;i<=n;i++){
+  if (isPrime(i)){
+    console.log(i)
+  }
+}
+
+function isPrime(e){
+  for (let i=2;i<=Math.sqrt(e);i++){
+    if (e%i==0){
+      return false;
+    }
+  }
+  return true;
+}
+
+  </script>
+</body>
+</html>

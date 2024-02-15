@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+          /*
+      用pseudo selector作黑鍵
+      pseudo selector出來的元素是生產者的子標籤
+      pseudo selector出來的元素沒有內容是不會出現的，除非position:absolute
+      在keys display:flex
+      key--flex: 0 0 40px
+      img是行內元素
+      用media query
+
+
+      科學 務實地找出piano應該奪寬
+      */
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+    #piano{
+      width:calc(45px * 21 + 60px);/*.key的總寬度加上padding*/
+      padding:30px;
+      padding-top:80px;
+      background-color: green;
+      position:relative;
+      border-radius:5px;
+      margin:50px auto;
+
+      
+    }
+    img{
+      position:absolute;
+      top:20px;left:20px;
+      width:200px;
+      background-color: green;
+    }
+    #keys{
+      border:2px solid black;
+      display:flex;
+      overflow:hidden;
+
+    }
+    .key{
+      flex:0 0 45px;/*很重要 不允許縮放*/
+
+      width:100vw;max-width:45px;min-width:45px;/*也可以用這樣定住size*/
+     height:150px;
+     
+      background-color: white;
+      border-right:2px solid black;
+      position:relative;
+    }
+    .key.black::after{
+      content:"";
+      width:25px;height:100px;
+      background-color: black;
+      border:1px solid black;
+      position:absolute;
+      left:-15px;
+    }
+    .key:last-of-type{
+      border-right:none;
+    }
+    @media only screen and (max-width:1300px){
+      #piano{
+        width:calc(45px * 14 + 60px)
+      }
+    }
+    @media only screen and (max-width:750px){
+      #piano{
+        width:calc(45px * 7 + 60px)
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="piano">
+    <img src="https://cdn.freecodecamp.org/platform/universal/fcc_primary.svg" alt="piano"/>
+    <div id="keys">
+      <div class="key"></div>
+      <div class="key black"></div>
+      <div class="key black"></div>
+      <div class="key"></div>
+      <div class="key black"></div>
+      <div class="key black"></div>
+      <div class="key black"></div>
+
+      <div class="key"></div>
+      <div class="key black"></div>
+      <div class="key black"></div>
+      <div class="key"></div>
+      <div class="key black"></div>
+      <div class="key black"></div>
+      <div class="key black"></div>
+
+      <div class="key"></div>
+      <div class="key black"></div>
+      <div class="key black"></div>
+      <div class="key"></div>
+      <div class="key black"></div>
+      <div class="key black"></div>
+      <div class="key black"></div>
+    </div>
+
+  </div>
+  <script>
+    /*
+    
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>偽選擇器創黑鍵和@media</title>
+    <style>
+{
+        box-sizing:border-box;
+      }
+      main{
+        width:992px;
+        height:290px;
+        padding:10px;
+        padding-top:50px;
+        margin:60px auto;
+        background-color: rgb(5, 68, 5);
+        position:relative;
+      }
+
+      img{
+        width:200px;
+        background-color: rgb(5, 68, 5);
+        position:relative;
+        left:50px;
+      }
+      #keys{  
+        width:840px;
+        height:175px;
+        margin:0px auto;
+        display:flex;
+        overflow:hidden;
+   
+      }
+      .key{
+        flex: 0 0 40px; 
+        height:175px;
+        background-color: aliceblue;
+        border:4px solid black;
+        border-left:2px solid black;
+        border-right:2px solid black;
+        position:relative;
+        border-radius:0 0 7px 7px;
+
+      
+      }
+      .key.bl::after{
+        content:"";
+        width:32px;
+        height:90px;
+        background-color: black;
+        position:absolute;
+        left:-18px;
+        border-radius:0 0 7px 7px;
+      }
+      .key:first-of-type{
+        border-left:4px solid black;
+      }
+      .key:last-of-type{
+        border-right:4px solid black;
+      }
+
+
+
+      @media(min-width:1200px){
+        img{
+          left:65px;
+        }
+      }
+      @media(min-width:769px) and (max-width:1199px){
+          width:675px;
+        }
+        #keys{
+          width:560px;
+        }
+        .key:nth-of-type(14){
+          border-right:4px solid black;
+        }
+      }
+      @media(max-width:768px){
+        main{
+          width:358px;
+        }
+        #keys{
+          width:280px;
+        }
+        .key:nth-of-type(7){
+          border-right:4px solid black;
+        }
+        img{
+          left:30px;
+        }
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <main>
+      <img src="https://cdn.freecodecamp.org/platform/universal/fcc_primary.svg" alt="freecampcode">
+      <div id="keys">  
+        <div class="key"></div>
+        <div class="key bl"></div>
+        <div class="key bl"></div>
+        <div class="key"></div>
+        <div class="key bl"></div>
+        <div class="key bl"></div>
+        <div class="key bl"></div>
+        <div class="key"></div>
+        <div class="key bl"></div>
+        <div class="key bl"></div>
+        <div class="key"></div>
+        <div class="key bl"></div>
+        <div class="key bl"></div>
+        <div class="key bl"></div>
+        <div class="key"></div>
+        <div class="key bl"></div>
+        <div class="key bl"></div>
+        <div class="key"></div>
+        <div class="key bl"></div>
+        <div class="key bl"></div>
+        <div class="key bl"></div>
+      </div>
+    </main>
+   
+  </body>
+</html>
+    
+    */
+  </script>
+</body>
+</html>
+

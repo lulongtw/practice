@@ -1,0 +1,80 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //有些這obj特性這便沒有喔//只有筆記才有
+            //有些這obj特性這便沒有喔//只有筆記才有
+                  //有些這obj特性這便沒有喔//只有筆記才有
+                        //有些這obj特性這便沒有喔//只有筆記才有
+                              //有些這obj特性這便沒有喔//只有筆記才有
+
+
+      let obj = {
+        a : 69,
+        "fuck":"fck1111",
+        fuck:"fck222",
+        "want to fuck":"wannafuck",//字太多有空白要用""建立
+    }
+    delete obj.a  //用delete刪除屬性
+    console.log(obj["want to fuck"])//有""引號要用[]呼叫
+    console.log(obj.fuck,
+                obj["fuck"],//同樣鍵名會先訪問沒有""的鍵
+                  //obj[fuck],//不能用[]訪問 會以為是變數
+                )
+
+
+
+    ////////////////////////分隔線/////////////////
+    console.log("////分隔線///////")
+
+
+
+
+    let fruit = prompt("","apple")
+    let obj1 = {
+        0:69,
+        [fruit]:"furit",
+        [fruit + "s"]:"fruitssss",
+    }
+    console.log(obj1[0],
+                obj1[fruit],//物件外部變數要用[]引入
+                obj1.apple,//如果上面prompt真的輸入apple，代表obj內部真的有apple這鍵
+                obj1.apples//幹如果是變數混合固定值，嘻嘻，只能用.拜訪
+    )
+
+      ////////////////////////分隔線/////////////////
+      console.log("////分隔線///////")
+
+
+
+    //in運算子，如果要用in訪問鍵是否在obj內部，
+    //永遠記得，in左邊的東西必須要有""
+    //就算要用變數訪問也要，該變數的值也是""
+    let vari = "staff"
+    let obj2 = {
+        item:"book",
+        staff:"shit",
+        empty: undefined,
+    }
+    if ("item" in obj2){//in左邊要用""
+        console.log("item in obj2")
+    }
+    if (vari in obj2){//變數的值也是“”，這邊用[]也一樣都是引入vari這個變數
+      console.log("vari in obj2")
+    }
+    console.log(  //in是拿來解決用.呼叫鍵時，值為undefined時，
+      obj2.empty  //跟真的沒有這個鍵值時也是undefined的情況
+    )
+    if ("empty" in obj2){//用in呼叫empty和用.呼叫empty兩種不一樣
+      console.log("empty is in obj2")//用.呼叫回傳其值undefined，用in確定他到底在不在
+    }
+
+    </script>
+  </body>
+  </html>

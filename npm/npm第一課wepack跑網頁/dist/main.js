@@ -1,0 +1,1 @@
+(()=>{let e=document.createElement("div");e.textContent="eeweewf",document.body.appendChild(e)})();

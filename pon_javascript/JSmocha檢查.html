@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- mocha的css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.2.0/mocha.css">
+  <!-- mocha的框架 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/3.2.0/mocha.js"></script>
+  <!-- add chai 斷言assert系統  assert好像返回布林值???-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.5.0/chai.js"></script>
+</head>
+<body>
+  <!--建立mocha標記 像react一樣附身-->
+  <div id="mocha"></div>
+  <script>
+    //建立要檢查的函式，此程式是拿來數入a,b來求a的b次方
+    function pow(a,b){
+      //設定b如果是負數或者是有小數點，返回NaN
+      if ((b<0)||!(Math.round(b)==b)) return NaN;
+      //函式本體
+      let res = 1;
+      for (let i=0;i<b;i++){
+        res*=a;
+      };
+      return res;
+    }
+
+    mocha.setup("bdd")//啟動mocha
+
+    // 開始寫mocha網頁 pow是第一分檢查的大title，後面的function()是描述這份檢查
+    describe("pow",function(){
+
+      //巢狀2個describe 意思是這份檢查有兩個小title
+      //分別是檢查次方參數輸入負數與小數點數是否==NaN
+      //以及1~5的3次方是否==預設的答案
+
+      //第一個小title,檢查次方參數輸入負數與小數點數是否==NaN
+      describe("input should be an Interger",function(){
+        //裡面有兩個it，代表有2個小小title,分別是  if b is negative 和 if b is a round
+
+        //進行兩項檢查 次方是-1時，pow(2,-1)返回NaN時 assert.isNaN判別true時 成功 否則失敗
+        //it可以變it.only 變成單獨測試
+        it("if b is negative",function(){
+          chai.assert.isNaN(pow(2,-1));
+        });
+        // 次方是小數數時，pow(2,1.5)返回NaN時 assert.isNaN判別true時 成功   否則失敗
+        it ("if b is a round",function(){
+          chai.assert.isNaN(pow(2,1.5))
+        });
+      });
+      //第二個小title  檢查1~5的3次方是否==預設的答案
+      describe("1~5 in power 3",function(){
+        //用回圈測試，把要測試的1~5用u傳入
+        for (let i=1;i<=5;i++){
+          test(i);//執行5次test 也就是檢查5次,也就是會有5個小小title
+        };
+        function test(i){
+          let ans = i*i*i;//建立該數字的3次方
+
+        
+          it (`${i} in power 3 is ${ans}`,function(){
+              //開始檢查，i的3次方是否符合 ans
+            chai.assert.equal(pow(i,3),ans);
+          });
+        }
+      });
+    });
+    mocha.run()//mocha 啟動!
+  </script>
+</body>
+
+</html>

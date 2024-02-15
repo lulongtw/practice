@@ -1,0 +1,144 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0 , width=device-width" />
+    <link rel="stylesheet" type="text/css" href="" />
+    <title>bind,apply,call改變this</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="hehe"></div>
+    <script>
+      function add(n1, n2) {
+        console.log(n1 + n2);
+        console.log(this);
+      }
+      add(3, 5); //和一般函式無異 這個this是window
+      console.log("----分隔線111-----");
+
+      //bind 可以改變this的指向物 但bind會返回新函式  必須用新的變數引導
+      let add1 = add.bind({ y: 4 }); //bind後方也可加入給add的參數 如果有的話 詳情看下方85行
+      add1(3, 5); // add維持原樣 add1的this是{y:4}
+      console.log("----分隔線222-----");
+
+      //這個是bind另一種使用方法
+      //上述bin使用中是返回一個改變this後的新函式，舊函式的this不變
+      //而此處bind用在內置函式(setInterval的內置函式)上，會直接改變內置函式的this 且不會返回一個新函式
+      //至於為什麼
+      function ss() {
+        this.sex = window.setInterval(
+          function () {
+            if (this.state.level == 6) {
+              clearInterval(this.sex);
+            } else {
+              this.setState((nowst, nowps) => ({
+                level: nowst.level + 1,
+              }));
+            }
+          }.bind(this),
+          500
+        );
+      }
+      console.log("----分隔線333-----");
+
+      //apply不需建立新變數引導 他直接單次改變add的this 並在後方以陣列方式呈現參數
+      add.apply({ y: "apply" }, [3, 5]);
+      add(99, 99); //注意 這邊this又變成window apply魔法只能用一次
+      //等同於
+      let test = add.bind({ y: "apply" });
+      test(3, 5);
+      console.log("----分隔線444-----");
+
+      //跟apply一樣 差別只在後方不需以陣列方式呈現參數
+      add.call({ y: "call" }, 6, 5);
+      add(99, 99); //this又變回來拉
+
+      console.log("----分隔線555-----");
+      console.log("----分隔線555-----");
+      console.log("----分隔線555-----");
+      //上面是一般獨立函式被call,apply,bind改變this 下方
+
+      //此為物件被改變this
+      add = {
+        x: 2,
+        test: function () {
+          console.log(this.x);
+        },
+      };
+      let s = add.test;
+      let add2 = s.bind({ x: 4 });
+      add2(3, 5); //只呼叫了add內的test 此時test的this是{x:4}所以印出4
+
+      //等同於
+      add.test.apply({ x: 4 }, [3, 5]);
+      add.test.call({ x: 4 }, 3, 5);
+      console.log("----分隔線666-----");
+
+      //此為觸發事件的函式的this改動
+      let hehe = document.getElementById("hehe");
+      hehe.addEventListener("click", he);
+      function he() {
+        console.log(this.x);
+      }
+      he.apply({ x: 5 }, []); //不能用bind 因為bind會導向到新的變數 除非我把事件變數改為新變數 如下
+      //apply把觸發的函式he的this改為{x:5}
+      //等同於
+      let pp = he.bind({ x: 5 });
+      pp();
+      console.log("----分隔線777-----");
+
+      function Person(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+
+      const alice = new Person("Alice", 30);
+      console.log(alice.name); // 输出 "Alice"
+      console.log(alice.age); // 输出 30
+
+      const boundPerson = Person.bind(null, "Bob"); //魔鬼在這邊
+      //一般來說bind後面只能加一個東西 來把它指向this 但這邊沒有這麼做
+      //原因是他的this並沒有重新指向 他的this仍然是這個建構函式的物件 重點是這個物件沒有名字
+      // 而後面的"bob" 可以把它視為function Person後的參數
+      //指向name 也可以再加個數字來指向age
+      const bob = new boundPerson(25);
+      console.log(bob.name); // 输出 "Bob"
+      console.log(bob.age); // 输出 25
+      //
+      function xdd(x, y) {
+        console.log(x + y);
+      }
+      let xdd99 = xdd.bind(document, 9, 10); //9,10作為參數被傳入xdd裏面 但此舉
+      //讓xdd99的參數永遠變成9,10  下方要再更動也無法
+      xdd99();
+      xdd99(100, 100); //一樣輸出19
+
+      /*
+
+let 變數新函式 = 舊函式.bind(新this,在新函式內無法變動的參數)
+
+簡單的說bind需要有變數被復職 有新this對象的函式  如果不要給新this對象也可以用null代替 
+後面也可以引入給新函式的參數  但該參數就用永遠釘在該新函式中，即使給新函式引入參數也無法使用
+
+
+而apply 和 call是一樣的東西，僅供一次使用，不需賦值，後面可以引入參數
+apply以序列引入參數，
+call的參數引入只需要,逗號分開
+
+*/
+
+      /*
+            function mom(name){
+                this.n = name
+                //console.log(this)
+                return this
+            }
+            
+            let son = new mom("da") //看有new沒new的差別 我快崩潰了
+            console.log(son.n)
+            console.log(window.n)
+      
+            */
+    </script>
+  </body>
+</html>

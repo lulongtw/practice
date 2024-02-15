@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery</title>
+   <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+    .header{
+      width:100%;
+      border-bottom:10px solid yellow;
+      text-align:center;
+      background-color: blue;
+      font-size:2rem;  
+      overflow:hidden;
+    }
+    h1{
+      margin:50px auto;
+    }
+
+    .gallery{
+      width:min(99%,1200px);
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin:auto;
+
+    }
+    img{
+      width:minmax(90%,300px);/*這邊min和minmax切換*/
+      /*
+      min是取框框內最小值，
+      而minmax是給定最大跟最小值，所以是區間
+      而height已經給定，所以width會照照片scale後的height下去定width
+      所以會不一樣
+      */
+      height:300px;
+      object-fit:cover;
+      margin:10px;
+      border-radius:30px;
+    }
+    .gallery::after{
+      content:"";
+      width:min(90%,300px);
+      margin:10px;
+    }
+
+   </style>
+  </head>
+  <body>
+
+    <header class="header">
+      <h1>css flexbox photo gallery</h1>
+    </header>
+    
+    <div class="gallery">
+      <img src="https://cdn.freecodecamp.org/curriculum/css-photo-gallery/1.jpg">
+      <img src="https://cdn.freecodecamp.org/curriculum/css-photo-gallery/2.jpg">
+      <img src="https://cdn.freecodecamp.org/curriculum/css-photo-gallery/3.jpg">
+      <img src="https://cdn.freecodecamp.org/curriculum/css-photo-gallery/4.jpg">
+      <img src="https://cdn.freecodecamp.org/curriculum/css-photo-gallery/5.jpg">
+      <img src="https://cdn.freecodecamp.org/curriculum/css-photo-gallery/6.jpg">
+      <img src="https://cdn.freecodecamp.org/curriculum/css-photo-gallery/7.jpg">
+      <img src="https://cdn.freecodecamp.org/curriculum/css-photo-gallery/8.jpg">
+      <img src="https://cdn.freecodecamp.org/curriculum/css-photo-gallery/9.jpg">
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*此為建構函式 也稱建構子 因為容易跟下面一課class類別 的建構式constructor容易搞混 講三遍
+        此為建構函式 也稱建構子 因為容易跟下面一課class類別 的建構式constructor容易搞混 講三遍
+        此為建構函式 也稱建構子 因為容易跟下面一課class類別 的建構式constructor容易搞混 講三遍
+        此為建構函式 也稱建構子 因為容易跟下面一課class類別 的建構式constructor容易搞混 講三遍
+        此為建構函式 也稱建構子 因為容易跟下面一課class類別 的建構式constructor容易搞混 講三遍
+        此為建構函式 也稱建構子 因為容易跟下面一課class類別 的建構式constructor容易搞混 講三遍
+        此為建構函式 也稱建構子 因為容易跟下面一課class類別 的建構式constructor容易搞混 講三遍
+        
+        功能是用函式建立物件
+         函式內部的this 指的是建立的物件本身
+         差別在使用函式建立物件時，前面要加new 還有函式名稱
+        */
+        function Rpg(nam,hh,aa){//建構函式的寫法  會在程式中寫this.屬性 還有程式名稱開頭會大寫
+            this.name = nam;//建立勇士大名
+            this.hp = hh;  //建立勇士血量
+            this.ap = aa;   //建立勇士攻擊力
+            this.atk = ()=>(this.ap) //建立勇士攻擊時，return 勇士的ap
+            this.hrt = (pts)=>{  //建立函式寫入勇士受傷時，血量受傷
+                this.hp-=pts
+            }
+            this.rest = ()=>{   //建立函式  勇士休息恢復血量
+                this.hp+=9
+            }
+        }
+        let a = new Rpg("a",100,30)//用new表示用建構函式建立物件  注意a 是物件
+        let b = new Rpg("b",50,60)//刺客 血量50 攻擊60
+        console.log('a!!!!!', a)
+        a.hrt(b.atk())  //此處解讀為a受傷了 受到攻擊點數為b的攻擊力，注意函式啟動要加()
+        b.hrt(a.atk())
+        a.rest();b.rest()
+        console.log(a.hp,b.hp)
+        /*
+        這是用class類別寫rpg
+        class Rpg {
+            constructor(name,hp,ap){
+                this.name = name;
+                this.hp = hp;
+                this.ap = ap
+            }
+            atk(){
+                return this.ap
+            }
+            hrt(pts){
+                this.hp-=pts
+            }
+            rest(){
+                this.hp++
+            }
+        }
+        let a = new Rpg("a",100,30)
+        let b = new Rpg("b",50,40)
+        a.hrt(b.atk())
+        b.hrt(a.atk())
+        a.rest();b.rest();
+        console.log(a.hp,b.hp)
+        */
+    </script>
+</body>
+</html>

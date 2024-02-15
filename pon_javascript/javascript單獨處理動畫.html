@@ -1,0 +1,137 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>javascript單獨處理動畫</title> 
+        <style>
+            .box{
+                width:50px;
+                height:50px;
+                background-color: red;
+                position:fixed;top:0px;right:0px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                font-size:20px;
+                
+            }
+        </style>
+    </head>
+    <body> 
+        <div class="box" id="box" onclick="cng()">變</div>
+        <script>
+            /*題外話
+            window.setInterval(function(){},1000) 意思是每1秒執行一次func
+            window.setTimeout(function(){},1000) 意思是1秒過後 執行func
+            ex:
+    <body>
+        <div id="k">5</div>
+        <script>
+            let k = document.getElementById("k")
+            window.setTimeout(cd,1000) //設了倒數計時 1秒過後執行cd
+            function cd(){
+                if (k.innerHTML>0){  如果大於0 執行下方
+                    k.innerHTML-=1   開始減一
+                    window.setTimeout(cd,1000)  並重新執行coundown 值到0
+                }
+            }
+
+            下方用interval同樣意思
+
+    <div id="k">5</div>
+        <script>
+            let k = document.getElementById("k")
+            window.setInterval(cd,1000)
+            function cd(){
+                if (k.innerHTML>0){
+                    k.innerHTML-=1
+                }
+            }
+
+
+
+            ///////////////////////屌的屌的///////////////////
+  <div id="k">5</div>
+  <div id="a">7</div>
+  <script>
+      let k = document.getElementById("k")
+      window.setTimeout(cd,500)
+      let father = parseInt(k.innerHTML)
+
+      function cd(){
+        let digit = parseInt(k.innerHTML)
+        if (digit>0){
+          digit-=1
+          k.innerHTML = digit
+          window.setTimeout(cd,500)
+        }else if (digit==0){
+          father = father + 5
+          k.innerHTML = father
+          window.setTimeout(cd,500)
+        }
+      }
+
+   let a = document.getElementById("a")
+      let mom = a.innerHTML
+      window.setInterval(count,500)
+      function count(){
+        let digit = parseInt(a.innerHTML)
+        
+        if (digit>0){
+          digit-=1
+          a.innerHTML = digit 
+        }else if (digit==0){
+          mom = parseInt(mom) + 5
+          a.innerHTML = mom
+          
+        }
+      }
+    
+
+
+
+            */
+            let box = document.getElementById("box")
+            function cng(){
+                let styles = getComputedStyle(box)//取得box的style
+                let size = styles.getPropertyValue("width")//取得style裡的width
+                let ftsize = styles.getPropertyValue("font-size")
+                size=parseInt(size)//把width int化  忘記
+                ftsize=parseInt(ftsize)
+                if (size==50){
+                    let big = window.setInterval(function(){ //設定動畫名稱 
+                        // setInterval(function(){},5)  是定時重複執行一段（函數）。它接受兩個參數：一個是要執行的函式，另一個是時間間隔（以毫秒為單位）。
+                        if (size>=500){
+                            //size=200
+                            window.clearInterval(big)//一旦大到目標大小 清除動畫
+                            box.innerHTML = "變"
+                        }else{
+                            size+=3
+                            ftsize+=1
+                            box.innerHTML = "變大"
+                            box.style.width=size+"px"
+                            box.style.height=size+"px"
+                            box.style.fontSize=ftsize+"px"
+                        }
+                    },5)//每0.05秒執行上述函式
+                }else if (size==500){
+                    let small = window.setInterval(function(){
+                        if (size <= 50){
+                            window.clearInterval(small)
+                            box.innerHTML = "變"
+                            //size=50
+                        }else{
+                            size-=3
+                            ftsize-=1
+                            box.innerHTML = "變小"
+                            box.style.width=size+"px"
+                            box.style.height=size+"px"
+                            box.style.fontSize=ftsize+"px"
+                        }
+                    },5)
+                }
+            }
+        </script>
+    </body>
+</html>

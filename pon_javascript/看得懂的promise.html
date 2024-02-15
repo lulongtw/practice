@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        /*
+        正宗promise物件教學 幹蓬蓬教那什麼鬼
+        promise物件是拿來處理非同步流程成功與否與之後要幹嘛的物件
+        要呼叫promise物件出來要先 new Promise 才能創造promise物件
+        下方例子是將promise物件返回給一個變數，在變數中傳入參數跑promise程式
+        */
+
+        function test(ques){//建立函式，可返回promise物件 而此函式的參數是決定promise成功與否
+            /*
+            注意 這裡new Promise(此處傳入一個函式) 想想上一課class類別和建構函式，是不是都要傳入東西，而此處是傳入函式
+            */
+            return new Promise(function(ok,notok){//這個函式的參數，包含了兩個函式 ok 與 notok
+                if (ques){  //如果test傳入的參數是true
+                    ok("成功的數據")
+                }else{
+                    notok("失敗拉")
+                }
+            })
+        }
+        /*
+        .then後方可以傳入兩個狀況，第一個是成功，第二個是失敗
+          而第一個就是接收從ok函式送過來的"成功的數據''
+          第二個就是接收從notok韓式發送過來的"失敗拉"
+        */
+        test(false).then(  
+            function(data){
+                console.log(data,"one")
+            },function(data){
+                console.log(data,"one")
+            }
+        )
+
+        test(true).then(
+            function(data){
+                console.log(data,"two")
+            },function(data){
+                console.log(data,"two")
+            }
+        )
+
+        //這樣一來  搞懂promise在幹嘛後  再來搞xmlhttprequest
+        function net(){
+            return new Promise(function(ok,notok){
+                let req = new XMLHttpRequest()//建立XML三小物件
+                req.open("get","https://cwpeng.github.io/live-records-samples/data/products.json")//開啟檔案
+                req.onload = function(){//一但開啟
+                    ok(this.responseText)//透過ok傳入資訊
+                }
+                req.onerror = function(){//一但不ok
+                    notok("shit")//notok傳shit
+                }
+                req.send()
+            })
+        }
+
+        net().then(//.then後寫入兩個function用,隔開  第一個是導入ok 成功的參數  第二個導入notok 施掰的參數
+            function(data){
+                console.log("works",data)
+            },function(data){
+                console.log("notwork",data)
+            }
+        )
+
+
+    </script>
+</body>
+</html>
