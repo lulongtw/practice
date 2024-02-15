@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .title{
+      background-color: rgba(0, 104, 49, 0.432);
+      color:rgb(57, 57, 57);
+      width:200px;
+      text-align:center;
+      margin-bottom:5px;
+    }
+    input{
+        display:block;
+        margin:10px 0;
+    }
+    hr {
+      margin: 50px 0;
+      border-color: red;
+    }
+    .square{
+      width:100px;height:100px;
+      border: 1px solid black;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <!--vue react angular是以資料驅動網頁
+  差別在簡化選取元素和批次修改元素的過程????
+  Vue 的核心功能是聲明式渲染：通過擴展於標準 HTML 的範本語法，
+  我們可以根據 JavaScript 的狀態來描述 HTML 應該是什麼樣子的。
+  當狀態改變時，HTML 會自動更新。
+  -->
+  <span>{{text}}在載入目標外無法使用vue</span>
+  <hr>
+
+
+
+  <div id="app">
+    <div class="title">用雙{}引入Vue的data資料</div>
+    {{text}}
+    <hr>
+
+
+
+    <div class="title">v-if和v-show</div>
+    這行要看開console看ＤＯＭ元素
+    <div v-if="boolean">show和if的差別 插在false時 if DOM元素直接消失 就是連console也看不到</div>
+    <div v-show="boolean">show和if的差別  show是display none</div>
+    <hr>
+
+
+
+
+    <div class="title">用v-model取代value</div>
+    <br>
+    <input type="text" v-model="message">
+    <div>{{message}}</div>
+    <hr>
+
+
+
+
+    <div class="title">用v-model即時匯率換算</div>
+      <input type="number" v-model="money">
+    <div>日幣{{money/0.2}}</div>
+    <div>美金{{money/32}}</div>
+    <hr>
+
+
+
+
+
+
+    <div class="title">v-for與他的變數</div>
+    只有引入一個變數，該變數代表值
+    <div v-for="value in lst">{{value}}</div>
+    引入兩個變數第一個變數代表值，第二個代表index<div v-for="(value, idx) in lst">{{value}}和{{idx}}</div>
+    <br>
+
+    用在物件上也一樣<div v-for="info in obj">{{info}}</div>
+    <div v-for="(info, key) in obj">{{info}}和{{key}}</div>
+    但{}內部一樣可以使用js的寫法取出物件的值
+    <div v-for="(info, key) in obj">{{obj[key]}}</div>
+    <div v-for="man in farm">{{man.farmer}}</div>
+    <hr>
+
+
+
+
+
+    <div class="title">函式概念和this</div>
+    <div v-for="man in gymlst" v-on:click="myGa(man.gay)">{{man.gay}}</div>
+    <div class="square" @mousemove="cngClr">屌</div>
+    <!-- 要輸入參數時才需要() 如無參數直接輸入函式名稱就好
+      另外在vue無法使用querySelector
+    -->
+    <hr>
+    <div class="title">keyup.enter是vue特有寫法 還有除錯</div>
+    <!--keyup是js事件  意思是當用戶按下並放開鍵盤按鍵  keyup.enter代表用戶按enter-->
+    <input type="text" @keyup.enter="print">
+    <input type="text" @keyup.enter="add" v-model="thing">
+    <pre>{{this.lst2}}</pre>
+    <!--pre能保留資料的原有格式  例如空白空格都會照格式顯示 拿來除錯用超讚-->
+  </div>
+
+
+  <hr>
+  <div class="title">vue也有生命週期</div>
+  <div class="title">每個生命週期跟data和method同階層 看console</div>
+  <div id="lifecircle"></div>
+
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+
+    let app = Vue.createApp({
+      data() {//用這樣來引入資料
+        return {
+          text: "sit",
+          boolean: false,
+          message: "v-model代替value",
+          money: 0,
+          lst: [1, 2, 3],
+          obj: { a: 7, b: 8, c: 9 },
+          farm: [{ farmer: "bob" }, { farmer: "tom" }],
+          gymlst: [{ gay: "雅集" }, { gay: "俊宏" }, { gay: "健身" }],
+          colorlst:["black","red","blue","green","yellow"],
+          count:0,
+          thing:"事項",
+          lst2:[],
+          //toggle:ref("old"),
+          //toggleBoolean:true
+        };
+      },
+      methods: {//用這樣來引入函式
+        myGa(gay) {
+          console.log(`${gay}是gay`);
+        },
+        cngClr(e){//在vue裡面一樣 事件函式引入的第一個參數就是事件物件
+          //  要用這種方法引入data要加上this 
+          e.target.style.backgroundColor = this.colorlst[this.count];
+          this.count++;
+          if (this.count>this.colorlst.length){
+            this.count = 0
+          }
+        },
+        print(e){
+            console.log(e.target.value)
+        },
+        add(){
+            this.lst2.push(this.thing);
+            this.thing = ""
+            console.log(this.lst2)
+        }
+
+
+      }
+    });
+
+    app.mount("#app");
+
+    let life = Vue.createApp({
+        data(){
+            return{
+                text:"生命週期"
+            }
+            
+        },
+        method:{
+
+        },
+        beforeCreate:function(){
+            console.log("beforeCreated",this.text)
+        },
+        created:function(){
+            console.log("created",this.text)
+        },
+        beforeMount:function(){
+            console.log("聽說這邊取不到受肉元素")
+        },
+        mounted:function(){
+            console.log("掛上DOM，且已取得受肉")
+        }
+    })
+    life.mount("#lifecircle")
+  </script>
+</body>
+</html>

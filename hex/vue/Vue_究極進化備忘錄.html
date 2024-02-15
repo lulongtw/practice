@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>Document</title>
+  <style>
+    .blue{
+      color:blue
+    }
+    .undone{
+      color:red;
+    }
+    .done{
+      color:green
+    }
+    ul{
+      width:50%;
+    }
+    li span{
+      margin:10px;
+    }
+    .editInput{
+      width:50%
+    }
+    
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+
+    <input type="text" v-model='text' @keyup.enter='add'>  
+
+      <ul>
+        <!-- 在li使用lstcomputed形成的currentViewLst 就可以把v-if和v-for放一起了 -->
+        <!-- for回圈生成資料都需要 :key=一個獨一無二的屬性  方便vue追蹤  
+          具體怎樣追蹤不知道 反正就像保命符一樣 
+          如果沒有:key的話  被使用v-for標籤包裹的元素如果有使用v-for迭代資料的話
+          會像孤兒一樣辣對 像是下面的checkbox 他使用了item.doneStatus 
+          如果key沒有設置的話 ckeckbox 在切換currentView時不會跟著響應式
+        -->
+        <li v-for='(item,index) in currentViewLst' :key='item.timeStamp' :class="['undone',{'done':item.doneStatus}]">  
+          
+          
+          <!-- 使用checkbox來toggle item.doneStatus的true和false
+          其勾選狀態會反映在v-model上  所以用物件的一個屬性去綁定 -->
+          <input type="checkbox" v-model='item.doneStatus' >
+          
+
+          <!-- 使用v-if取得是否可以編輯 切換input與span -->
+          <span v-if='!item.editable'>{{item.text}}
+
+
+            <!-- dblclick 雙擊事件
+            toggle item.ediable切換input和span
+            並對item建立item.ediText屬性 用來計入新出現的input的輸入
+            -->
+            <span @dblclick='edit(item)'>edit</span>
+          </span>
+
+
+
+          <!-- 這個input的v-model綁定item.exitText媽的雞巴報屌 因為這個editText並不是在setup裡面宣告的
+          而是在進入edit後宣告這個屬性 == 什麼神操作  而且還可以響應事 = = 到底 
+          finEdit檢查輸入是否空白 改變item.text後切換item.editable
+          -->
+          <input v-if='item.editable' v-model='item.editText' @keyup.enter='finEdit(item)' class='editInput' type="text">
+          
+          
+          del不能直接del 要檢查獨一無二的timeStape才可以刪除
+          這裡使用findIndex找到lst 裡的timeStampe和item.timeStampe一樣的物件的index
+          用.splice刪掉
+          <span @click='del(item,index)'>x</span>
+        </li>
+
+
+      </ul>
+      <div v-for='item in viewLst' @click='currentView=item' :class='{"blue":currentView==item}'>{{item}}</div>
+  </script>
+  <script>
+    let {createApp,ref,computed} = Vue;
+    let app = createApp({
+      template:"#apphtml",
+      setup(){
+        let lst = ref([]);
+        let text = ref("");
+        let viewLst = ["全部","未作","做完"];
+        let currentView = ref("全部");
+
+        let currentViewLst = computed(()=>{
+          switch (currentView.value){
+            case "全部":
+              return lst.value
+            case "未作":
+              let newLst = ref([]);
+              lst.value.forEach(item=>{
+                if (!item.doneStatus){
+                  newLst.value.push(item)
+                }
+              });
+              return newLst.value
+            case "做完":
+              let newLst2 = ref([]);
+              lst.value.forEach(item=>{
+                if (item.doneStatus){
+                  newLst2.value.push(item)
+                }
+              });
+              return newLst2.value
+          }
+        })
+        function add(){
+          if (!text.value.trim()){
+            return
+          }
+          let newData = {
+            text:text.value,
+            timeStamp:getTimeStamp(),
+            doneStatus:false,
+            editable:false
+          }
+          lst.value.push(newData);
+          text.value = ""
+        }
+        function getTimeStamp(){
+          return new Date().getTime();
+        }
+        function del(item,index){
+          // 
+          let tarIdx = lst.value.findIndex(
+            elm=>{
+              return elm.timeStamp==item.timeStamp
+            }
+          );
+          lst.value.splice(tarIdx,1)
+ 
+        }
+        function edit(item){
+          item.editable = !item.editable;
+          item.editText = item.text;
+        }
+        function finEdit(item){
+          item.editText = item.editText.trim();
+          if (item.editText){
+            item.text = item.editText
+          }
+          item.editable = false
+        }
+
+        return{
+          text,add,del,viewLst,getTimeStamp,currentViewLst,viewLst,lst,currentView,edit,finEdit
+        }
+      }
+    });
+    app.mount("#app")
+  </script>
+</body>
+</html>

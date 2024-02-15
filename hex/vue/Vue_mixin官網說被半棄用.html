@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script type="text/x-template" id="apphtml">
+      <div @click='speak()'>按我</div>
+      <div @click='add()'>add</div>
+      {{c}}
+    </script>
+    <script>
+      /*
+    mixin不是像繼承的概念  比較偏組合
+    因為mixin可以一次引入多組mixin
+    概念是如果有需多次利用程式
+    在組合式api 都需要使用setup(){return{}}
+    let a = {setup(){
+      需多次利用程式1
+      return{需多次利用程式1}
+    }
+    let b = {setup(){
+      需多次利用程式2
+      return{需多次利用程式2}
+    }
+
+    然後c組件要使用a和b組件的函式和變數，就要
+    mixins:[a,b],
+    然後在setup(){}裡面
+    let {要用的函式與變數1} = a.setup();
+    let {要用的函式與變數2} = b.setup();
+    最重要要return {要用的函式與變數1,要用的函式與變數2}
+
+    在組合式API中都是要用setup包裹才好引入與輸出
+
+    這樣看起來extends 跟mixin一樣啊
+      */
+      let { createApp, ref, onMounted } = Vue;
+      let com1 = {
+        setup() {
+          function speak() {
+            console.log("fromCom1");
+          }
+          return {
+            speak,
+          };
+        },
+      };
+      let com2 = {
+        setup() {
+          let c = ref(0);
+          function add() {
+            c.value++;
+          }
+          return {
+            c,
+            add,
+          };
+        },
+      };
+
+      let app = createApp({
+        template: "#apphtml",
+        mixins: [com1, com2],
+        setup() {
+          let { speak } = com1.setup();
+          let { c, add } = com2.setup();
+          return {
+            speak,
+            c,
+            add,
+          };
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

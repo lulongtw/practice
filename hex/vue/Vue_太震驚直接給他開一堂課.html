@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border: 1px solid black;
+        transition: all 0.3s;
+        text-align: center;
+        background-color: red;
+      }
+      .box1{
+        width:50px;height:50px;
+        border:1px solid black;
+        background-color: gray;
+      }
+      .red{
+        color:red
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/x-template" id="apphtml">
+      <div id="qq"></div>
+    </script>
+
+    <script>
+      let { createApp, ref, reactive, computed, watch,onMounted} = Vue;
+    
+      let app = createApp({
+        template: "#apphtml",
+        setup() {
+         onMounted(()=>{
+          let qq = document.querySelector("#qq");
+          qq.textContent = "sad";
+          qq.style.color = "red"
+         })
+          return {
+            
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

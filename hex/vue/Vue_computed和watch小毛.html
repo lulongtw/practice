@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 70px;
+        height: 70px;
+        border: 1px solid black;
+        transition: all 0.3s;
+        text-align: center;
+      }
+      .blue {
+        background-color: blue;
+      }
+      .red {
+        white-space: pre-wrap;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/x-template" id="apphtml">
+      <div class="red">
+        computed是拿來處理即將渲染畫面的資料的處理過程<br>
+        是一個函式  裡面有個回呼函式會return處理完的東西<br>
+        像是lst要reverse 還是要filter之類的<br>
+        太多會影響效能
+        如果computed處理的東西具有響應是  也會一起響應
+      </div>
+      <div v-for='item in revlst'>{{item.name}}</div>
+      <hr>
+
+      <div class="red">
+        watch要注意<br>
+        第二個參數的參數可以輸入newVal和oldVal <br>
+        也要注意如果改動被觀察物本身 是否會無限改動<br>
+        例如下面沒有的watch沒有if判斷式的話就會無限動<br>
+      </div>
+      <div :class="['box',{'blue':isBlue}]"></div>
+      <div @click='isBlue=!isBlue'>toggle</div>
+    </script>
+    <script>
+      let { createApp, ref, reactive, computed, watch } = Vue;
+      let app = createApp({
+        template: "#apphtml",
+        setup() {
+          let lst = [{ name: "min" }, { name: "koko" }, { name: "tyson" }];
+          let revlst = computed(() => {
+            let newlst = JSON.parse(JSON.stringify(lst));
+            return newlst.reverse();
+          });
+
+          let isBlue = ref(false);
+          watch(
+            () => isBlue.value,
+            (newValue, oldValue) => {
+              if (newValue === true) {
+                let timeoutId = setTimeout(() => {
+                  isBlue.value = false;
+                }, 500);
+              }
+            }
+          );
+          return {
+            lst,
+            revlst,
+            isBlue,
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

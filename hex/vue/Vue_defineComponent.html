@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue 3 Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script type="text/x-template" id="apphtml">
+      <div>
+        <h1>{{ message }}</h1>
+        <button @click="increment">Increment</button>
+        <p>Count: {{ count }}</p>
+      </div>
+    </script>
+
+    <script>
+      /*
+    這節課是defineComponent
+    意思是定義創造出一個組件
+    雖然我們不需透過defineComponent方法就可以創造出組件了
+    蛋chat老師說之後typescript會需要  這樣比較明確
+    下面其他程式碼都不重要
+    重點在註解那邊
+    */
+
+      let { createApp, defineComponent, ref } = Vue;
+
+      //其實下面兩個是一樣的
+      /*
+    let CounterCompoennt = defindeComponent({....})
+    let CounterComponent = {...}
+    只是差在defineCompoennt()包裹  裝逼啊
+    */
+      const CounterComponent = defineComponent({
+        template: "#apphtml",
+        setup() {
+          const message = ref("Hello Vue 3!");
+          const count = ref(0);
+
+          function increment() {
+            count.value++;
+          }
+
+          return { message, count, increment };
+        },
+      });
+
+      let app = createApp(CounterComponent);
+      app.mount("#app");
+      /*
+
+      這是SFA格式下的defineComponent
+  import { defineComponent, ref } from 'vue';
+
+      差在這邊明確定義說export 出什麼東西
+      以及多了name屬性  其他setup 全部包裹在defineCpomponnet({})裡面
+    export default defineComponent({
+      
+      name: 'CounterComponent',
+      setup() {
+        // 使用 ref 建立一個響應式的值
+        const count = ref(0);
+
+        // 定義一個方法來更新 count
+        const increment = () => {
+          count.value++;
+        };
+
+        // 返回所有需要在範本中使用的響應式資料和方法
+        return { count, increment };
+        }
+      });
+    */
+    </script>
+  </body>
+</html>

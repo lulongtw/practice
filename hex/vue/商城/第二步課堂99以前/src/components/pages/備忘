@@ -1,0 +1,45 @@
+這節課上什麼??
+
+93~99
+設置前端的後台頁面 要出現產品列表
+並針對產品列表 設置 編輯 新增 刪除 功能
+要使用這些功能的頁面 使用modal 呈現
+學習如何透過 標籤用法 與 自製函式 觸發modal
+以及上傳圖片要透過 new一個表單物件  比較好處理
+
+
+
+以下備忘
+
+1.
+我的index = 卡屎伯的 admin 
+
+
+2.
+指定path到child可以出現??幹好難講
+login ok後跳轉到 "/index/products"
+而index的template有設<router-view>
+再router裡面index有child products 
+幹這樣也可以
+
+
+
+4.沒有辦法監視伺服器改變的檔案
+
+5.
+grid-template-row不要亂用
+30 30 100 設row 1fr 1fr 1fr
+1fr的高度會以100算  30空超多
+
+6.
+input type=file @change=getData($event);
+
+使用事件參數 event
+let data = e.target.files
+以序列呈現
+
+
+
+
+
+

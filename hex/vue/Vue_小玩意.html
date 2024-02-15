@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>Document</title>
+  <div id="app">
+
+    <input type="text" v-model="text">
+    <div v-once> v-once單次綁定  只會響應第一次而已{{text}}</div>
+    <hr>
+    <div>雙大括號可以內部可以給他處理運算  因為是表達式 
+    <br>
+    {{num1}}加上{{num2}}是 {{num1 + num2}}</div>
+    <div>{{langio}}{{langio.split("").reverse().join("")}}</div>
+    <hr>
+    哇操可以透過:disabled=xxx來操控能不能輸入
+    <br>
+    <input type="text" :disabled="cng" :placeholder='toggleplaceholder()'>
+    <input type="checkbox" v-model="cng">
+    {{cng}}
+  </div>
+
+</head>
+<body>
+  <script>
+    let {createApp,ref} = Vue;
+    let app = createApp({
+      setup(){
+        let text = ref("qqq");
+        let num1 = 69;
+        let num2 = 96;
+        let langio = "大牛比較懶";
+        let cng = ref(true);
+
+        function toggleplaceholder(){
+          return cng.value?"我不能輸入拉":"我又能輸入拉打我啊bd"
+        }
+
+        return{
+          text,num1,num2,langio,toggleplaceholder,cng
+        }
+      }
+    });
+    app.mount("#app")
+  </script>
+</body>
+</html>

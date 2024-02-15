@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="a"></div>
+
+<!--
+
+這節課是在介紹<KeepAlive>標籤 
+這標籤的功能是可以讓內部的狀態保存    
+如果沒有KeepAlive 在每次用:is換子元件  每次都會把既有的狀態摧毀
+KeepAlive會保留那些狀態
+可以在網頁輸入值後  把下方KeepAlive標籤刪掉看看結果
+
+其他就是展示:is功能  上節課講過了
+
+-->
+
+
+
+  <script src="https://unpkg.com/vue@3"></script>
+  
+  <script type="text/x-template" id="comAhtml">
+    <div>
+      count: {{count}} <button @click='add'>+</button>
+    </div>   
+  </script>
+
+  <script type="text/x-template" id="comBhtml">
+    <div>
+      message is <input/>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="apphtml">
+    <div v-for='(value,key) in obj'>
+      <input type="radio" :value='value' v-model='selected'>{{key}}
+    </div>
+    Current component is {{selected}}
+    <!--一定要用selected 因為這在setup有ref才能響應-->
+    <KeepAlive>
+      <component :is='selected'></component>
+    </KeepAlive>
+  </script>
+  <script>
+    let {createApp,ref} = Vue;
+
+    let comA = {
+      template:"#comAhtml",
+      setup(){
+        let count = ref(0);
+        function add(){
+          count.value++
+        }
+        return{
+          count,add
+        }
+      }
+    };
+
+    let comB = {
+      template:"#comBhtml",
+    }
+
+    let app = createApp({
+      template:'#apphtml',
+      setup(){
+        let obj = {
+          A:"comA",
+          B:"comB"
+        };
+        let selected = ref(obj.B) //用ref和v-model傳回來的value響應
+        return{
+          obj,selected
+        }
+      },
+      components:{
+        comA:comA,comB:comB
+      }
+    });
+    app.mount("#a")
+  </script>
+</body>
+</html>

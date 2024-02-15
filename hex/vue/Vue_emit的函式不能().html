@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        transition: all 0.3s;
+        text-align: center;
+      }
+      .red{
+        color:red
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/x-template" id="apphtml">
+      {{text}}
+      <div class="red">emit事件觸發的函式不能加()！！！！！！！</div>
+      <com1 @call='cng'></com1>
+    </script>
+    <script type="text/x-template" id="com1html">
+      <input type="text" v-model='num' @input='makeCall()'>
+      <!-- <input type="text" v-model=num @change='makeCall()'> -->
+    </script>
+
+   
+    <script>
+      let { createApp, ref, reactive, computed, watch, onMounted } = Vue;
+      let app = createApp({
+        template: "#apphtml",
+        setup() {
+          let text = ref("ff")
+          function cng(newVal){
+            text.value = newVal
+          }
+          return {
+            text,cng
+          };
+        },
+      });
+      app.component("com1", {
+        template: "#com1html",
+        emits:["call"],
+        setup(props,{emit}) {
+          num = ref(99);
+          function makeCall(){
+            emit("call",num.value)
+          }
+          return {
+            num,makeCall
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

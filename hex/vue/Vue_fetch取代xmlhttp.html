@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="qq">
+    <h1>gogofetch</h1>
+    <div v-for="branch in obj.branches">
+
+ 
+    <input type="radio" 
+      
+      :value="branch"
+      v-model="obj.currentBranch"
+    >{{branch}}
+  </div>
+
+    現在是<span>{{obj.currentBranch}}</span>
+    <div></div>
+    <ul>
+      <li v-for="idx in obj.commits">
+        <a :href="idx.html_url" target="_blank">更新資訊</a>
+        -by{{idx.commit.author.name}} at {{idx.commit.author.date}}
+      </li>
+    </ul>
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    let app = Vue.createApp({
+      setup(){
+        let obj = Vue.reactive({
+          commits:null,
+          branches:["main","dev"],
+          currentBranch:"main"
+        });
+        /*
+        fetch寫把比較直觀  還有promise功能
+        
+        fetch 重點是async await try catch
+        一定要有catch
+        寫法
+        async function get(){
+          try{
+            let 變數1 = await fetch(網址)
+            資料要去哪 = await 變數1.json()
+          }catch(error){
+            console.error("爆炸說啥",erro)
+          }
+        }
+        */
+
+        async function fetchData(){
+          let url = `https://api.github.com/repos/vuejs/vue/commits?per_page=3&sha=${obj.currentBranch}`;
+
+          try{
+            let response = await fetch(url);
+            obj.commits = await response.json();//一定要await .json()
+          }catch(error){
+            console.error("shit",error)
+          }
+        }
+        Vue.watch(
+          ()=>obj.currentBranch,
+          ()=>fetchData()
+        )
+        Vue.watch(
+          ()=>obj.currentBranch,
+          ()=>console.log("fdsf")
+        )
+        return{
+          obj,fetchData
+        }
+
+      },
+      created:function(){
+        this.fetchData()
+      }
+      
+    });
+    app.mount("#qq")
+  </script>
+</body>
+</html>

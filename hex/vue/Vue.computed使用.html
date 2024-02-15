@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<div id="a">
+		a多胖<input type="number" v-model="obj.akg">
+		b多胖<input type="number" v-model="obj.bkg">
+		<div></div>
+		{{ans}}
+		<div></div>
+		a比平均胖{{aavg}}
+		<div></div>
+		b比平均胖{{bavg}}
+	</div>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+	<script>
+		let app = Vue.createApp({
+			setup(){
+				let obj = Vue.reactive({//必須recreative保持響應式
+					akg:0,
+					bkg:0,
+					all:80
+				});
+				//computed只能引入函式本體  不能引入是函式的變數 ex let ans = Vue.computed(Math()) 這樣不行
+				let ans = Vue.computed(()=>{ //引入響應式資料
+					switch (true) {
+            case obj.akg > obj.bkg:
+              return "a重";
+            case obj.akg < obj.bkg:
+              return "b重";
+            default:
+              return "一樣重";
+          }
+				});
+				let aavg = Vue.computed(()=>{
+					return obj.akg-obj.all
+				});
+				let bavg = Vue.computed(()=>obj.bkg-obj.all)
+
+
+				
+				return{
+					ans,obj,aavg,bavg
+				}
+			},
+		});
+		app.mount("#a")
+	</script>
+</body>
+</html>

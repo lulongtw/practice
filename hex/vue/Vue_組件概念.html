@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    hr{
+      margin:20px 0;
+    }
+  </style>
+</head>
+<body>
+
+
+  <div id="test1">
+   <cpnt></cpnt>
+  </div>
+  <hr>
+  <div id="test2">
+    <one></one>
+    <two></two>
+  </div>
+  <hr>
+  <div id="test3"></div>
+
+
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    //組件的結構
+    //組件以物件表示，key是templete 該值寫html
+    ////template代表目前階層組件的html
+    //cpnt 代表的就是一個組件 
+    //永遠注意 幹你娘老雞掰操你媽的逼幹
+    //組件不可以使用既有的html標籤 例如main 和nav....
+    //他媽直接沒反應還不會報錯幹你鳥老幾掰操你媽的逼我真的藥崩潰幹
+    let a = {template:"<div>this is a component</div><div>this is a component</div>"}
+ 
+    
+    let app1 = Vue.createApp({
+      components:{//componets代表此vue要掛載哪些元件
+        cpnt:a //以物件方式引入 將a引入cpnt
+        //然後cpnt成為app1的組件  在掛載處可使用cpnt標籤使用組件
+      }
+    })
+    app1.mount("#test1")
+
+    
+
+
+
+
+    //兩種不同建立component的方法  
+    //一個在createApp內 一個在外面  
+    //寫在裡面的要用component"s"
+    let app2 = Vue.createApp({
+      components:{
+        one:{template:'<div>one</div>'}
+      }
+    });
+    //component不用加"s"
+    app2.component("two",{//用這個方法  組件的名稱two要變字串
+      template:"<div>two</div>"
+    });
+    //.component只能用在跟組件上  不能用在非跟組件上
+    app2.mount("#test2")
+
+
+    //組件裡面建造組件
+    //要注意結構  是一層一層的 
+    //意思是  不是這一層寫好的組件 馬上當這層的子元件
+    //components的意思是  目前所在元件的子元件的意思
+    //也就是說 最上層的app3是根組件 
+    //跟組件裡面有components代表裡面有子元件dad
+    //dad裡面有components代表有son這個子元件
+    //不能在dad那一層裡值些寫son 然後把son寫入dad 這樣nono
+
+    let son = {template:"<div>son</div>"}
+    
+    let app3 = Vue.createApp({
+      components:{
+        dad:
+          {
+            template:"<div>dad<son></son></div>",
+            components:{son:son},
+          },
+        /*
+        dad:{template:"<div>dad<son></son></div>"},
+        son:{template:"<div>son</div>"} 錯誤寫法
+        這種寫法意思是son是app3的子元件
+        */
+      },
+      template:"<dad></dad>"
+    });
+    app3.mount("#test3")
+   
+  </script>
+</body>
+</html>

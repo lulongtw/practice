@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <!--
+    幹provide和indject超屌的拉
+    父組件透過 provide 向所有子孫組件提供東西
+    所有的子孫組件可以透過 inject 接收東西
+    如下 com1 com2都是app的子孫組件 
+    都可以接收由app provide的fromDad
+
+    而透過響應式也可以將資料向上傳遞
+    app provide 一個函式 
+    這個函式可以更改 reactive 物件的資料
+    com2 inject 這個函式 直接更改
+    哇操跟傳送門一樣
+
+  -->
+
+  <script type="text/x-template" id="apphtml">
+    app
+    {{data.val}}
+    <hr>
+    com1
+    <com1></com1>
+  </script>
+  <script type="text/x-template" id="com1html">
+    {{fromDad}}
+    <hr>
+    com2
+    <com2></com2>
+  </script>
+  <script type="text/x-template" id="com2html">
+    {{fromDad}}
+    <br>
+    <input @change='updt()' type="text" v-model='com2Text'>
+  </script>
+  <script>
+    let {createApp,reactive,provide,inject,ref} = Vue;
+    let com2 = {
+      template:"#com2html",
+      setup(){
+        let com2Text = ref("");
+        let aFunctn = inject("aFunctn")
+        function updt(){
+          aFunctn(com2Text.value)
+        }
+        let fromDad = inject("fromDad")
+        return{
+          updt,com2Text,fromDad
+        }
+      }
+    }
+
+    let com1 = {
+      template:"#com1html",
+      components:{
+        com2:com2
+      },
+      setup(){
+        let fromDad = inject("fromDad")
+        return{
+          fromDad
+        }
+      }
+    }
+
+    let app = createApp({
+      template:"#apphtml",
+      components:{
+        com1:com1
+      },
+      setup(){
+        let data = reactive({
+          val:"??"
+        });
+        let fromDad = "fromDad";
+        provide("fromDad",fromDad)
+        provide("aFunctn",(newVal)=>{
+          data.val = newVal
+        })
+        return{
+          data
+        }
+      }
+    });
+    app.mount("#app")
+  </script>
+</body>
+</html>

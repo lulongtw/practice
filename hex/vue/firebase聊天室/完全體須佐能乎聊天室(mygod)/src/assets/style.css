@@ -1,0 +1,37 @@
+.wrap{
+  width:min(80%,500px);
+  margin:0 auto
+}
+
+.inputWrap{
+  width:70%;
+  margin:0 auto;
+}
+
+.room{
+  padding:10px;
+  border:1px solid gray;
+  border-radius: 10px;
+
+}
+.chat{
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding:20px;
+  border-bottom: 1px solid gray;
+  gap:10px;
+}
+.other{
+  flex-direction:row-reverse
+}
+.time{
+  color:gray;
+  font-size: 10px;
+  text-align: right;
+}
+.other .time{
+  text-align: left;
+}
+
+

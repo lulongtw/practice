@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+ 
+<script src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.js"></script>
+  <title>Document</title>
+  <style>
+    .box{
+      width:30px;height: 30px;
+      background-color: red;
+    }
+    .flex{
+      display: flex;
+      justify-content: space-between;
+    }
+    ul{
+      width:50%;
+      margin:0 ;
+    }
+    .green{
+      color:green
+    }
+    .red{
+      color:red
+    }
+  </style>
+</head>
+<body>
+  <!--
+    超複雜todolist
+    追蹤做了沒的狀態list放在store
+    記錄所有輸入資料放在app = =
+    會用到store因為分了兩個com做
+    應該兩個都放store的
+    但懶得改 而且這樣筆記複雜比較屌  = =
+    重點在 ul li 的v-for 和v-if部分 
+    一開始 v-for 和 v-if 都放 li 
+    但是 v-if 即使false ul還是會留一個點 就是沒有內容  但有空格
+    看了之前的超人筆記
+    為什麼那時候會用div v-for來包裹ul li 真是想都想沒有
+    然後v-if在ul就絕對不會出現黑點了
+
+    然後最重要的事 v-for時  要加上:key = item+index
+    對框架渲染才不會出問題  保命用
+    如果不加 輸入 abcde 刪除 c 畫面出現abcd 不見的變成e
+    但是consolelog lst是正確的
+    但是按未作 再回來  畫面又正常
+    所以這點要體諒vue 跟react也會傳遞ksy 一樣
+
+    還有在vue的事件監聽函式要加入event
+    @click = add(idx,$event)  $event這樣引入
+    
+   
+
+  -->
+
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+    <input type="text" v-model=text @keyup.enter="add">
+    <div v-for='(item,index) in lst' :key="item+index" >
+      <ul  v-if='show(index)'>
+        <li>
+            <com  :thing='item' :idx='index' :sonLst='lst' @sentDelLst='cngLst' ></com>
+        </li>
+      </ul>
+    </div>
+    
+    {{lst.length}}
+
+    <div v-for='item in showState' @click='cngShow(item)'>{{item}}</div>
+  </script>
+  <script type="text/x-template" id="comhtml">
+   <div  :index='idx' :class='["flex",check(idx)]'>
+    <span @click='done(idx,$event)'>{{text}}</span>
+    <span @click=del(idx) :index='idx'>x</span>
+  </div>
+  </script>
+
+  <script>
+    let {createStore} = Vuex
+    let {createApp,ref} = Vue;
+    let store = createStore({
+      state(){
+        return{
+          stateLst:ref([])
+        }
+      },
+      mutations:{
+        pushLst(state,newVal){
+          state.stateLst.push(newVal)
+        },
+        toggleTarget(state,newVal){
+          state.stateLst[newVal] = !state.stateLst[newVal]
+        },
+        delStateLst(state,newVal){
+          state.stateLst.splice(newVal,1)
+        }
+      }
+    })
+
+  
+    let com = {
+      props:["thing","idx","sonLst"],
+      emits:["sentDelLst"],
+      template:"#comhtml",
+      setup(props,{emit}){
+        let text = ref(props.thing);
+        let idx = ref(props.idx);
+        let sonLst = ref(props.sonLst)
+        
+        function done(idx,e){
+          store.commit("toggleTarget",idx)
+        }
+        function check(idx){
+          return store.state.stateLst[idx]?"green":"red"
+        }
+        function del(idx){
+          //console.log(idx)
+          sonLst.value.splice(idx,1);
+          ///console.log(sonLst.value)
+          emit("sentDelLst",sonLst.value)
+          store.commit("delStateLst",idx)
+        }
+        return{
+          text,del,check,done
+        } 
+      }
+    }
+
+    let app = createApp({
+      template:"#apphtml",
+      components:{
+        com:com
+      },
+      setup(){
+        let text = ref("")
+        let lst = ref([]);
+        let nowShow = ref("全部")
+        let showState = ["全部","未作","做完"]
+        function add(){
+          lst.value.push(text.value);
+          store.commit("pushLst",false);
+          text.value = "";
+        }
+        function cngLst(deldLst){
+          //console.log(deldLst)
+          lst.value = deldLst
+          console.log(lst.value)
+        }
+        function cngShow(item){
+          nowShow.value = item
+        }
+
+        function show(idx){
+          switch (nowShow.value){
+            case "全部":
+              return true
+            case "未作":
+              return !store.state.stateLst[idx]
+            case "做完":
+            return store.state.stateLst[idx]
+          }
+        }
+        return{
+          lst,text,add,cngLst,show,cngShow,showState
+        }
+      }
+    });
+    app.mount("#app")
+  </script>
+</body>
+</html>

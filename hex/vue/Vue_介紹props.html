@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .red{
+    color:red
+  }
+</style>
+<body>
+  <div id="a"></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+
+  <script type="text/x-template" id="sonhtml">
+    <div v-bind:class='dadclr'>{{dadmsg}}</div>
+    <!--在重申一次  v-bind和{{}}
+    意思是讓你可以在html直接拿取js的資料
+    -->
+  </script>
+
+
+
+  <script>
+    //這節課上props 從外部傳入資訊  這便是從父組件傳資料近子組件
+    //通過在描述父組件的template時，給子組件用v-bind傳入資訊
+    //這個資訊在let子組件時，使用props:["資訊"]接收  注意  要變成字串
+    //然後，就可以在子組件以響應方式使用
+
+    let son = {
+      template:"#sonhtml",
+      props:["dadmsg","dadclr"],//建立了v-bind 不要忘記設props   記得要變字串
+    }
+
+
+
+    
+    
+    let app = Vue.createApp({
+      setup(){
+        let msg = "來自爸爸的聲音"
+        let color = "red"
+        return{
+          msg,color
+        }
+      },
+      components:{son:son},
+      template:"<son v-bind:dadmsg='msg' :dadclr='color'></son>"
+    });
+    app.mount("#a")
+    //如果父組件傳進來的props是ajax來的  
+//就必須使用watch檢查props是否有更新
+//但在最後渲染畫面時有可能發生
+//在watch時有資料  但是無法渲染在畫面上的情形
+//此時就必須
+/*
+
+     這種可以 <div>{{imm.name?.first}}</div>
+    這種也可以<div v-if="imm.name">{{imm.name.first}}</div>
+     這行印不出來<div>{{imm.name.first}}</div> 
+
+
+意思是要先檢查傷一層有沒有東西在進行渲染*/
+
+
+  </script>
+</body>
+</html>

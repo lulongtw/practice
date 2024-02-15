@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border: 1px solid black;
+        transition: all 0.3s;
+        text-align: center;
+        background-color: red;
+      }
+      .box1{
+        width:50px;height:50px;
+        border:1px solid black;
+        background-color: gray;
+      }
+      .red{
+        color:red
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/x-template" id="apphtml">
+      <div class="red">
+        下面註解起來的部分是花俏的城市 跟這節課沒關係
+        <br>這節課是上生命週期 <br>
+        onBeforeMount, 渲染畫面之前 資料都是vue形狀<br>
+        onMounted,    渲染畫面後 資料變成html<br>
+        <hr><hr>
+        他媽最重要在這邊
+        要在onMounted之後才能使用js語法!!!!!
+        比方說document.querySelector!!!!!
+        <hr>
+
+
+        onBeforeUpdate,  更新資料前  資料已經更新 只是還沒渲染到畫面<br>
+        onUpdated,    更新資料後  新資料渲染到畫面<br>
+        以下四種都要放在會發生<br>
+        onBeforeUnmount,  卸載前  如果沒有keep alive就會發生<br>
+        onUnmounted,  卸載後  如果沒有keep alive就會發生<br>
+        onActivated,   kp的元素出現之後  會觸發 onBeforeUpdate和 onUpdated<br>
+        onDeactivated   kp的元素卸載之後 會觸發 onBeforeUpdate和 onUpdated<br>
+        跟組件一開始順序是<br>
+        1.onBeforeMount  上根組件<br>
+        2.onActivated  上keepalive的子組件<br>
+        3.onMounted  完成<br>
+        <br>
+        切換component with keep-alive<br>
+        1.onBeforeUpdate  更新前<br>
+        2.onDeactivated  舊子組件冬眠<br>
+        3.onActivated  新子組件醒來<br>
+        4.onUpdated  完成<br>
+   
+      </div>
+      <!-- <div class='box' @click='show = !show'>{{text}}</div> -->
+      <!-- <div @click='cng()'>按我換顏色</div> -->
+      <div @click='cngCom = !cngCom'>按我換兒子</div>
+      <!-- <hr> -->
+      <!-- <div v-if='show'  :style='[{"color":clr}]'>保留狀態</div> -->
+      <hr>
+      <keep-alive>
+        <component :is=WhichCom()></component>
+      </keep-alive>
+    </script>
+    <script type="text/x-template" id="com1html">
+      <div @click='add()' class='box1'>{{count}}</div>
+    </script>
+    <script type="text/x-template" id="com2html">
+      <input type="text" v-model='com2text'>{{com2text}}
+    </script>
+    <script>
+      let { createApp, ref, reactive, computed, watch ,
+        onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted,
+        onActivated,onDeactivated
+      } = Vue;
+      let com1 = {
+        template:"#com1html",
+        setup(){
+          let count = ref(0);
+          function add(){
+            count.value++
+          }
+          onActivated(()=>{
+            alert("onAvtivated,this count is "+count.value)
+          })
+          onDeactivated(()=>{
+            alert("onDeactivated,this count is "+count.value)
+          })
+          onBeforeUnmount(()=>{
+            alert("onBeforeUnmounte,this count is "+count.value)
+          })
+          onUnmounted(()=>{
+            alert("onUnmounted,this count is "+count.value)
+          })
+    
+          return{
+            count,add
+          }
+        }
+      }
+
+      let com2 = {
+        template:"#com2html",
+        setup(){
+          let com2text = ref("天好高地好大");
+          onActivated(()=>{
+            alert("onAvtivated,this.com2text is "+com2text.value)
+          })
+          onDeactivated(()=>{
+            alert("onDeactivated,this.com2text is "+com2text.value)
+          })
+          onBeforeUnmount(()=>{
+            alert("onBeforeUnmounte,this.com2text is "+com2text.value)
+          })
+          onUnmounted(()=>{
+            alert("onUnmounted,this.com2text is "+com2text.value)
+          })
+    
+          return{
+            com2text
+          }
+        }
+      }
+      let app = createApp({
+        template: "#apphtml",
+        components:{
+          com1:com1,
+          com2:com2
+        },
+        setup() {
+          let show = ref(false);
+          let text = computed(()=>{
+            return show.value?"hide":"show"
+          })
+          let clr = ref("black");
+          function cng(){
+            clr.value = clr.value=="black"?"red":"black"
+          }
+          let cngCom = ref(true)
+
+          function WhichCom(){
+            return cngCom.value?com1:com2
+          }
+
+          onBeforeMount(()=>{
+            alert(`onBeforeMount,現在是 ${cngCom.value?"com1":"com2"}`)
+          })
+          onMounted(()=>{
+            alert(`onMounted,現在是 ${cngCom.value?"com1":"com2"}`)
+          })
+          onBeforeUpdate(()=>{
+            alert(`onBeforeUpdate,現在是${cngCom.value?"com1":"com2"}`)
+          })
+          onUpdated(()=>{
+            alert(`onUpdated,現在是 ${cngCom.value?"com1":"com2"}`)
+          })
+
+
+          return {
+            show,text,clr,cng,WhichCom,cngCom
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

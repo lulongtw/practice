@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .over,.click{
+      width:50px;height:50px;
+      border:1px solid black;
+    }
+    
+  </style>
+</head>
+<body>
+  <div id="a"></div>
+  <!--把以此之前的組概念整合寫一起ˋ
+    新發現是 子元件用{}包裹 裡面放setup(){}，寫有關該子元件的城市
+    let 子元件 = {
+        tempalte:"",
+        setup(){
+            return{}
+        }
+    }
+    幹你娘殺小不能把標籤設成mn是怎樣幹你娘雞掰
+-->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script type="text/x-template" id="headerhtml">
+    <h1>headeffsfdr content</h1>
+  </script>
+  <script type="text/x-template" id="navhtml">
+    <ul>
+      <lis></lis>
+    </ul>
+  </script>
+  <script type="text/x-template" id="lishtml">
+    <li v-for="item in lst">{{item}}</li>
+  </script>
+
+  <script type="text/x-template" id="cnt1html">
+    <div class="over" @mousemove="over">over</div>
+  </script>
+
+  <script type="text/x-template" id="cnt2html">
+    {{count}}<div class="click" @click="add">click</div>
+  </script>
+
+  <script>
+    let header = {template:"#headerhtml"}
+    let lis = {template:"#lishtml",
+    setup(){
+      let lst = ["1","2","3"]
+      return{
+        lst
+      }
+    }
+  
+  }
+    let nav = {
+      template:"#navhtml",
+      components:{lis:lis}
+  }
+
+  let cnt1 = {
+    template:"#cnt1html",
+    setup(){
+      let lst = ["green","yellow","red"];
+      let c = 0;
+      function over(e){
+        e.target.style.backgroundColor = lst[c];
+        c++;
+        if (c>3){
+          c=0
+        }
+      }
+      return{
+        lst,c,over
+      }
+    }
+  }
+  let cnt2 = {
+    template:"#cnt2html",
+    setup(){
+      let count = Vue.ref(0);
+      function add(){
+        count.value++
+      }
+      return{
+        count,add
+      }
+    }
+  }
+    let main = {
+      template:"<cnt1></cnt1><cnt2></cnt2>",
+      components:{cnt1:cnt1,cnt2,cnt2}
+
+    }
+
+
+    let app = Vue.createApp({
+      components:{
+        hed:header,
+        nv:nav,
+        gg:main,
+
+      },
+      template:"<hed></hed><nv></nv><gg></gg>"
+    });
+
+  
+
+
+    app.mount("#a")
+  </script>
+</body>
+</html>

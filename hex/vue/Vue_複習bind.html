@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .a{
+            color:red
+        }
+        .b{
+            color:green
+        }
+    </style>
+</head>
+<body>
+    <div id="a">
+        <div :class="check" @click="click">fasfsaf</div>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script>
+        /*
+        v-bind的意義在將js和DOM元素結合，一但js改變，用v-bind結合的DOM元素也會改變
+        */
+        let app = Vue.createApp({
+            data(){
+                return{
+                    toggle:true,
+                    check:"a"
+                }
+            },
+            methods:{
+                click(){
+                    this.toggle = !this.toggle
+                    this.check = this.toggle?"a":"b"
+                }
+            }
+        });
+        app.mount("#a")
+    </script>
+</body>
+</html>

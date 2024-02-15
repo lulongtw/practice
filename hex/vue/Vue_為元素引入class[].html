@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box{
+      width:100px;height:100px;
+      border:1px solid black;
+      transition: all 0.3s;
+      font-size:30px;
+      line-height:100px;
+      text-align:center;
+
+    }
+    .red{
+      background-color: red;
+    }
+    .rotate{
+      transform:rotate(45deg)
+    }
+    .fntSize{
+        font-size: 100px;
+    }
+    .bgyellow{
+      background-color: yellow;
+    }
+    .border{
+      border:10px solid black
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  簡單的說 多個class引入就是序列[a,b,c]
+  <br>
+  a,b,c都是獨立的className
+  <br>
+  其中可以使用判斷式 如需使用判斷式 則以物件形式引入{"className":判斷式}
+  <!-- 這節課上導入元素的style的方法 -->
+  <script type="text/x-template" id="apphtml">
+
+    <div>以computed物件型態導入判斷式</div>
+    <!-- <div :class="['box',{'red':isRed,'rotate':isRotate}]"></div> -->
+    <!-- 上面可以簡寫成下面 因為那個其實物物件型態
+    但是要用computed追蹤 不能用ref以及reactive 我也不知道為啥 -->
+    <div :class="['box',obj]"></div>
+    <input type="checkbox" v-model='isRed'>切換色彩
+    <div @click='isRotate = !isRotate'>isRotate</div>
+    <hr>
+
+    <div>使用序列引入class序列
+      使用checkbox決定加入哪個class</div>
+    <div :class="classLst">自</div>
+    <input type="checkbox" v-model='classLst' value="fntSize">fntSize
+    <input type="checkbox" v-model="classLst" value="bgyellow">背景變黃
+    <input type="checkbox" v-model="classLst" value="border">border變粗
+    <hr>
+
+    <div>直接以行內方式(style)輸入樣式 格式是物件</div>
+    <div :style='styleObj'></div>
+    <div :style="[{width:'70px'},{height:'30px'},{backgroundColor:'pink'},{borderRadius:'30'}]"></div>
+ 
+
+  </script>
+  <script>
+    let {createApp ,ref,reactive,computed} = Vue;
+    let app = createApp({
+      template:"#apphtml",
+      setup(){
+        let isRed = ref(false);
+        let isRotate = ref(false);
+        let obj = computed(()=>{
+          return {
+          red:isRed.value,
+          rotate:isRotate.value
+        }
+        });
+
+        let classLst = ref(["box"]);
+        let styleObj = {
+          width:"75px",
+          height:"75px",
+          borderRadius:"100%",
+          backgroundColor:"green"
+        }
+        return{
+          obj,isRed,isRotate,classLst,styleObj
+        }
+      }
+    });
+
+    app.mount("#app")
+  </script>
+</body>
+</html>

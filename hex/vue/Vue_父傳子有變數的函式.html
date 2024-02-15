@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js">
+          /*
+      
+      這節課是從父組件傳遞 物件 和  函式
+      子組件使用 父組件傳來的函式  處理 父組件傳來的物件
+      畫到畫面上
+
+      重點是如何在子組件使用父組件的函式，而且是需要傳入變數的情況下
+      解答是用子組件的另一個函式去包裹
+      */
+  </script>
+  <title>Document</title>
+  <style>
+    .box{
+      width:30px;
+      height: 30px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+    <son :num='num1' :func='add'></son>
+    <son :num='num2' :func='add'></son>
+  </script>
+  <script type="text/x-template" id="sonhtml">
+    <div>{{sonnum}}</div>
+    <div @click="add" class="box"></div>
+  </script>
+  <script>
+
+    let {createApp,ref} = Vue;
+    let son = {
+      props:["num",'func'],
+      template:"#sonhtml",
+      setup(props){
+        let sonnum = ref(props.num)
+        function add(){//用子組件的函式包裹
+            //並傳入變數
+          sonnum.value = props.func(sonnum.value)
+        }
+        
+        return{
+          add,sonnum
+        }
+      }
+    }
+
+    let app = createApp({
+      template:"#apphtml",
+      components:{
+        son:son
+      },
+      setup(){
+        let num1 = ref(2);
+        let num2 = ref(3);
+        function add(num){
+           return ++num
+        }
+        return{
+          num1,num2,add
+        }
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        transition: all 0.3s;
+        text-align: center;
+      }
+      .red{
+        color:red
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/x-template" id="apphtml">
+      <com1 :item='obj'></com1>
+      <com2></com2>
+    </script>
+    <script type="text/x-template" id="com1html">
+      <div class="red">
+        如果資料是ajax來的  
+        除了使用watch檢查props是否有更新外
+        但在最後渲染畫面時有可能發生
+        在watch時有資料  但是無法渲染在畫面上的情形
+        此時就必須先檢查上一層有沒有東西在進行渲染
+        = = 三小拉
+      </div>
+      <div>{{imm.name?.first}}</div>
+      <div v-if="imm.name">{{imm.name.first}}</div>
+      <!--這行就不行 <div>{{imm.name.first}}</div> -->
+      <hr>
+    </script>
+
+    <script type="text/x-template" id="com2html">
+      <div class="red">
+        這也一樣 只是要取得的資料在更多層裡面
+      </div>
+      <input type="checkbox" v-model='swtch'>
+      <div v-if='swtch'>
+        <img v-if='data.results' :src="data.results[0].picture.medium" alt="">
+      </div>
+
+    </script>
+    <script>
+      let { createApp, ref, reactive, computed, watch, onMounted } = Vue;
+      let app = createApp({
+        template: "#apphtml",
+        setup() {
+          let obj = ref({});
+          onMounted(async () => {
+            let temp = await fetch("https://randomuser.me/api/");
+            temp = await temp.json();
+            obj.value = temp.results[0];
+          });
+          return {
+            obj,
+          };
+        },
+      });
+      app.component("com1", {
+        template: "#com1html",
+        props: ["item"],
+        setup(props) {
+          let imm = ref(props.item);
+          watch(
+            () => props.item,
+            () => {
+              imm.value = props.item;
+              console.log(imm.value.name.first)//watch印得出來 畫面出不來靠杯         
+            }
+          );
+          return {
+            imm
+          };
+        },
+      });
+      app.component("com2",{
+        template:"#com2html",
+        setup(){
+          let data = ref([]);
+          let swtch = ref(true);
+
+          onMounted(async()=>{
+            //要記得好習慣 要先temp 在.value  要記得.value = =
+            let temp = await fetch("https://randomuser.me/api/");
+            data.value = await temp.json();
+            console.log(data.value.results[0].picture.medium)
+          })
+          return{
+            data,swtch
+          }
+        }
+      })
+      app.mount("#app");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="a"></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <!--
+    這節課教vue在編譯時，有無template的差別
+    子組件本身無template時，會接收父給子組件的內容，
+    但是當子元件有template時，會無視父組件傳給子組件的任何標籤內容
+    意思是這種<son>{{dadmsg}}</son>會無視
+    
+    但是如果子組件template內部加上slot標籤
+    就可以傳入資訊，通常用在不須加工的資訊上，因為只是要單純渲染在子組件上而已
+
+
+    意思是 
+    當子組件沒有設置template時，父組件在寫自身template時在子組件標籤用{{}}寫入資訊
+    該資訊會出現
+    如果子組件有設置template時，那麼父組件用{{}}傳入的資訊會消失
+
+    如果要設置template同時出現父組件傳入的{{}}
+    就在子組件的template加上<slot></slot>
+    就像洞一樣會引入父組件傳入的{{}}資訊
+  -->
+  <script type="text/x-template" id="apphtml">
+   
+    <hr>
+    <son1>no template ,{{text}}</son1>
+    <hr>
+    <son2>{{text}}</son2>
+    <hr>
+    <son3>{{text}}</son3>
+  </script>
+  <script>
+    let {createApp,ref} = Vue;
+    let app = createApp({
+      template:"#apphtml",
+      setup(){
+        let text = "this is from dad"
+        return{
+          text
+        }
+      }
+    });
+    app.component("son1")
+    app.component("son2",{
+      template:"<div>{{son2msg}}</div>",
+      setup(){
+        let son2msg = "with template, this is son2msg"
+        return{
+          son2msg
+        }
+      }
+    });
+    app.component("son3",{
+      template:"<div>{{son3msg}}</div><slot></slot>",
+      setup(){
+        let son3msg = "this is son3msg with template and slot tag"
+        return{
+          son3msg
+        }
+      }
+    })
+    app.mount("#a")
+  </script>
+</body>
+</html>

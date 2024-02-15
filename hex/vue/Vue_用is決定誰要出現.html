@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      padding:0;margin:0;
+      box-sizing: border-box;
+    }
+    ul{
+      position:fixed;
+      width:200px;
+      height:300px;
+      background-color: blue;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      justify-content: space-evenly;
+    }
+    .content{
+      width:calc(100vw - 200px);
+      height:300px;
+      background-color: rgb(255, 181, 181);
+      margin-left:200px;
+      border:10px solid black;
+      display: flex;
+      justify-content: center;
+      align-items:center
+      
+    }
+  </style>
+</head>
+<body>
+  <div id="a"></div>
+  <div ></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+  <!--
+    用 :is 更乾淨的決定誰要上場
+    跟v-if 和 v-show 差不多功能 ，
+    只是v-if 和 v-show直接寫完template，在if 和show後面傳入布林值決定是否要出現
+    也就是說 一開始載入時 if show 所有都會載入 會很慢
+    v-is是等到子組件被指定之後才會載入  不需要的就不載入
+
+    用假定子元件標籤
+    is一定要用<component>標籤
+    is一定要用<component>標籤
+        is一定要用<component>標籤
+    is一定要用<component>標籤
+        is一定要用<component>標籤
+    is一定要用<component>標籤
+        is一定要用<component>標籤
+    is一定要用<component>標籤
+        is一定要用<component>標籤
+    is一定要用<component>標籤
+        is一定要用<component>標籤
+    is一定要用<component>標籤
+        is一定要用<component>標籤
+    is一定要用<component>標籤
+    
+    <compoennt :is='變數名'></compoennt> 作為出現子元件的受肉
+    而v-is後面傳入變數，該變數是要出現的組件變數
+    這些變數必須是父元件的子元件
+    也就是說 如果變數名==子元件名
+    該子元件就會出現
+    用在routerView上的好東西
+  -->
+
+
+  <script type="text/x-template" id="navhtml">
+    <ul ><!--迭代lst 並把lst中的資料分給每次的迭代產生的寶貝-->
+      <li v-for='idx in lst'><button @click='cng(idx)'>我是{{idx}}</button></li>
+    </ul>
+    <!--一定要用:is 不能三小v-is-->
+    <component class='content' :is="currentView"></component>
+  </script>
+
+  <script>
+    let one = {  //子元件們
+      template:'<div>我是一號</div>'
+    };
+    let two={
+      template:'<div>我是二號</div>'
+    };
+    let three={
+      template:'<div>我是三號</div>'
+    }
+
+    let nav = Vue.createApp({
+      template:"#navhtml",
+    
+      setup(){
+        let  currentView=Vue.ref("one")//響應式的是currentView
+
+        let lst = ["one","two","three"] //這沒有響應式
+
+        function cng(idx){
+          currentView.value = idx  //.value上載currentView上
+       
+
+        }
+        return{
+          currentView,lst,cng,
+          
+        }
+      },
+      components:{
+        one:one,two:two,three:three
+      }
+    });
+    
+
+    nav.mount("#a")
+  </script>
+</body>
+</html>

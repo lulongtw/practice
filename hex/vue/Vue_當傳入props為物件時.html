@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .click{
+      display: inline-block;
+      margin:30px;
+      background-color: red;
+    }
+  </style>
+      <!--
+    這節課上到的是在引入props要注意的事情
+    第一
+    如何在setup(){}中使用props  
+    setup(props){}即可，然後在setup(){}裡面props.xxx引入該props
+    當然還是要在setup(){}外面  引入props屬性=>props:["xxx"]
+    第二
+    在引入props時，要注意  如果是引入number string boolean等單一資料的屬性  是沒什麼要調整的
+    但如果引入object array 
+    要把必須引入特定值，意思就是不能整個object直接引入
+    整個直接引入每個count都會連動，不會分開計算
+    這是因為Js在引入的時候，引入的事參考值，我也不知道那啥，反正在引入object list的情況下，
+    所以指向都會只回原本父元素的目標   也就無法分開計算
+
+    下面展示兩種方法
+    一種是在傳入父元素的template用bind傳入props時就重新指定
+    一種是在子元件setup內部指向特定的值
+    反正就是不能原原本本的整個obj拿來用就對了
+
+
+    下面
+    直接執行是第二種方法
+    註解起來的是第一種方法
+    -->
+
+
+</head>
+<body>
+  <div id="a"></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script type="text/x-template" id="sonhtml">
+    <!--
+       {{reactiveGift.count}}<div class='click' @click='add'>click</div>
+    -->
+    {{reactiveGift}}<div class='click' @click='add'>click</div>
+  </script>
+  <script type="text/x-template" id="apphtml">
+    <!--      在此處傳給子組件時重新建立一個物件
+      <son :gift='{count:obj.count}'></son><son :gift='{count:obj.count}'></son><son :gift='{count:obj.count}'></son>
+    -->
+    <son :gift='obj'></son><son :gift='obj'></son><son :gift='obj'></son>
+   
+  </script>
+  <script>
+    let son = {
+      template:"#sonhtml",
+      props:["gift"],
+      setup(props){
+        //let reactiveGift = Vue.reactive(props.gift)
+        let reactiveGift = Vue.ref(props.gift.count)
+        function add(gift){
+          //reactiveGift.count++
+          reactiveGift.value++
+        }
+        return {
+          add,
+          reactiveGift
+        }
+      }
+    }
+    let app = Vue.createApp({
+      setup(){
+        let obj = {
+          count:0
+        }
+        return{obj}
+      },
+      template:"#apphtml",
+      components:{son:son}
+    });
+    app.mount("#a")
+  </script>
+</body>
+</html> 
+
+
+
+<!--
+這樣就是整個拿來用  完全連動nono
+但要是建立一個新變數讓新職復職，然後{{}}裡面的是新變數的話，就可以了
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        background-color: red;
+        width: 50px;
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script type="text/x-template" id="sonTemp">
+      <div>{{n.count}}</div><div @click='add' class=box>click</div>
+    </script>
+    <script>
+      let { createApp, ref, reactive } = Vue;
+      let app = createApp({
+        template: "<son :gift='obj'></son><son :gift='obj'></son>",
+        setup() {
+          let obj = {
+            count: 0,
+          };
+          return {
+            obj,
+          };
+        },
+      });
+
+               
+ 
+            ans.value =  n.count++;
+      app.component("son", {
+        template: "#sonTemp",
+        props: ["gift"],
+        setup(props) {
+          let n = reactive(props.gift);
+           //但是如果建立一個新變數就可以獨立了  let ans = ref(0)
+          function add() {
+            n.count++;
+               //ans.value =  n.count++;
+          }
+          return {
+            n,
+            add,
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>
+
+
+-->

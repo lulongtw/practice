@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        transition: all 0.3s;
+        text-align: center;
+      }
+      .blue {
+        background-color: blue;
+      }
+      .red {
+        white-space: pre-wrap;
+        color: red;
+      }
+      .box1{
+        border: 1px solid black;
+        text-align: center;
+      }
+      .big{
+        width:100px;height:100px;
+        background-color: red;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .mid{
+        width:75px;height:75px;
+        background-color: rgb(0, 26, 255);
+        display:flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .small{
+        width:45px;height:45px;
+        background-color: rgb(0, 255, 42);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/x-template" id="apphtml">
+      <div class="red">
+        傳參數近函式  如果是針對函式本身來改動
+        <br>要傳的事整個物件 而不是只傳值<br>
+        像下面add(item) 不能add(item.cash) <br>
+        因為牽扯到 傳值 跟 傳參考  如果只傳值<br>
+        就只是改那個值  傳參考 才能達到改動物件本身的目的<br>
+      </div>
+      <div v-for='item in obj' :key='item.cash'>
+        {{item.name}}有{{item.cash}}
+        <div class='box' @click='add(item)'>add</div>
+      </div>
+      <hr>
+
+
+      <div class="red">
+        這邊上事件監聽修飾符<br>
+        .stop .prevent .capture .self .once <br>
+        .stop 意思就是.stopPropagation 停止事件傳播<br>
+        .capture 與預設相反的又外而內傳播方向 <br>
+        .self 只有事件發生在自己身上才會觸發
+        .once 事件只觸發一次
+      </div>
+      展示.stop  停止事件傳播<br>
+      <div class="big box1" @click.stop='call($event)'>大
+        <div class="mid box1" @click.stop='call($event)'>中
+          <div class="small box1" @click.stop='call($event)'>小</div>
+        </div>
+      </div>
+        展示.capture 由外而內<br>
+        <div class="big box1" @click.capture='call($event)'>大
+          <div class="mid box1" @click.capture='call($event)'>中
+            <div class="small box1" @click.capture='call($event)'>小</div>
+          </div>
+      </div>
+      展示.self 只會觸發自己<br>
+        <div class="big box1" @click.self='call($event)'>大
+          <div class="mid box1" @click.self='call($event)'>中
+            <div class="small box1" @click.self='call($event)'>小</div>
+          </div>
+      </div>
+
+      展示.once 只會觸發一次<br>
+        <div class="big box1" @click.once='call($event)'>大
+          <div class="mid box1" @click.once='call($event)'>中
+            <div class="small box1" @click.once='call($event)'>小</div>
+          </div>
+      </div>
+      <hr>
+
+      <div class="red">
+        你以為.keyup後面只能加.enter??<br>
+        媽的還可以加一大堆<br>
+        下面要shift和enter和shift一起按才會出現
+      </div>
+      <input type="text" v-model='prefix' @keyup.enter.shift.up='send'>
+      {{text}}  
+      <hr>
+
+      <div class="red">
+        滑鼠修飾符
+        在.click後面加上.right
+      </div>
+      <div @click.right='shout'>拿滑鼠右鍵按我</div>
+    </script>
+    <script>
+      let { createApp, ref, reactive, computed, watch } = Vue;
+      let app = createApp({
+        template: "#apphtml",
+        setup() {
+          let obj = ref([
+            {name:"min",cash:100},
+            {name:"pqo",cash:72},
+            {name:"klp",cash:692}
+          ])
+          function add(item){
+            item.cash+=100
+          }
+          function call(e){
+        
+            console.log(e.currentTarget.className,"不要碰我")
+          }
+          let text = ref("");
+          let prefix = ref("")
+          function send(){
+            text.value = prefix.value
+          }
+          function shout(){
+            console.log("這是我跟美國之間的事")
+          }
+          return {
+            obj,add,call,send,text,prefix,shout
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        transition: all 0.3s;
+        text-align: center;
+      }
+      table{
+        border-collapse: collapse;
+        border:1px solid black;
+        padding:20px;
+        width:500px;
+        text-align: center;
+      }
+      thead{
+        border:1px solid black;
+      }
+      tr{
+        border-bottom: 1px solid black;
+      }
+      th,td{
+        width:30%;
+        padding:10px 30px;
+      }
+      th:first-of-type,td:first-of-type{
+        width:40%;
+        text-align: left;
+      }
+
+
+
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/x-template" id="apphtml">
+      <table>
+        <thead>
+          <tr>
+            <th>name</th>
+            <th @click='priceAscendant = !priceAscendant'>price
+              <span v-if='priceAscendant'>便宜到貴</span>
+              <span v-else='!priceAscendant'>貴到便宜</span>
+            </th>
+            <th @click='dueAscendant = !dueAscendant'>due
+              <span v-if='dueAscendant'>便宜到貴</span>
+              <span v-else='dueAscendant'>貴到便宜</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- template以及template的子標籤是看不到的
+          如果v-for放在tr就全部都沒有
+          所以必須讓tempalte有事做 把v-for放那邊 -->
+          <template v-for='item in lst'>
+            <tr>
+              <td>{{item.name}}</td>
+              <td>{{item.price}}</td>
+              <td>{{item.due}}</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </script>
+    <script>
+      let { createApp, ref, reactive, computed, watch } = Vue;
+      let app = createApp({
+        template: "#apphtml",
+        setup() {
+          let lst = ref([
+            {name: "我愛一條柴",
+             price: 30,
+             due:72
+            },
+            {name: "神猴偷仙桃",
+             price: 82,
+             due:13
+            },
+            {name: "奇淫合歡散",
+             price: 94,
+             due:57
+            },
+            {name: "殺人不眨眼",
+             price: 8,
+             due:9
+            },
+            {name: "周餅倫",
+             price: 56,
+             due:23
+            }
+          ]);
+          let priceAscendant = ref(false);
+          let dueAscendant = ref(false);
+          //本來想用下方註解起來的computed一次解決
+          //但是裡面的操作條件並不是互斥的
+          //所以變成一次sort兩種條件  會卡關
+          //他不是一次sort完再下一次sort
+
+          //要用watch  用computed無法一次處理兩組行為
+          //用watch一次監控一組比較合邏輯
+          watch(()=>priceAscendant.value,
+                ()=>{
+                  lst.value.sort((a,b)=>
+                    priceAscendant.value?a.price-b.price:
+                    b.price-a.price
+                  )
+                }
+          )
+          watch(()=>dueAscendant.value,
+                ()=>{
+                  lst.value.sort((a,b)=>
+                    dueAscendant.value?a.due-b.due:
+                    b.due-a.due
+                  )
+                }
+          )
+          
+          // let computedLst = computed(()=>{
+          //   if (priceAscendant.value){
+          //     lst.value.sort((a,b)=>a.price-b.price)
+          //   }else{
+          //     lst.value.sort((a,b)=>b.price-a.price)
+          //   }
+          //   // console.log(priceAscendant.value)
+          //   if (dueAscendant.value){
+          //     lst.value.sort((a,b)=>a.due-b.due)
+          //   }
+          //   return lst.value
+          // })
+          return {
+            lst,priceAscendant,dueAscendant
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

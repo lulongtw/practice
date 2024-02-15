@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="a"></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script type="text/x-template" id="apphtml">
+    <div>這行是父元素裡面自己的msg ={{msg}}=</div>
+    <div>這行是子組件傳給父組件的內容 ={{fromSon}}=</div>
+    <hr>
+    下面是子組件
+    <son :dadmsg=msg @toDad='reNew'></son>
+  </script>
+  <script type="text/x-template" id="sonhtml">
+    <div>這行是用props取得的來自父組件的msg": ={{msgFromDad}}</div>
+    <div>這行直接用雙括號取得props裡的鬼東西: ={{dadmsg}}</div>
+  </script>
+  <script>
+    let {createApp,ref} = Vue;
+    let app = createApp({
+      template:'#apphtml',
+      setup(){
+        let msg = "this is dadmsg";
+        let fromSon = ref("")
+        function reNew(newMsg){
+          fromSon.value = newMsg
+        }
+        return{
+          msg,fromSon,reNew
+        }
+      }
+    });
+    app.component("son",{
+      template:"#sonhtml",
+      props:["dadmsg"],
+      emits:["toDad"],
+      setup(props,{emit}){//不管有沒有props 要emit一定要引入props  這是順序跟規矩問題
+        let msgFromDad = props.dadmsg
+        window.onload = ()=>{
+          let toDad = "to dads words"
+          emit("toDad",toDad)
+        }
+        return{
+          msgFromDad
+        }
+      }
+    })
+    app.mount("#a")
+  </script>
+</body>
+</html>

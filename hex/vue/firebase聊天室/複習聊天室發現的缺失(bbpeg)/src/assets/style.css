@@ -1,0 +1,14 @@
+.room{
+  padding:10px;
+  border:1px solid black;
+}
+.chat{
+  padding:10px 20px;
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom:1px solid black;
+}
+.other{
+  flex-direction:row-reverse;
+}

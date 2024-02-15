@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+    <div @click='()=>{say(),speak(),add()}'>按我</div>
+    {{c}}
+  </script>
+  <script type="text/x-template" id="com1html">
+      com1
+  </script>
+  <script>
+    /*
+    尻北這節課上extend  和mixin
+    兩個是差不多一樣的東西  都是將程式內容 整個搬進去需要的組件裡面
+    意思是可以減少重複的程式碼  但在意義上extend關注繼承關係 mixin專注組合功能??
+    但是extend不適合用在composition API 而mixin已經不推薦使用了 = = 靠杯
+    蛋extend還是可以用在composition api上
+    感覺像把整個setup()全部繼承過去
+    使用方法是
+
+    全部繼承：
+    父組件什麼都不用幹
+    在要繼承的子組件內使用 
+    extends:父組件,
+    並且return中 {...父組件.setup()}
+    子組件就把父組件中setup所有東西繼承過去
+
+    部分繼承
+    子組件一樣要
+    extends:父組件,
+    然後在setup裡面
+    let {要繼承的變數或函式} =父組件.setup()
+    
+
+
+
+    */
+   let {createApp,ref,onMounted} = Vue;
+   let com1 = {
+    template:"#com1html",
+    setup(){
+      function speak(){
+        console.log("fromCom1")
+      }
+      let c = ref(0)
+      function add(){
+        c.value++
+        console.log(c)
+      }
+      onMounted(()=>{
+        console.log("com1被使用extend")
+      })
+      return{
+        speak,add,c
+      }
+    }
+   }
+
+   let app = createApp({
+    template:"#apphtml",
+    //重點是要extends 才可以繼承  但是只能繼承1個
+    extends:com1,
+    setup(){
+      //可以選部分繼承com1 setup()中的部分東西
+      let {speak,add,c} = com1.setup()
+      function say(){
+        console.log("fromApp")
+      }
+
+      onMounted(()=>{
+        console.log("app使用extends:com1,然後return{...com1.setup()}")
+      })
+      return{
+        say,//也可以選擇全部繼承com1的setup ...com1.setup()
+      }
+    }
+   });
+   app.mount("#app")
+  </script>
+</body>
+</html>

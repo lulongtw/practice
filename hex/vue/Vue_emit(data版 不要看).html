@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.css">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+  <title>update-from-events</title>
+  <style>
+    #app {
+      margin: 1em;
+      font-size: 1.5em;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    <p>
+      Parent: {{ message }} <input v-model="message">
+    </p>
+
+    <hr>
+
+    <p>
+      Child:
+      <my-component :parent-message="message" @update="selfUpdate"></my-component>
+    </p>
+  </div>
+
+  <script>
+    const MyComponent = {
+      template: `
+        <span>
+          {{ parentMessage }}
+          <input v-model="message">
+          <button @click="updateText">Update</button>
+        </span>
+      `,
+      props: {
+        parentMessage: String
+      },
+      data() {
+        return {
+          message: this.parentMessage
+        };
+      },
+      methods: {
+        updateText() {
+          this.$emit('update', this.message);
+        }
+      },
+      emits: ['update'] // Declare the 'update' event
+    };
+
+    Vue.createApp({
+      data() {
+        return {
+          message: 'hello'
+        };
+      },
+      methods: {
+        selfUpdate(val) {
+          this.message = val;
+        }
+      }
+    }).component('my-component', MyComponent).mount('#app');
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+.btn{
+  width: 30px;
+  height:30px;
+  border:1px solid black;
+  background-color: gray;
+  font-size:15px;
+  line-height: 30px;
+  margin:0 auto;
+}
+table{
+  border-collapse: collapse;
+  width:600px;
+  margin:50px;
+  text-align:center;
+}
+tr{
+  border:1px solid black;
+}
+td{
+  width:25%;
+  border:1px solid black;
+}
+td:first-of-type{
+  width:8%
+}
+
+img{
+  vertical-align: middle;
+}
+.bck{
+  background-color: red;
+}
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://unpkg.com/vue@3"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        transition: all 0.3s;
+        text-align: center;
+      }
+      .red{
+        color:red
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div> 
+    <script type="text/x-template" id="apphtml">
+      <com1>      
+        <div class="red">
+          不具名標籤情況<br>
+          子組件只有一個不具名slot標籤 <br>
+          父組件可以使用既有html標籤傳入<br>
+        </div>
+      </com1>
+      <hr>
+      <com1>
+      </com1>
+        <hr>
+      <com2>
+        <template #b>
+          <div style='color:green'>
+            具名標籤清況<br>
+            子組件使用slot標籤<br>
+            加上 name='變數' <br>
+            <br>
+            父組件 只能 使用template標籤 <br>
+            加上 v-slot:變數 <br>
+            或者#變數 <br>
+          </div>
+        </template>
+        <template v-slot:a>
+          <div style='color:blue'>
+            template 搭配<br>
+             v-slot:變數 <br>
+            傳入變數
+          </div>
+        </template>
+      </com2>
+      <hr>
+      <div class="red">
+        template標籤裡面就可以使用既有的html標籤了<br>
+        也可以上class <br>
+        &lt;template #x&gt;    or <br>
+        &lt;template v-slot:x &gt;<br>
+        只是負責將內部資訊傳進對應的 <br>
+        &lt;slot name=x&gt;
+      </div>
+      <hr>
+      <div style='color:blue'>
+        !!!!!!!!!!!注意!!!!!!!!!!! <br>
+        slot 不能上class 每個slot都應該有被指定與指定的目標  不能亂掉<br>
+        會爆炸 子組件內部的slot就乖乖的引入name='名稱A' 就好  也不要寫標籤內文  會爆炸<br>
+        &lt;slot name=x&gt;這樣就好<br>
+    
+        哪個slot='名稱A'對應哪個slot name='名稱A'  標籤對應要寫好 一個對一個 位置也要對好</div>
+    </script>
+
+    <script type="text/x-template" id="com1html">
+      <slot>當父組件沒有對不具名slot傳資訊<br>
+        不具名slot可提供預設內容</slot>
+    </script>
+
+    <script type="text/x-template" id="com2html">
+        <slot name='b'></slot>
+        <slot name='a'></slot>
+      
+    </script>
+
+    <script type="text/x-template" id="com3html">
+      <slot></slot>
+    </script>
+
+   
+    <script>
+      let { createApp, ref, reactive, computed, watch, onMounted } = Vue;
+      let com1 = {
+        template:"#com1html"
+      }
+      let com2 = {
+        template:"#com2html"
+      }
+      let com3 = {
+        template:"#com3html"
+      }
+      let app = createApp({
+        template: "#apphtml",
+        components:{
+          com1:com1,
+          com2:com2,
+          com3:com3
+        }
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

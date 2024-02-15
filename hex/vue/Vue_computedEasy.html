@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>Document</title>
+  <style>
+
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+    <input type="text" v-model='text'>
+    {{revtext}}
+  </script>
+  <script>
+    /*
+    computed不會更動原有資料
+    只回回傳用於呈現畫面的資料
+    是監視原有資料 在每次變動時跟著變動
+    適合小資料使用
+    如果大量資料就很好記憶體
+    大資料還是要用函式處理
+    */
+    let { createApp,ref,computed} = Vue;
+    let app = createApp({
+      template:"#apphtml",
+      setup(){
+        let text = ref("");
+        //computed必須使用ref或reactive元素
+        let revtext = computed(()=>{
+          return text.value.split("").reverse().join("")
+        })
+        return{
+          text,revtext
+        }
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html>

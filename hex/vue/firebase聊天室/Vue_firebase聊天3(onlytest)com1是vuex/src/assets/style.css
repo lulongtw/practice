@@ -1,0 +1,21 @@
+.wrap{
+  width:min(100%,500px);
+}
+.cntnwrap{
+  border:1px solid gray;
+  border-radius:10px;
+  padding:0px 30px;
+  
+}
+.text{
+  margin:20px 0px;
+  padding:10px 0;
+  border-bottom:1px solid gray;
+  display:flex;
+  align-items: center;
+  gap:10px;
+}
+.me{
+  flex-direction:row-reverse;
+
+}

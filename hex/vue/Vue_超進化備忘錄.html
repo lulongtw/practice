@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .done{
+      color:green
+    }
+    .undone{
+      color:red
+    }
+    .box{
+      width:30px;height:30px;
+      border: 1px solid black;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .box.done{
+      border-color: green;
+    }
+    .box.undone{
+      border-color: red
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <input type="text" @keyup.enter="addToUndone" placeholder="輸入">
+   <div> {{currentList}}</div>
+   <!--媽的真的天才  為什麼可以想到把v-for放在div 來包裹ul li
+    之後做的因為把v-for放在li
+    但是這樣就v-if檢查也是放在li
+    造成即使是false 蛋畫面會空一格  就是看不到li 但是那行是空的
+    ul
+      li v-if=xxx v-for='xxx' li
+    ul
+    像這樣  
+  -->
+    <div class="wrap" v-for="(thing,index) in lst">
+      <!-- 一開始卡在想要設dataset-idx .box按下後status要怎麼更改狀態  一定是靠index  卡在不知道怎麼傳index進去 = =
+      但是vue直接在click時，超越時空接收到index，真滴猛
+      -->
+      <ul>
+        <li  v-if="show(currentList,index)" :class="checkClass(index)"><div :class="['box',checkClass(index)]" @click="switchStatus(index)"></div>{{thing}}</li>
+      </ul>
+    </div>
+    <hr>
+    <div class="btn" @click="cngLst('all')">all</div>
+    <div class="btn" @click="cngLst('undone')">undone</div>
+    <div class="btn" @click="cngLst('done')">done</div>
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    let {createApp,ref} = Vue;
+    let app = createApp({
+      setup(){
+        let lst = ref([]);
+        let status = ref([]);
+        let currentList = ref("all");
+
+        function addToUndone(e){
+          let newThing = e.target.value;
+          if (e.target.value){
+            status.value.push(false);
+            lst.value.push(newThing);
+          }
+
+        }
+        function checkClass(idx){
+          return status.value[idx]?"done":"undone"
+        }
+        function switchStatus(idx){
+          status.value[idx] = !status.value[idx]
+        }
+        function cngLst(which){
+          currentList.value = which;
+        }
+        function show(current,idx){
+          //從變數傳進來就不用current.vlaue
+          if (current=="done"){
+            return status.value[idx]
+          }else if(current=="undone"){
+            return !status.value[idx]
+          }else {
+            return true
+          }
+        }
+
+        return{
+          lst,status,currentList,addToUndone,checkClass,switchStatus,cngLst,show
+        }
+      }
+    });
+    app.mount("#app")
+  </script>
+</body>
+</html>

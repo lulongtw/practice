@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .ok,.notok{
+      display:none;
+    }
+    .ok *{
+      color:green;
+      text-decoration: line-through;
+    }
+    .notok *{
+      color:red;
+    }
+    .done{
+      color:green;
+      text-decoration: line-through;
+    }
+    .notdone{
+      color:red;
+    }
+  </style>
+</head>
+<body>
+  <!--
+    整個都要瘋了
+    一開始想把資料全部做盡每個li元素裡面 但卡在這是vue 想用vue的方法做
+    最後用lst追蹤狀態 true是完成 false是未完成  一開始狀態都是false
+    其實分了3個ul作  因為同一個ul我無法去對不同類別li渲染不同的function 比方說在done的li和undone的的function要不同
+    然後針對不同的ul 下不同的function  但都是用同一筆資料
+    ok 和not ok 的css相較簡單  用css就可以搞定
+    只要增減內部元素，還有toggle lst 的狀態
+
+  
+    但all 會牽扯到狀態以及css 
+    每個li都要透過v-bind功能和js綁再一起
+    這樣lst的狀態改變  all的li的css也會改變
+
+    也就是說 重點是要設lst處理狀態
+
+  -->
+  <div id="a">
+    <input type="text" @keyup.enter="add" v-model="newtext">
+    <div class="all">
+      <ul><li v-for="(item,idx) in all" v-bind:data-idx="idx" :class="check(idx)" @click="delinall">{{item}}</li></ul>
+    </div>
+    <div class="ok">
+      <ul><li v-for="(item,idx) in ok" v-bind:data-idx="idx" @click="delinok">{{item}}</li></ul>
+    </div>
+    <div class="notok">
+      <ul><li v-for="(item,idx) in notok" v-bind:data-idx="idx" @click="delinnotok">{{item}}</li></ul>
+    </div>
+    
+    <div @click="showall">showall</div>
+    <div @click="showok">showok</div>
+    <div @click="shownotok">shownotok</div>
+    <pre>all{{all}}</pre>
+    <pre>ok{{ok}}</pre>
+    <pre>notok{{notok}}</pre>
+
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    let app = Vue.createApp({
+      data(){
+        return{
+          newtext:"",
+          all:[  "吃飯",
+  "睡覺",
+  "打東東"],
+          ok:[],
+          notok:[  "吃飯",
+  "睡覺",
+  "打東東"],
+          lst:[false,false,false],
+        }
+      },
+      methods:{
+        check(idx){//bind 檢查 一但lst狀態改變 呼叫check改變狀態
+          //但我看不吃來他怎麼呼叫，只能當作是城市偵測到bind再一起的變數發生改變，就會衝新渲染
+            if(this.lst[idx]){
+              return "done"
+            }else{
+              return "notdone"
+            }
+          },
+        
+        add(){  
+          this.all.push(this.newtext);
+          this.notok.push(this.newtext)
+          this.lst.push(false);//重要  建立狀態
+          this.newtext = "";
+        
+        },
+        delinall(e){
+          //我不知道到底是要用idx還是用textContent抓  let idx = JSON.parse(e.target.dataset.idx) 
+          let idx = this.all.indexOf(e.target.textContent);
+          //在all裡按下li 先改動狀態 按一下 true done 再按一下 false undone
+          let status = this.lst[idx];
+          status = !status
+          this.lst[idx] = status
+
+          if (status){//if true done
+            this.ok.push(this.all[idx]);//把事情放入做完清單
+            let notokIdx = this.notok.indexOf(this.all[idx]);//獲取該事情在沒做完的清單的idx
+            this.notok.splice(notokIdx,1);//在未完成移除該事情
+           
+          }else{ //if false notdone
+            this.notok.push(this.all[idx]);//把事情放入沒做完清單
+            let okIdx = this.ok.indexOf(this.all[idx]);//獲取該事情在做完的清單的idx
+            this.ok.splice(okIdx,1)//在完成移除該事情
+          
+          }
+
+
+        
+        },
+        delinok(e){
+         // let idx = JSON.parse(e.target.dataset.idx)
+           let idx = this.ok.indexOf(e.target.textContent);//獲取點選目標的idx
+          let targetidx = this.all.indexOf(this.ok[idx]);//獲取點選目標在all的idx
+          this.lst[targetidx] = !(this.lst[targetidx])//改動點選目標在lst的狀態
+
+          this.notok.push(this.ok[idx]);//把點選目標放入未完成
+          this.ok.splice(idx,1);//在已完成清單移除點選目標
+          //這邊順序要注意  移除要最後移除  否則會找不到
+          
+
+        },
+        delinnotok(e){
+         // let idx = JSON.parse(e.target.dataset.idx)
+          let idx = this.notok.indexOf(e.target.textContent);//獲取選取事件在notok的idx
+          let targetidx = this.all.indexOf(this.notok[idx]);//獲取選取事件在all的idx
+          this.lst[targetidx] = !(this.lst[targetidx])//改動選取木標的撞態
+
+          this.ok.push(this.notok[idx]);//把選取目標放入已完成
+          this.notok.splice(idx,1)//移除選取目標
+        },
+        showall(){
+          let all = document.querySelector(".all");
+          let ok = document.querySelector(".ok");
+          let notok = document.querySelector(".notok");
+          all.style.display = "block";
+          ok.style.display = "none";
+          notok.style.display = "none";
+          console.log(this.lst)
+        },
+        showok(){
+          let all = document.querySelector(".all");
+          let ok = document.querySelector(".ok");
+          let notok = document.querySelector(".notok");
+          all.style.display = "none";
+          ok.style.display = "block";
+          notok.style.display = "none";
+        },
+        shownotok(){
+          let all = document.querySelector(".all");
+          let ok = document.querySelector(".ok");
+          let notok = document.querySelector(".notok");
+          all.style.display = "none";
+          ok.style.display = "none";
+          notok.style.display = "block";
+        }
+      }
+    });
+    app.mount("#a")
+  </script>
+</body>
+</html>

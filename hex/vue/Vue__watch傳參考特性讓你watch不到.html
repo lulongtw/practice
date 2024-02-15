@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/template" id="apphtml">
+      <div @click='count++' style='fontSize:300px'>{{count}}</div>
+      {{num}}
+      <hr>
+      <input type="text" v-model='text' @input='send()'>{{text}}
+      <br>
+      這是lst{{lst}}
+      <br>
+      這是lst2
+      {{lst2}}
+    </script>
+    <script>
+      /*
+      watch會受到傳值與傳參考的影響
+      例如第一個數字 num使用watch可以直接觀察到count.vlaue的變化
+      但是第二個例子 input 輸入v-model透過監聽事件傳值給lst push
+      lst變化了 但是lst2卻監聽不到  
+      因為lst2監聽的對象是序列，他的參考沒有變過
+      除非
+      1.使用{deep:true}如下所示
+      或是
+      2.在宣告lst2時 直接將lst賦值給lst2   如註解起來的方法
+      */
+      let { createApp, ref, watch ,reactive} = Vue;
+      let app = createApp({
+        template: "#apphtml",
+        setup() {
+          let count = ref(0);
+          let num = ref(0);
+          let text = ref("");
+          let lst = ref([])
+          let lst2 = ref([]);
+         // let lst2 = ref(lst)
+    
+          function send() {
+            lst.value.push(text.value);
+          }
+          // watch(
+          //   () => lst.value,
+          //   () => {
+          //     lst2.value=lst.valie
+          //   }
+          // );
+
+          watch(
+            ()=>lst,
+            () => {
+              lst2.value = lst.value;
+            },
+            { deep: true }
+          );
+
+
+          watch(
+            () => count.value,
+            () => {
+              num.value = count.value;
+            }
+          );
+          return {
+            count,
+            num,
+            send,
+            lst,
+            text,
+            lst2,
+          };
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="a">
+    <div @click="refgood">{{ withref }}</div>
+    <div @click="norefsucks">{{noref}}</div>
+  </div>
+  <!-- 要import東西 像是ref方法，就要用下面這個連接才能import
+  此連接也可實現模板化開發，連帶下方createApp內部寫法也不一樣
+
+
+  編按:
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  然後 let {createApp,ref} = Vue 就好了
+  不用type=module 也不用 import
+  -->
+  <script type="module">
+  
+    import { createApp, ref } from 'https://cdn.jsdelivr.net/npm/vue@3/dist/vue.esm-browser.js';
+      //這邊跟蓬蓬的script setup意思一樣
+      //變數和函式都寫一起，只是多了要return 所有建立的變數
+    const app = createApp({
+      setup() {
+        let withref = ref("點我更動資料可即時渲染");
+        let noref = "我沒有ref無法渲染";
+
+        let refgood = () => {
+          withref.value = "渲染拉";
+          console.log(withref)
+        };
+        let norefsucks = ()=>{
+          noref = "just cant"
+          console.log(noref)
+        }
+
+        return {
+          withref,
+          noref,
+          refgood,
+          norefsucks,
+        };
+      },
+    });
+
+    app.mount("#a"); // 将应用程序挂载到 id 为 "a" 的元素上
+  </script>
+</body>
+</html>

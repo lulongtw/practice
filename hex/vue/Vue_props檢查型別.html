@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="a"></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/vue@3"></script>
+  <!--
+    這節課是上導入props的檢查
+    vue2會檢查
+    vue3在生產環境已經不檢查了，
+    
+    所以必須使用開發者環境 script src="https://unpkg.com/vue@3"></script
+    而且也不會報錯 只要出現提示
+    
+    一般導入props是直接props:["屬性1","屬性2"....]
+    而Vue也提供檢查屬性是不是某項型別這項功能 
+    就是props:{
+      屬性:型別  (此時屬性變成鍵，不需"屬性")
+    }
+    用來表示物件表示，被檢查的屬性是鍵，理想的型別是值
+    還可以有其他檢查方式
+    看下面
+
+  -->
+  <script type="text/x-template" id="apphtml">
+    <son
+      v-bind:p1='propsA'
+      :p2='propsB'
+      :p4='propsD'
+      :p5='propsE'
+      :p6='propsF'
+    ></son>
+  </script>
+  <script type="text/x-template" id="sonhtml">
+    <div>{{p1}}</div><div>{{p2}}</div><div>{{p4}}</div><div>{{p5.info}}</div><div>{{p6}}</div>
+  </script>
+  <script>
+
+let son = {
+  template: "#sonhtml",
+  props: {
+    p1: Number, //檢查p1是否是數字  有報錯
+    p2: [Number, String],  //這樣以序列表示代表兩者皆可
+    p3: {         
+      type: String,   //必須傳入此props 且型別為字串
+      required: true
+    },
+    p4: {
+      type: Number, //型別為數字  default代表  如果沒有傳入  傳出100
+      default: 100
+      
+    },
+    p5: {
+      type: Object,
+      default: function(){ return {info:"asfsaf"} } //default也可以是函式
+      //注意
+      //default會執行的時候  只有是傳入undefined的時候 才會執行default
+      //如果傳入其他有定義的值  會印出其他有定義的值  只是會報錯
+      //比方說這個  p5傳入3的話  是一個數字不是物件  仍然會以3執行  只是會報錯
+      //除非傳入的事undefind  或是根本沒有傳入 才會執行default
+    },
+    p6: {
+      type: [Number],  
+      validator: function (value) {  //高級檢查
+        return value > 10; //如果輸入的props沒有>10會報錯
+      }
+    }
+  }
+};
+
+    let app = Vue.createApp({
+      setup(){
+        let propsA = "fefs"
+        let propsB = "123"
+        //let propsC = 沒有我
+        let propsD 
+        //let propsE = undefined
+        let propsE
+        let propsF = 1
+        return{
+          propsA,propsB,propsD,propsE,propsF
+        }
+      },
+      template:"#apphtml",
+      components:{son:son}
+    });
+    app.mount("#a")
+  </script>
+</body>
+</html>

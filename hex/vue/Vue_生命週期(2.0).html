@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js"></script>
+  <style>
+    body {
+      font-size: 1.5em;
+    }
+
+    #app {
+      margin-bottom: 1em;
+    }
+  </style>
+</head>
+
+<div id="app">
+  <h1>{{ count }}</h1>
+  <button @click="updateEvent">Update</button>
+</div>
+
+<button id="del">Del</button>
+<!--
+這個無法正常運行  因為$el的關係  這是vue2的  但我找不到比這更好的版本@@
+組件的生命週期有好幾個，而下面出現的稱作Hook
+意思是我們可以在那些hook代表的時間點進入做事情
+
+
+beforeCreate  蛇麼屁都抓步到
+created    可以抓到資料 但抓不到受肉
+
+beforeMount  組件們還是vue型態
+mounted     組件們變成html型態
+
+beforeUpdate  資料已更新 但是html相對的資料還沒更新
+updated   html相對的資料已更新
+
+
+
+-->
+
+<script>
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      count: 0
+    },
+    methods: {
+      updateEvent: function() {
+        this.count += 1;
+      }
+    },
+
+    //before什麼事都還沒做  只有建立元件實體 createApp做
+    beforeCreate: function() {
+      // 元件實體剛被建立，屬性計算之前。
+      console.log('beforeCreate - this.count: ', this.count);
+      console.log('beforeCreate - this.$el: ', this.$el);
+    },
+
+    //created已經取得vue實體內部資料
+    created: function() {
+      // 元件實體已建立，屬性已綁定，但 DOM 還沒生成。
+      console.log('created - this.count: ', this.count);
+      console.log('created - this.$el: ', this.$el);
+    },
+
+    //bewforeMount和mount差在 
+    //beforeMount還是Ｖue內容 ex:@click,{{}}....
+    //mounted內容會被編譯為html內容 onclick=....
+    beforeMount: function() {
+      // 模板 (template) 編譯或掛載至 HTML 之前
+      console.log('beforeMount - this.$el: ', this.$el);
+    },
+    mounted: function() {
+      // 模板 (template) 編譯或掛載至 HTML 之後
+      console.log('mounted - this.$el: ', this.$el);
+    },
+    
+    //元件更新前後差一點在兩者的資料都已經更新完成  只是bewfore是還沒渲染到畫面上
+    beforeUpdate: function() {
+      // 元件被更新之前
+      console.log('beforeUpdate: ',
+        this.$el.querySelector('h1').innerText,
+        this.count);
+    },
+    updated: function() {
+      // 元件被更新之後
+      console.log('updated: ',
+        this.$el.querySelector('h1').innerText,
+        this.count);
+    },
+
+    //移除vue實體  意思是Vue實體和渲染到網頁上的東西脫鉤
+    beforeDestroy: function() {
+      // 移除 vue instance 之前
+      console.log('beforeDestroy');
+    },
+    destroyed: function() {
+      // 移除 vue instance 之後
+      console.log('destroyed');
+    }
+  });
+  //原本是destory() 是讓DOM和Vue實體脫鉤  也就是畫面一樣，但是什麼都動不了
+  //換成unmount之後  是直接把ＤＯＭ元素拿掉  通通都沒有拉
+  document.getElementById('del').addEventListener('click', function() {
+    vm.unmount()
+  });
+</script>
+
+
+</html>

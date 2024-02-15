@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="a"></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<!--
+好了  真的頭暈腦脹  分手 換工作  搬家  買房 對像  年紀到了  四面八方都在找你要東西
+什麼也掏不出來也不敢講  真的是唉呀呀
+
+
+這節課重點是從子組件傳東西進父組件
+我們都知道父傳子 是透過在父組件寫template時，將props以bind方式傳入子組件，子組件以props:['..']接收props
+但是要怎麼從子組件傳東西進父組件雷  就要用emit
+
+第一 在子組件裡面
+跟props一樣，在子組件建立emits:["xxx"]  xxx是一個自訂的事件變數名稱  相當於redux的行動物件(其實根本不是物件??)
+然後建立  一個可以觸發該emit的函式  函式裡面需要 emit("xxx",參數)  
+意思是啟動vue的emit函式，參數分別是  行動物件 以及 需要給父組件的參數
+
+第二，在父組件描述子組件的架構裡，也就是父給子寫props的地方   寫入@行動物件='父的函式'
+
+第三，在父組件裡面寫入父的函式的內容
+注意 如有需要記得傳入參數
+
+也就是說 父組件在寫template寫到子組件時，會傳入props 
+同時也是子組件emit的位置
+
+觸發emit後要幹嘛的函式寫在父組件裡面
+
+如何觸發emit ， 以及宣告emmit的行動物件  和  要傳什麼值  是在子組件裡面
+
+-->
+
+
+  <script type="text/x-template" id="apphtml">
+    <!--父組件的template-->
+    <div>parent: {{msg}}</div><input type="text" v-model='msg'>
+    <hr>
+    <!--這便傳入props 也接收子組件來的emit-->
+    <span style="color:red"> 記得此處emit事件updtDad觸發的函式updtSelf後面不能加()</span>
+
+    <son :dadmsg='msg' @updtDad='updtSelf'></son><!--記得是@行動物件-->
+  </script>
+
+
+  <script type="text/x-template" id="sonhtml">
+    <!--此處決定之後傳進父組件的參數  也就是sonmsg-->
+    <div>Chiiiiiild: {{dadmsg}}<!--這個直接用dadmsg 也就是props接收到的東西直接變
+    如果不要連動的話就在son的setup裡面立一個新的ref變數被props.dadmsg賦值
+    但這樣只有一開始會變動而已
+    如果要像目前這樣直接連動
+    需要watch(
+      ()=>props.dadmsg,
+      ()=>新ref變數.value = props.dadmsg
+    )
+    -->
+
+    </div><input type="text" v-model='sonmsg' @keyup.enter=refresh >
+    //@keyup.enter監聽只能加在表單輸入元件
+    <!--此處觸發emit-->
+    <button @click=refresh>刷新</button>
+  </script>
+  <script>
+
+
+    let app = Vue.createApp({
+      template:"#apphtml",
+      setup(){
+        let msg = Vue.ref("hello")//響應事資料
+        function updtSelf(text){//這個是父組件接收到emit後 要幹嘛的函式
+          msg.value = text //把msg變成接收到的參數
+        }
+        return{
+          updtSelf,msg
+        }
+      }
+    });
+
+    app.component("son",{//描述app的子組件
+      template:"#sonhtml",
+      props:["dadmsg"],
+      emits:["updtDad"],//和props一樣  記得是複數s
+      setup(props,{emit}){//  注意  即使 沒有使用props 一樣要照這樣順序宣告
+        //這邊式emit沒有s == 
+        //這是規矩  
+        //要使用emit
+        //setup()就得是setup(props,{emit}){}
+        //這樣才能在內部使用props與{emit} 懂了吧
+
+        let sonmsg = Vue.ref(props.dadmsg);//將input透過v-model與ref變成響應資料
+
+        function refresh(){//觸發emit的函式
+          emit("updtDad",sonmsg.value)//emit("行動物件",給父的值)  沒有s = =
+        }
+        return{
+          sonmsg,refresh
+        }
+      },
+  
+    })
+    app.mount("#a");
+  </script>
+</body>
+</html>
+
+<!--
+
+
+-->

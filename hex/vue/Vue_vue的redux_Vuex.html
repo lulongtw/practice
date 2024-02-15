@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+<!--
+  這節課上Vue的redux 叫做vuex  一樣要記得用script引入vuex程式
+  vuex更改內部資料的方法不是直接更動 而是觸發mutations的函式進行更改
+  
+  使用vuex的方法
+  1.從vuex引入{createStore} 這是一個函式
+  2.然後用createStore建立狀態儲存庫 ， 並給他賦值到一個變數storeＡ
+  3.建立狀態資訊  
+    state(){
+      return{}}
+      注意是state不是setup
+  4.內部使用mutations:{} 建立更新函式A 
+  5.建立更新函式必須引入兩個參數 state 和 新資訊
+    state代表狀態 取用儲存的狀態必須 XX.state.狀態資訊
+  6.在要使用該狀態儲存庫的父組件的setup宣告 父組件.use(storeA)
+
+  ---------以上store建立完成，下方是如何宣告更新狀態---------
+  1.建立一個事件，以便觸發宣告更新狀態
+  2.commit("更新函式A",新資訊)  這就是跟storeA說  給我觸發"更新函式A"  就更改完成
+
+  ---------狀態更新完成  如何將新狀態渲染到畫面--------
+  目前是用getter 但我的了解是設getter的資料有get才會動作
+  但目前情況是只有給elm2的msg設getter 一但get會return store的msg
+  我可以理解說  window剛load時，vue會get elm2的msg 此時觸發getter
+  但之後都沒有get elm2的msg啊  動的都是store和input  @@
+        ========  這部分太麻煩======
+        =====平民用watch監聽store=======
+        這樣就可以連動了
+
+
+  
+
+-->
+  <div id="app">
+    <custom-elem1></custom-elem1>
+    <hr>
+    <custom-elem2></custom-elem2>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/vuex@4"></script><!--引入vuex-->
+
+  <script>
+    const { createStore } = Vuex;//建立createStore function
+
+    const store = createStore({  //將狀態儲存庫賦值到store
+      state() { //建立狀態
+        return {
+          msg: 'qqq',
+        };
+      },
+      mutations: { //建立狀態更新函式
+        updateMsg(state, newMsg) {  //傳入state和新資訊
+          state.msg = newMsg;
+        },
+      },
+    });
+
+    const customelem1 = {
+      template: '<div class="custom-elem1">\
+                  <input v-model="msg"> <button @click="submit">Submit</button>\
+                 </div>',
+      setup() {
+        let msg = Vue.ref(store.state.msg)
+        return {
+          submit() {//建立觸發狀態更新事件 的事件= = 
+            store.commit('updateMsg', msg.value);//觸發狀態更新函式 跟store說要觸發哪個函式 和傳入新資訊
+            //記得用.value
+            console.log(msg)
+            console.log(msg.value)
+          },
+          msg
+        };
+      },
+    };
+
+
+    
+    const customelem2 = {
+      template: '<div class="custom-elem2">{{ msg }}</div>',
+      setup(){
+        let msg = Vue.ref(store.state.msg)
+        //====================他媽注意=============================
+        //watch的重點是一開始在本文就引入被監視的值  如果此處是let msg = Vue.ref(store.state.msg)
+        //那watch就不會起作用幹
+
+        Vue.watch(//用watch監聽store.state
+          ()=>store.state.msg,
+          ()=>msg.value = store.state.msg
+        )
+        return {
+          msg
+        }
+      }
+      //下面是一樣可以達成但看不懂的computed = =
+      //最搞不懂的一環  反正就用computed
+      // computed:{
+      //   msg:{
+      //     get(){
+      //       return store.state.msg
+      //     }
+      //   }
+      // }
+    };
+
+    const app = Vue.createApp({
+      setup() {
+        app.use(store);//記得在父組件.use(store)
+      },
+    });
+
+    app.component('custom-elem1', customelem1);
+    app.component('custom-elem2', customelem2);
+
+    app.mount("#app");
+  </script>
+
+</body>
+
+
+</html>

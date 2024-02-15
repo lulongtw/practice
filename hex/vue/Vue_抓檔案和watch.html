@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!--
+    靠北搞好久 這個是在Vue抓github的api 
+    學習重點是看懂 github 的api  但我還是不會
+    還有input radio的v-model取代name 
+    還有reactive和v-model響應
+    還有watch的使用
+    還有生命週期created的使用
+
+  -->
+  <div id="qq">
+
+    <h1>Latest Vue.js Commits</h1>
+
+
+    <div v-for="branch in obj.branches"><!--for設在哪變 哪邊就會變多-->
+      <!--value用bind動態引入迭代的js資料branch-->
+      <!--vue環境裡的name被v-model取代  已經不是獨立於value外的值了 看ponpon筆記  而是隨著value變動-->
+      <input  
+      type="radio"
+      :value="branch"
+      v-model="obj.currentBranch">
+      {{branch}}
+    </div>
+
+    <div>現在是</div>{{obj.currentBranch}}
+
+    <ul>
+      <li v-for="iteration in obj.commits"><!--commits長這樣[{..},{..},{..}] 迭代取得個別物件-->
+        <a :href="iteration.html_url" target="_blank">更新資訊</a><!--bind引入迭代的js資料-->
+      -by <span>{{iteration.commit.author.name}}</span>at <span>{{iteration.commit.author.date}}</span></li>
+      <!--{{}}引入js資料-->
+    </ul>
+
+
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+
+    let app = Vue.createApp({
+      
+      setup(){
+        
+        let obj = Vue.reactive({//一定要reactive 因為上方v-model要和此處資料響應  
+          commits:null,
+          branches:["main","dev"],
+          currentBranch:"main"//此處資料響應改變後 由watch偵測變動
+        });
+
+        function fetchData(){
+          let apiUrl = "https://api.github.com/repos/vuejs/vue/commits?per_page=3&sha=";
+          let xhr = new XMLHttpRequest();
+          xhr.open("get",apiUrl+obj.currentBranch,true);//在網址引入響應式資料
+          xhr.send(null);
+          xhr.onload = ()=>{
+            obj.commits = JSON.parse(xhr.response);
+            //console.log(obj.commits);
+          }
+        }
+        
+        Vue.watch(//一但資料變動  watch執行
+        //一組watch抓一組變動  有多組則多設立watch
+          ()=>obj.currentBranch,
+          ()=>fetchData()
+        )
+        Vue.watch(//像這樣
+          ()=>obj.currentBranch,
+          ()=>console.log("fdsf")
+        )
+        return{
+          //return 必須放在最後面  
+          //如果有東西放在return 後面  
+          //那就白寫了
+          fetchData,obj
+        }
+      },
+      created:function(){//一create好 執行抓檔案
+        this.fetchData()
+      }
+    });
+    app.mount("#qq")
+  </script>
+</body>
+</html>

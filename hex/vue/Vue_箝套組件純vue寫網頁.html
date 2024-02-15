@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="a"></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    //這節是在組件內部繼續鉗套組件
+    //一直建立子組件 放進服組件裡面  注意使用子組件 要用components註冊子組件
+    //每一層都要建立template 代表html
+    //要注意let的先後 子組件必須先let 於父組件
+    //他媽最重要的事幹你娘組件的名字  不能使用既有的html標籤名稱
+    let header = {template:"<h1>header content</h1>"};
+    let lis = {template:"<li>home</li><li>about</li><li>contact</li>"}
+    let nav = {
+      template:"<ul>=nav=<lis></lis></ul>",
+      components:{lis:lis}
+      };
+    let son1 = {template:"<div>content1</div>"};
+    let son2 = {template:"<div>content2</div>"};
+
+    let main = {
+      template:"<main>=main=<son1></son1><son2></son2></main>",
+      components:{son1:son1,son2:son2}
+    };
+    let app = Vue.createApp({
+      components:{
+        heade:header,
+        nv:nav,
+        mai:main
+      },
+      template:
+      `
+        <heade></heade>
+        <nv></nv>
+        <mai></mai>
+      `
+    })
+    app.mount("#a")
+  </script>
+</body>
+</html>

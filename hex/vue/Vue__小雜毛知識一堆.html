@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box{
+      width:100px;height:100px;
+      border:1px solid black;
+      transition: all 0.3s;
+      font-size:30px;
+      line-height:100px;
+      text-align:center;
+
+    }
+    .red{
+      white-space:pre-wrap;
+      color:red
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+
+    <div class='red'>  vue在切換時是快速置換<br>
+    內部ＤＯＭ元素有些會辣對 要記得:key="獨立值"<br>
+    確保整個DOM元素都會一起換 <br>
+    你他媽卡屎伯也沒說什麼時候會發生
+    反正就是如果有發生辣對情形  用key就對了 
+    好像常發生在for有使用到回圈的子元素身上
+  </div>
+    <div v-for='(item,index) in revlst' :key='item.name'>{{index+1}}.{{item.name}}今年{{item.age}}歲
+      <input type="text" :value='index'>
+    </div>
+    <input type="checkbox" v-model='rev'>
+    <hr>
+
+    <div class='red'>
+      使用select選取不要出現在畫面上的人<br>
+      使用computed filter出 和select.value不一樣的name <br>
+      讓他們出現在畫面上<br>
+    </div>
+    <div v-for='(item,index) in filterLst' :key='index'>{{index+1}}.{{item.name}}今年{{item.age}}歲</div>
+    <select v-model='sel'>
+      <option v-for='item in lst' :value="item.name">{{item.name}}</option>
+    </select>
+    <hr>
+
+    <div class="red">
+      使用checkbox殺掉人<br>
+      不能用map <br>
+      for回圈不能用map!!!! <br>
+      map會回傳undefined!! <br>
+    </div>
+    <div v-for='(item,index) in filter2lst' :key='index'>{{index+1}}.{{item.name}}今年{{item.age}}歲</div>
+    <div  v-for='item in lst'>
+      <input type="checkbox" v-model='checkboxLst' :value='item.name'>{{item.name}}
+    </div>
+   <hr>
+    <div class="red">
+      不要直接更動computed的資料<br>
+      沒有屁用<br>
+      computed的資料是根據computed裡面算出來的<br>
+      要更動要從裡面下手  所以他才適合小組件的原因<br>
+      不能從外部更動它<br>
+      可是如果有原生響應資料更動時 他也會作用 = = 三小 <br>
+      <br>
+    </div>
+    <div v-for='item in lst2'>{{item.name}}</div>
+    <div class='box' @click='notWork()'>notWork</div>
+    <hr>
+
+
+    <div class="red">
+      v-for直接數字回圈
+    </div>
+    <div v-for='item in 5'>{{item}}</div>
+    <hr>
+
+
+    <div class="red">
+      template標籤不會出現在畫面上的應用
+      <br>element看不到的這個標籤的意思
+      <br>使用在for回圈上 這有什麼用@@
+    </div>
+    <template v-for='item in lst'>
+      <div>{{item.name}}</div>
+      <div>{{item.age}}</div>
+    </template>
+    <hr>
+
+    <div class="red">
+    v-for不能和v-if擺在同一個標籤 <br>
+    v-for不能和v-if擺在同一個標籤 <br>
+    v-for不能和v-if擺在同一個標籤 <br>
+    v-for不能和v-if擺在同一個標籤 <br>
+    v-for不能和v-if擺在同一個標籤 <br>
+    所以才回用computed來取代v-if
+
+    </div>
+    
+    &lt;div v-for='item in lst2' <br>
+    v-if="item.age"&gt;{item.name}&lt;/div&gt;
+    <br> v-for v-if 放一起這樣會爆炸
+     
+
+
+  </script>
+  <script>
+    let {createApp ,ref,reactive,computed} = Vue;
+    let app = createApp({
+      template:"#apphtml",
+      setup(){
+        let lst = [
+          {name:"小名",age:16},
+          {name:"小美",age:19},
+          {name:"阿姨",age:26},
+          {name:"卡丘",age:23},
+          {name:"小勃",age:42}
+        ];
+  
+        let rev = ref(true)
+        let revlst = computed(()=>{
+          return rev.value?lst.reverse():lst.reverse()
+        })
+
+        let sel = ref("")
+        let filterLst = computed(()=>{
+          return lst.filter(item=>item.name !=sel.value)
+        })
+
+
+        let checkboxLst = ref([]);
+        let filter2lst = computed(()=>{
+          return lst.filter(item=>{
+            if (!checkboxLst.value.includes(item.name)){
+              return item
+            }
+          })
+        })
+        //也可這樣寫
+        // let checkboxLst = ref([]);
+        // let filter2lst = computed(() => {
+        //   return lst.filter(item => !checkboxLst.value.includes(item.name));
+        // });
+
+
+
+        let lst2 =  ref([
+          {name:"小名",age:16},
+          {name:"小美",age:19},
+          {name:"阿姨",age:26},
+          {name:"卡丘",age:23},
+          {name:"小勃",age:42}
+        ]);
+
+        function notWork(){
+          //單獨有這個時  computed生成的響應式資料不會響應
+          //要更動響應是資料不可直接更動
+          filterLst.value[1] = {
+            name:"愛哭",age:3
+          }
+          //要有下面原生響應是資料一起漲聲
+          lst2.value[3] = {
+            name:"愛哭",age:3
+          }
+        }
+        
+
+        return{
+          lst,revlst,rev,sel,filterLst,filter2lst,checkboxLst,notWork,lst2
+        }
+      }
+    });
+
+    app.mount("#app")
+  </script>
+</body>
+</html>

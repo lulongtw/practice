@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    const { ref, reactive, watch } = Vue;
+const app = {
+  setup() {
+    const pointRef = ref({ idx: 0 });
+    const pointReactive = reactive({ idx: 0 });
+
+    watch(pointRef, newVal => {
+      console.log("ref:", newVal);
+    });
+
+    watch(pointReactive, newVal => {
+      console.log("reactive:", newVal);
+    });
+
+    setTimeout(() => {
+      pointRef.value.idx = 1;
+      pointReactive.idx = 1;
+    }, 1000);
+
+    return {
+      pointRef,
+      pointReactive };
+
+  } };
+
+Vue.createApp(app).mount("#app");
+  </script>
+</body>
+</html>

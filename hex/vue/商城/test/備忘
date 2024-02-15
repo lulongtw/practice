@@ -1,0 +1,100 @@
+Ａ：轉圈小玩意
+https://github.com/ankurk91/vue-loading-overlay
+
+設置讀取時轉圈圈
+
+1.先安裝
+npm install vue-loading-overlay@^6.0
+
+2.在 main.js 宣告 loading 為全域組件 以及導入 css   //靠杯下次把會用到的方法都在main.js import啊
+
+    import Loading from 'vue-loading-overlay';
+    import 'vue-loading-overlay/dist/css/index.css';
+    app.component("loading",loading);
+
+3.在組件引入 loading 組件
+let isLoading = red(false)
+<loading v-model:active="isLoading"/>
+這個 loading 標籤放在 template>div>Loading xxx
+不能放在最外面 又有一個 div 包裹他  
+isLoading 是控制 loading 畫面是否出現的變數
+執行 ajax isloading = true 執行完畢 isloading=false
+isloading=false 這行要加在 ajax .then 裡面
+
+
+4.更小的玩意fontAwesone 
+script setup 無法引入cdn 
+所以直接在index.html全局引入
+<i class="fa-solid fa-spinner fa-spin"></i>
+
+
+B: 要愛用async 和await 
+因為沒有onValue 所以只能依靠每次modal送出變動後
+發送emit事件出發products組件重新getData
+但是不是每次都可以成功刷新  有時候刪除了畫面依然在
+這就是await的問題
+
+
+C: 使用provide 和 inject
+
+祖父組件使用 provide 傳遞資料給 有使用inject 接收的所有子孫組件
+照這樣看是單向
+但如果provide 一個可以修改祖父組件裡的reactive物件 
+那麼就變逆向了
+
+D: 使用directive  顯示上傳錯誤的資料
+modal裡面可以上傳檔案  但如果上傳錯誤格式
+會在畫面顯示跳錯資訊提醒使用者
+做法是
+由APP.vue 建立reactive 物件收集錯誤資料
+並且provide 一個函式 以便更改App.vue裡面的 reactive物件
+並把reactive物件 以props方式給nono組件
+
+nono負責最後的資料呈現
+困難點是使用directive 新東西  困難點是想到用它
+用到很好用
+
+modal負責發送資料及整理資料
+刪除檔案是要使用id  所以必須打包timestamp進去
+上傳檔案那欄負責inject 函式 並透過函式發送資料 改動app.vue的reactive 物件
+
+
+E:頁數導覽
+好像差不多 就只是拿bootstrap的材料做成組件用props 跟 emit處理資料而已
+
+F:發瘋加上價錢
+
+G:做模擬訂單  也是在dashboard裡面  但是不需登入 
+並且將旁邊side bar 處理成
+
+------開始線-------
+
+產品列表
+訂單列表
+優惠券
+==============以上需登入  以下不需登入
+模擬訂單
+
+------結束線-------
+
+並在模擬訂單內出現所有產品列表介面
+就是讓商品可以選購的意思
+
+
+H:靠杯 忘了  做模擬訂單
+模擬訂單裡面有
+模擬客戶看產品下單的頁面
+以及 模擬客戶看購物徹的頁面
+
+Ｉ：要改的 
+
+login永遠都指向產品列表  
+要做成可以從模擬訂單到優惠券login後直接到優惠券
+
+所有訂單 和 到優惠券的  pagination
+
+以及所有送出都使用nono跳出提醒
+
+J:
+現在做到 到優惠券 的新增優惠券
+

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<div id="a">
+		<div @click="add">簡簡有本難念的經{{ans}}</div>
+	</div>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+	<script>
+		//recreative 跟ref差不多 只是recreative包裹的是物件 序列 而ref只能包裹單一資料
+		//下面跟上一課computed一樣
+		//只是展示的是computed對於reactive的屬性的反應
+		//注意 這邊變動的是透過add改變的obj 而不是digit 
+		//如果改變的事digit 那麼改動的資料就無法響應式渲染到畫面上
+		//因為digit不是reactive 也不是ref
+
+
+		媽的
+
+
+		let app = Vue.createApp({
+			setup(){
+				let digit = 1
+				let obj = Vue.reactive({
+					a:2,
+					b:3
+				});
+	
+				let ans = Vue.computed(()=>obj.a+digit)
+				
+				function add(){
+					obj.a+=99
+
+				}
+
+				return{
+					digit,obj,add,ans
+				}
+			}
+		});
+		app.mount("#a")
+	</script>
+</body>
+</html>
+
+
+
+
+<!--
+//這個看清楚reactive和ref之間的沒有差別 ＝＝
+//和computed的用處
+//好像是一個小函式  提供簡單計算？？
+
+	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <div @click="add">{{reactiveobj.a}}</div>
+    <div @click="add2">{{refobj.c}}</div>
+    <div>{{ans2}}</div>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    let {createApp,ref,computed,reactive} = Vue;
+    let app = createApp({
+      setup(){
+        let one = 100;
+        let reactiveobj = reactive({
+          a:1,
+          b:2
+        })
+        let refobj = ref({
+          c:3,
+          d:4
+        })
+     
+        let ans = ref(reactiveobj.a + one)
+        function add(){
+          reactiveobj.a++
+
+        }
+
+        // let ans2 = ref(refobj.value.c + one)
+        //用這個就無法ans2就連動
+        //意思是computed是函式內部小跳板??
+        //但是這個ref也可以偵測到內部屬性改變@@
+        //我就不知道ref跟reactive差在哪了
+        let ans2 = computed(()=>{
+          return refobj.value.c + one
+        })
+        function add2(){
+          refobj.value.c++
+        }
+        return{
+          add,ans,reactiveobj,one,ans2,add2,refobj
+        }
+      }
+    });
+    app.mount("#app")
+  </script>
+</body>
+</html>
+
+
+
+-->

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .done{
+      color:green;
+      text-decoration: line-through;
+    }
+    .undone{
+      color:red;
+    }
+    .box{
+      display:inline-block;
+      width:15px;height:15px;
+      border:1px solid red;
+      position:relative;
+      vertical-align: middle;
+      margin-right:10px;
+    }
+    .box:hover{
+      background-color: rgb(253, 180, 180);
+    }
+    .donebox{
+      border-color: green;
+    }
+    .donebox:hover{
+      background-color: rgb(176, 249, 176);
+    }
+    .donebox::after{
+      content:"O";
+      color:green;
+      position:absolute;
+      font-size: 0.9rem;
+      left:2px;bottom:-3px;
+    }
+
+
+    .undonewrap .done{
+      display:none;
+    }
+    .donewrap .undone{
+      display:none
+    }
+    
+    .btn{
+    
+      text-align: center;
+      border: 1px solid black;
+      width:200px;
+    }
+    
+  </style>
+</head>
+<body>
+  <!--
+    重點在狀態
+    用狀態控制所有事項
+    true 變成綠色 false變成紅色
+  -->
+  <div id="a">
+    <input type="text" @keyup.enter="addTo" v-model="newThing"><!--按下enter啟動ａｄｄＴＯ 把輸入加入all  v-model取代value-->
+ 
+
+    <div class="allwrap" v-show="currentList==='allwrap'"><!--v-show後面接布林值 false代表display:none  其實這個class設allwrp沒啥用-->
+      <div>{{currentList}}</div><!--提示現在在哪-->
+      <ul>
+        <li v-for="(item,idx) in all" v-bind:class="status(idx)">
+          <!--批次出現all的元素  重點是v-bind:class 
+          用v-bind 和下方js連結  一但相關js動作 VUe會自動檢查此變動 如有需要直接渲染
+          所以意思是
+          在給li上class時 vue先執行下方的status函式 
+          -->
+          <div v-bind:class="checkingBox(idx)" @click="changeStatus(idx)"></div>{{item}} <!--在@click上兩個事件要@click="[a,b]"  但這邊會無限循環 我也不知道為啥-->
+          <!--v-bind重要  上此div時 先執行checkingBox
+          按下此div 執行改變狀態changeStatus
+          -->
+        </li>
+      </ul>
+    </div>
+
+
+    <div class="undonewrap" v-show="currentList==='undonewrap'" ><!--這個.undonewrap拿來控制下面li的class是done就不出現-->
+      <div>{{currentList}}</div>
+      <ul>
+        <li v-for="(item,idx) in all" v-bind:class="status(idx)">
+          <div v-bind:class="checkingBox(idx)" :data-idx="idx" @click="changeStatus(idx)"></div>{{item}}
+        </li>
+      </ul>
+    </div>
+
+
+    <div class="donewrap" v-show="currentList==='donewrap'" >
+      <div>{{currentList}}</div>
+      <ul>
+        <li v-for="(item,idx) in all" v-bind:class="status(idx)">
+          <div v-bind:class="checkingBox(idx)" :data-idx="idx" @click="changeStatus(idx)"></div>{{item}}
+        </li>
+      </ul>
+    </div>
+
+
+    <div class="btn" @click="showAll">showall</div>
+    <div class="btn" @click="showUndone">showundone</div>
+    <div class="btn" @click="showDone">showdone</div>
+    <!--
+      這是用來開發時用來檢查各個list對不對
+      但是搞到最後
+      其實結果是直接用all打全部
+      unDone和done都沒有用到
+      要用也可以
+      但是這兩個在傳遞資料時
+      是用push 和slice的
+      slice沒問題
+      但問題在push push是把東西放在最後面
+      會跟all的順序混亂 要找特定位置放更麻煩
+      所以直接用all 在undone時 用css把.done display:none;
+      順序完全一樣
+      因為都是用all  只是依照class把特定li遮起來
+    <pre>all{{all}}</pre>
+    <pre>undone{{unDone}}</pre>
+    <pre>done{{done}}</pre>
+    -->
+
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    let app = Vue.createApp({
+      data(){
+        return{
+          newThing:"",
+          all:[],
+          lst:[],
+          currentList:"allwrap",
+          //unDone:[],
+          //done:[],
+        }
+      },
+      methods:{
+        check(){//檢查是否重複以及有輸入
+          let uniqueAndContent = false;
+          if (this.newThing){
+            uniqueAndContent = true;
+            for (let i=0;i<this.all.length;i++){
+              if (this.newThing==this.all[i]){
+                uniqueAndContent = false;
+                return uniqueAndContent
+              }
+            }
+          }
+          return uniqueAndContent
+        },
+        addTo(){
+          if (this.check()){
+            this.all.push(this.newThing);
+            //this.unDone.push(this.newThing);
+            this.lst.push(false);
+            this.newThing = ""
+          }else{
+            console.log("輸入不重複的內容")
+          }
+        },
+        status(idx){
+          if (this.lst[idx]){
+            return "done"
+          }else{
+            return "undone"
+          }
+        },
+        checkingBox(idx){
+          if (this.lst[idx]){
+            return "box donebox"
+          }else{
+            return "box"
+          }
+        },
+        changeStatus(idx){
+          this.lst[idx] = !this.lst[idx];
+          //this.classify(idx)
+        },
+        /*
+        classify(idx){
+          if (this.lst[idx]){//done index
+            let targetIdx = this.unDone.indexOf(this.all[idx])
+            this.unDone.splice(targetIdx,1);
+            this.done.push(this.all[idx]);
+          }else{//undone
+            let targetIdx = this.done.indexOf(this.all[idx])
+            this.done.splice(targetIdx,1);
+            this.unDone.push(this.all[idx]);
+          }
+        },
+        */
+        showAll(){
+          this.currentList="allwrap"
+        },
+        showUndone(){
+          this.currentList="undonewrap"
+        },
+        showDone(){
+          this.currentList="donewrap"
+        }
+
+      }
+    });
+
+    app.mount("#a")
+
+  </script>
+</body>
+</html>

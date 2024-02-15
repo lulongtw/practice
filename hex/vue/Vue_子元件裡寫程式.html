@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .btn{
+      background-color: red;
+      margin:10px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="a"></div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script>
+    //++按鈕小城市
+    //重點是在子元件裡面寫function
+    //用.component("子元件名稱",{子元件內容}) 寫出一個具有功能的子元件
+    //子元件內容其實根createApp({內容})是一樣的
+    //重點是看下方
+    //在data(){}裡面的資料似乎直接具有響應特性  不ref就可以了
+    //但在setup建立的變數就必須使用ref 才能響應
+    let app = Vue.createApp({
+      template:"<com></com><com></com><com></com><com></com><com></com><com></com>"
+    });
+
+    app.component("com",{
+      template:"<div>{{count}}:<div class='btn' @click='add'>click<div></div>",
+      data(){
+        let count=  0
+        return{
+          count
+        }
+      },
+      methods:{
+        add(){
+          this.count++
+          //console.log(this.count)
+        }
+      }
+    })
+
+    app.mount("#a")
+    /*
+        let app = Vue.createApp({
+      template:'<com></com><com></com><com></com><com></com><com></com>'
+    });
+    app.component("com",{
+      template:"<div>{{count}}:<div class='btn' @click=add>click</div></div>",
+      setup(){
+        let count = Vue.ref(0);
+        function add(){
+          count.value++
+          console.log(count.value)
+        }
+        return{
+          add,count
+        }
+      },
+      
+    })
+    app.mount("#a")
+    
+    */
+  </script>
+</body>
+</html>

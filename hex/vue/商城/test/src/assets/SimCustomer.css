@@ -1,0 +1,74 @@
+
+  .wrapSim{
+    margin:20px;
+    padding:30px;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    gap:10px;
+  }
+
+
+  .itemSim{
+    width:100%;
+    /* height:250px; */
+    margin-bottom:0;
+    background-color: white;
+    border:1px solid gray;
+
+  }
+  .picWrapSim{
+    height:100px;/*不能用% 用%會直接佔比 變成content只能戰50%
+    變成無法伸縮 會超過  如此一來就要射item的高度
+    所以在這邊社就不用在item社高度了*/ 
+    background-color: rgb(108, 32, 32);
+    background-size: cover;
+    background-position:center;
+  }
+  .contentWrapSim{
+    display:grid;
+    grid-template-columns:2fr 2fr 3fr 3fr;
+    padding:10px;
+    
+  }
+  .titleSim{
+    grid-column:span 3
+    
+  }
+  
+  .contentSim{
+    grid-column:span 4;
+  
+  }
+  .categorySim,.priceSim{
+    text-align: right;
+   
+  }
+  .priceSim{
+    grid-column:3/5;
+  
+  }
+  .originSim{
+    grid-column:span 2
+  }
+ 
+  .butnWrapSim{
+    grid-column:span 4;
+    display:flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    background-color: rgb(234, 234, 234);
+  }
+  .seeMoreSim,.addToCartSim{
+    padding:3px;
+    margin:5px;
+    border:1px solid gray;
+    font-size:10px;
+    text-align: center;
+    
+  }
+  .addToCartSim{
+    border:1px solid red;
+    color:red;
+  }
+

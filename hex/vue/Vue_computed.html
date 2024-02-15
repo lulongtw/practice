@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<div id="a">
+		<div @click="add">家家有本難念的經{{ans}}</div>
+	</div>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+	<script>
+		let app = Vue.createApp({
+			//computed可針對ref的資料即時渲染
+			//computed寫法 Vue.computed(()=>{return 值}) 要嗎return 要媽不要return也不要{}
+			//computed要在setup下方 setup跟data,method差不多
+			//setup寫法是setup(){return{}}  和data(){return{}}一樣
+			//setup要記得return內部的變數
+			
+			setup(){
+				let digit = Vue.ref(10);
+				let ans = Vue.computed(()=>{return digit.value*10});
+				//computed必須是一個新的值 裡面到值不能被重新賦值到原本的值
+				//例如digit.value = Vue.computed(()=>digit.value*10) 這樣會爆炸
+				function add(){
+					digit.value++//在此處，ref資料digit變化了，樓上的computed馬上感知 馬上動作  馬上產生新的ans
+				}
+				return{
+					ans,digit,add
+				}
+			},
+		});
+		app.mount("#a")
+	</script>
+</body>
+</html>
