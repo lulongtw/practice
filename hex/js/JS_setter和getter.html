@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //物件中不是只有鍵值對，還可以放setter和getter
+    //setter和getter脫胎於Object.defineProperty()  更簡潔易懂
+    //聽說這樣可以更細膩操控物件
+
+    //兩者代表的都是一個函式 
+    //兩者都當作以物件裡面屬性的方式來調用 console.log(obj.'get名') or obj.set名 = xxx 
+    //當作是 被調用時，啟動裡面的函式  簡單的說  就是多了個取用時和被復職時可以幹什麼的方式
+    
+    //get調用時機當然是帶調用時
+    //get後面的函式 代表調用get後面的函式時，執行get後面的函式
+
+    //set調用時機是在修改時
+    //set後面的函式，代表修改set後面的函示時，執行set後面的函式
+
+    let obj1 = {
+  name: 'John', 
+
+  get getname() {//建立getname的一個getter 待getname被調用時 執行下方函式
+    console.log('Getting name');
+    //this.name = "sex" 也可以在這邊些改this.name
+    return this.name;
+  }
+};
+
+
+// 注意 getter和setter都不是函式  執行時不要()
+console.log(obj1.getname); // 自动调用 getter getename，输出 'Getting name' 和 'John'
+console.log(obj1.name);//其實沒什麼關係 因為getter只是調用而已
+
+
+
+
+
+let obj2 = {
+  name: 'John',
+
+  //setter被調用時 取得被賦值的value然後執行setter內部函式
+  set setname(newName) {//搞一個setter 叫做setname 其參數是修改值
+    console.log('Setting name to', newName);
+    this.name = newName;//在setter中修改this.name
+  }
+};
+
+// 注意 getter和setter都不是函式  執行時不要()
+obj2.setname = 'Doe'; // 自动调用 setter，输出 'Setting name to Doe'
+console.log(obj2.name); // 输出 'Doe'
+
+
+//  所以setter和getter的變數名稱和其函式內容沒有關係  
+//重點是函式名稱不要和物件裡面其他鍵一樣名字
+
+
+
+//setter和getter是更好動的寫法
+//原本是Object.defineProperty
+
+//沒時間不用看拉
+//吧
+/*
+
+let obj = {}; //建立一個變數
+
+//讓變數接受Object.defineProperty洗禮  
+//裡面輸入           被搞物件,被搞物件屬性,getter和setter
+Object.defineProperty(obj, 'myProperty', {
+  get: function() {
+    console.log('Getting myProperty');
+    return this.qq;//注意 他媽給我注意  這個this.qq 其實是變數 
+    //實際指向myProperty這個被搞屬性名 因為不能取的根其他實際屬性名一樣 否則會當作重複調用  會爆炸
+
+  },
+  set: function(newValue) {
+    console.log('Setting myProperty to', newValue);
+    this.qq = newValue;
+  }
+});
+
+obj.myProperty = 'New Value'; // 自动调用 setter，输出 'Setting myProperty to New Value'
+console.log(obj.myProperty); // 自动调用 getter，输出 'Getting myProperty' 和 'New Value'
+
+
+
+*/
+
+  </script>
+</body>
+</html>

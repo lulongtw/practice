@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*
+        因為input是他媽自閉合元素
+        偽元素討厭自閉兒
+        所以不要在input加煒元素
+        */
+        label::before{
+            content:"下面輸入數字1"
+        }
+        label:nth-of-type(2)::before{
+            content:"下面輸入數字2"
+        }
+    </style>
+</head>
+<body>
+    <label for="">
+        <input id="a" type="text">
+    </label>
+    <label for="">
+        <input id="b" type="text">
+    </label>
+    
+    <div class="c"></div>
+
+    <script>
+        let a = document.getElementById("a");
+        let b = document.querySelector("#b");
+        let c = document.querySelector(".c");
+        a.setAttribute("style","width:100px;height:100px;display:block");
+        b.setAttribute("style","width:100px;height:100px;display:block");
+        c.setAttribute("style","width:100px;height:100px;border:3px solid red")
+        /*
+        blur事件選擇器
+        跟focus相反，意思是離開不使用後
+        focus是點進去準備打字，blur是從裡面離開;
+        */
+
+        a.addEventListener("blur",blur1);/*意思就是離開了，就啟動blur1函式*/
+        b.addEventListener("blur",blur2);
+        c.addEventListener("click",add);
+        let num1 = false;/*拿來確認輸入是否為數字*/
+        let num2 = false;/*其實只需要一個，全部坐在.c的click裡面，但是為了要介紹blur ，所以這樣*/
+     
+        function blur1(e){
+            let cnt = e.target.value;//blur時，取得目標值
+            let digit = parseInt(cnt);//因為parseint 遇到6tt u 一開始是數字和英文組合  會只取數字 變6
+            if (parseInt(cnt)){//如果不是NaN
+                num1 = true;
+            }
+            if (digit != Number(cnt)){//如果 11 != 11fuck
+                num1= false;
+            }
+        }
+        function blur2(e){
+            let cnt = e.target.value;
+            let digit = parseInt(cnt);
+            if (parseInt(cnt)){
+                num2 = true;
+            }
+            if (digit != Number(cnt)){
+                num2= false
+            }
+        }
+      
+        function add(e){
+            e.target.textContent = ""
+       
+            if (allNum()){
+                let res = parseInt(a.value) + parseInt(b.value);
+                e.target.textContent = res;
+            }else{
+                e.target.textContent = "輸入數字"
+            }
+        }
+        function allNum(){
+            if (num1&&num2){//確認兩者是否都是數字
+                return true
+            }
+        }
+    /*
+
+    另2種方法
+    <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      label {
+        display: block;
+      }
+      label:first-of-type::before {
+        content: "輸入1";
+      }
+      label:nth-of-type(2)::before {
+        content: "輸入2";
+      }
+      .show {
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <label for=""><input type="text" /></label>
+    <label for=""><input type="text" /></label>
+    <div class="show"></div>
+    <script>
+      let inputs = document.querySelectorAll("input");
+      let show = document.querySelector(".show");
+
+      let ans1;
+      let ans2;
+
+      inputs[0].onblur = (e) => {
+        if (Number(e.target.value)) {
+          ans1 = parseInt(e.target.value);
+        } else {
+          ans1 = null;
+        }
+      };
+
+      inputs[1].onblur = (e) => {
+        if (Number(e.target.value)) {
+          ans2 = parseInt(e.target.value);
+        } else {
+          ans2 = null;
+        }
+      };
+
+      show.onclick = () => {
+        // if (ans1 && ans2) {
+        //   show.textContent = ans1 + ans2;
+        // } else {
+        //   show.textContent = "qq";
+        // }
+
+        let ans = 0;
+        inputs.forEach((item) => {
+          if (Number(item.value) && Number(ans + 1)) {
+            ans += Number(item.value);
+          } else {
+            ans = "qq";
+          }
+        });
+
+        show.textContent = ans;
+      };
+      console.log(Number(0));
+
+
+    */
+    </script>
+</body>
+</html>

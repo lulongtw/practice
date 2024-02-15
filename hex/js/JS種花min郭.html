@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      height:100vh;/*如果是event要放在body上*/
+      width:100vw;
+    }
+    div{
+      background:      linear-gradient(
+        90deg,
+        transparent 50%,
+        red 50%
+      ),linear-gradient(
+
+        transparent 50%,
+        red 50%
+      )
+    }
+  </style>
+</head>
+<body>
+  <script>
+    let div = document.createElement("div");
+    div.setAttribute("style",
+      "width:100px;height:100px;background-color:blue;position:absolute;white-space:pre-wrap;color:white"
+    );
+    div.innerHTML = "腫  花<br>min郭"
+    let body = document.body
+
+body.addEventListener("mousemove",(e)=>{
+      console.log(e.clientX)
+      div.style.top = e.clientY -50+ "px";//-50是致中  也可以拿掉
+      div.style.left = e.clientX -50+ "px";
+    })
+    document.body.appendChild(div);
+  </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/axios.min.js" integrity="sha512-TjBzDQIDnc6pWyeM1bhMnDxtWH0QpOXMcVooglXrali/Tj7W569/wd4E8EDjk1CwOAOPSJon1VfcEt1BI4xIrA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    /*
+    ajax方法大集合 xml fetch axios三巨頭都在這邊
+    fetch和xml 都需要對取得的東西JSON.parse 或.json()
+    axios不用 他很屌
+
+    重點是 所有的ajax當然都是異步 不可能在全局console出來
+
+    必須一定當然必須一定當然必須一定當然必須一定當然必須一定當然
+    都是.onload 或者在.then內取得資料後
+    執行畫面刷新的函式  或是以響應式處理
+
+    
+    */
+
+    function xml(){
+      let xhr = new XMLHttpRequest;
+      xhr.open("get","https://randomuser.me/api/?results=50",true);
+      xhr.send(null);
+      xhr.onload = ()=>{
+        let ans = JSON.parse(xhr.response);
+        console.log(ans)
+      }
+    }
+    xml();
+
+    async function ftch(){
+      try{
+        let temp = await fetch("https://randomuser.me/api/?results=50");
+        let ans = await temp.json();
+        console.log(ans)
+      }catch(error){
+        console.error("shit",error)
+      }
+    };
+    ftch();
+
+    function ftch2(){
+      fetch("https://randomuser.me/api/?results=50")
+        .then(function(response){
+          return response.json()
+        }).then(function(data){
+          console.log(data)
+        }).catch(function(error){
+          console.error("shit")
+        })
+    }
+    ftch2()
+
+    function axos(){
+      axios.get('https://randomuser.me/api/?results=50')
+      .then(function(response){
+        console.log(response)
+      }).catch(function(error){
+        console.error("shit",error)
+      })
+    }
+    axos()
+
+    async function axos2(){
+      try{
+        let data = await axios.get("https://randomuser.me/api/?results=50");
+        console.log(data)
+      }catch(error){
+        console.error("shit",error)
+      }
+    }
+    axos2()
+  </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root{
+            --clr:rgb(233, 239, 226)
+        }
+        *{
+            margin:0;padding:0;
+        }
+        main{
+            width:900px;
+            margin:0 auto;
+        }
+        #one,#two{
+            display:flex;
+            background-color: var(--clr);
+            margin-bottom:20px;
+            justify-content: space-between;
+            padding:20px;
+        }
+        .ones{
+            display:flex;
+            width:30%;
+            padding:10px;
+            box-sizing:border-box;
+        }
+ 
+        .ones img{
+            object-fit:contain;
+            margin-bottom:auto;
+            display: block;
+            width:50px;
+            /*
+            總共三問題
+            圖超出範圍，圖的位置，圖的大小
+            一開始的問題是圖超出範圍，用contain解決，
+            然後是無法跑到上面，最後用margin-bottom:auto
+            最後是調整size,先變block就可以
+            
+            另一個方法是在img外加上div ，用div包裹即可讓img置頂
+            然後就剩尺寸問題
+            img width設100%跟隨div
+            div 不能用width用要用flex 是說用width也會動，但會被flex影響
+            */
+    
+        }
+        .onecnt{
+            display:flex;
+            flex-direction: column;
+            gap:10px;
+        }
+        .twos{
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            text-align:center;
+            flex-direction:column;
+            gap:20px;
+        }
+        .threes{
+            display:flex;
+            align-items: center;
+            background-color: var(--clr);
+        }
+
+        .threes.a{
+            flex-direction:row-reverse;
+        }
+        #aa{
+            object-fit:contain;
+            margin-bottom:none;
+            display: inline;
+            width:none;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div id="one">
+
+            <div class="ones">
+                
+                    <img src="logo-small.png">
+         
+          
+                <div class="onecnt">
+                    <div class="title">為什麼要代替你爹</div>
+                    <div class="text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab officiis iste, beatae perferendis quaerat nihil temporibus? Saepe officia excepturi architecto?</div>
+                </div>
+            </div>
+            
+            <div class="ones">
+                <div>
+                    <img id="aa" src="logo-small.png">
+                </div>
+                <div class="onecnt">
+                    <div class="title">為什麼要代替你爹</div>
+                    <div class="text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab officiis iste, beatae perferendis quaerat nihil temporibus? Saepe officia excepturi architecto?</div>
+                </div>
+            </div>
+
+            <div class="ones">
+                <div>
+                    <img src="logo-small.png">
+                </div>
+                <div class="onecnt">
+                    <div class="title">為什麼要代替你爹</div>
+                    <div class="text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab officiis iste, beatae perferendis quaerat nihil temporibus? Saepe officia excepturi architecto?</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="two">
+            <div class="twos">
+                <img src="logo-medium.png">
+                <div class="title">為甚麼要代替你爹</div>
+                <div class="text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi rerum vitae iusto nulla facere numquam placeat enim magnam vel amet.</div>
+            </div>
+
+            <div class="twos">
+                <img src="logo-medium.png">
+                <div class="title">為甚麼要代替你爹</div>
+                <div class="text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi rerum vitae iusto nulla facere numquam placeat enim magnam vel amet.</div>
+            </div>
+
+            <div class="twos">
+                <img src="logo-medium.png">
+                <div class="title">為甚麼要代替你爹</div>
+                <div class="text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi rerum vitae iusto nulla facere numquam placeat enim magnam vel amet.</div>
+            </div>
+        </div>
+
+        <div id="three">
+            <div class="threes">
+                <img src="logo-big.png">
+                <div class="threecnt">
+                    <div class="title">為什麼要代替你爹</div>
+                    <div class="text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus eaque, aut odio maxime fuga ad voluptas sapiente quos neque illum.</div>
+                </div>
+            </div>
+
+            <div class="threes a">
+                <img src="logo-big.png">
+                <div class="threecnt">
+                    <div class="title">為什麼要代替你爹</div>
+                    <div class="text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusamus eaque, aut odio maxime fuga ad voluptas sapiente quos neque illum.</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

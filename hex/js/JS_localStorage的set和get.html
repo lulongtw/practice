@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style></style>
+</head>
+<body>
+  <script>
+    /*
+    這節課重點是
+    
+    從本地儲存localStorage存東西 
+    localStorage.setItem("key",value)
+
+    和
+    從本地儲存localStorage拿東西
+    localStorage.getItem("key")
+
+    而要經過localStorage裡面的東西，
+    如果不是字串，一定會被字串化，反正就是字串燒
+    也就是說要儲存前，要確定是否是字串格式，  
+    但物件也可以儲存在localStorage裡面，只要將他parse就可以使用
+    
+    簡單的說只有字串可以不經處理的儲存與使用
+    如果是物件或arrey 都要經過
+    JSON.stringify() 儲存
+    以及
+    JSON.parse() 取出
+    才能使用
+
+    */
+    let input = document.createElement("input");
+    let div = document.createElement("div")
+    let exprt = document.createElement("div");
+    let ans = document.createElement("div")
+
+    /*
+    只不不要在let 之前appendchild js都會做渲染
+    也就是說可以像這樣把程式內容寫在後面 append寫在前面
+    */
+    document.body.appendChild(input);
+    document.body.appendChild(div);
+    document.body.appendChild(ans);  
+    document.body.appendChild(exprt);
+
+
+    
+    input.type = "text";
+    input.setAttribute("style","width:100px")
+    div.setAttribute("style","width:100px;height:100px;background-color:red;line-height:100px;text-align:center");
+    div.textContent = "儲存"
+    exprt.setAttribute("style","width:100px;height:100px;background-color:blue;line-height:100px;text-align:center");
+    exprt.textContent = "輸出"
+    ans .setAttribute("style","min-width:100px;min-height:10px;border:1px solid black")
+
+
+
+
+    div.addEventListener("click",()=>{
+      /*本節重點*/
+      let obj = {
+        thing:""
+      }
+      obj.thing = input.value;
+      let res = JSON.stringify(obj);
+      localStorage.setItem("物件",res)
+
+    })
+    exprt.addEventListener("click",()=>{
+      /*本節重點*/
+      let fruit = localStorage.getItem("物件");
+      let final = JSON.parse(fruit)
+      ans.textContent = final.thing
+    })
+
+
+ 
+  </script>
+</body>
+</html>

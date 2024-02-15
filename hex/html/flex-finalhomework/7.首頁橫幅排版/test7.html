@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+        :root{
+            --clr:rgb(233, 239, 226)
+        }
+        main{
+            display:flex;
+            flex-direction:column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--clr);
+            height:90vh;
+            gap:10px;
+        }
+        main>img{
+            width:10%;
+            width:100px;
+
+        }
+        main>div{
+          font-size:30px;
+          color:rgb(0, 54, 0);
+        }
+        footer{
+            height:10vh;
+            padding:0 20px;
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #cnts{
+            display:flex;
+            gap:10px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <img src="headerLogo.png"/>
+        <div id="today">你他媽到底為什麼要代替你爹</div> 
+    </main>
+    <footer>
+        <img src="footerLogo.png">      
+        <div id="cnts">
+            <a href="" target="_blank"><div class="cnt">back</div></a>
+            <a href="" target="_blank"><div class="cnt">back</div></a>
+            <a href="" target="_blank"><div class="cnt">back</div></a>
+            <a href="" target="_blank"><div class="cnt">back</div></a>
+        </div>
+    </footer>
+</body>
+</html>

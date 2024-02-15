@@ -1,0 +1,127 @@
+<html>
+  <head>
+    <title>Simple Map</title>
+    <style>
+      #map {
+        /*上map一定要給height*/
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+		
+		<!-- 這張是講google map api
+		api 叫做應用程式介面
+		意思好像是一個應用程式提供給外部使用者 以javascript 取得資料的介面＠＠
+
+
+		這節課是單純使用google map API
+    這節可使用的api服務是maps javascript api
+    https://developers.google.com/maps/documentation/javascript/overview?hl=zh-tw
+
+		**第一步** 
+    引入maps javascript api
+    <script>
+  (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+    key: "輸入金鑰",
+    v: "weekly",
+  }); 
+   這鬼東西叫做以  Dynamic Library Import  方式載入
+
+
+    **第二步**
+    在程式碼中引入api
+    script標籤必須使用type=module才能引入
+    寫程式 -->
+		
+
+    <div id="map"></div>
+    <script type="module">//必須module = =
+
+			let map;
+      async function initMap() {
+        const { Map } = await google.maps.importLibrary("maps");//取得map建構函式
+
+				//new一個建構函式，並傳入參數  (目標元素) 以及   (包含座標及縮放資訊的物件)
+				//這個地圖有回傳東西  給之後放置圖釘用
+      	map = new Map(document.getElementById("map"), {
+          center: { lat: -34.397, lng: 150.644 },//座標
+          zoom: 8,//好像最大到15
+        });
+
+
+				//我還是不知道實際上是怎麼運作
+				//但這就是放標記的程式
+				//這也可以回傳東西
+				new google.maps.Marker(
+					{
+							position:{ lat: -34.397, lng: 150.644 },
+							map:map,//設置放標記的地圖
+							title:"fsdf"//標記說明
+					}
+    		)
+
+				//放第二個標記
+				new google.maps.Marker(
+					{
+							position:{ lat: -34.597, lng: 150.144 },//座標放超過地圖外不會報錯
+							map:map,//設置放標記的地圖
+							title:"fsdf"//標記說明
+					}
+    		)
+
+
+      }
+      initMap();//啟動函式
+    </script>
+
+
+
+
+
+    <!--以下是google邀求-->
+		<!--要給金鑰-->
+    <!-- prettier-ignore -->
+    <script>
+      ((g) => {
+        var h,
+          a,
+          k,
+          p = "The Google Maps JavaScript API",
+          c = "google",
+          l = "importLibrary",
+          q = "__ib__",
+          m = document,
+          b = window;
+        b = b[c] || (b[c] = {});
+        var d = b.maps || (b.maps = {}),
+          r = new Set(),
+          e = new URLSearchParams(),
+          u = () =>
+            h ||
+            (h = new Promise(async (f, n) => {
+              await (a = m.createElement("script"));
+              e.set("libraries", [...r] + "");
+              for (k in g)
+                e.set(
+                  k.replace(/[A-Z]/g, (t) => "_" + t[0].toLowerCase()),
+                  g[k]
+                );
+              e.set("callback", c + ".maps." + q);
+              a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+              d[q] = f;
+              a.onerror = () => (h = n(Error(p + " could not load.")));
+              a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+              m.head.append(a);
+            }));
+        d[l]
+          ? console.warn(p + " only loads once. Ignoring:", g)
+          : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
+      })({ key: "AIzaSyDlatLRSFrNSwdA6J8i9JNIMW66VCCDIa8", v: "weekly" });
+			/*
+			key是金鑰
+  	金鑰從這邊拿  https://console.cloud.google.com/google/maps-apis/credentials?utm_source=Docs_Credentials&hl=zh-tw&_gl=1*s7q47g*_ga*MTkyNDY5MzA4OC4xNzAyNDY4Mjg1*_ga_NRWSTWS78N*MTcwMjkwOTE4Mi4zLjEuMTcwMjkwOTE4NS4wLjAuMA..&project=silicon-light-408511
+			*/
+    </script>
+  </body>
+</html>

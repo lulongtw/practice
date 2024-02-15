@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root{
+            --clr:rgb(233, 239, 226)
+        }
+        #sheet{
+            width:800px;
+            margin:50px auto;
+            box-sizing: border-box;
+            border:10px solid green
+        }
+        nav{
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--clr);
+            color:green;
+            padding:5px 20px;
+            border-radius: 10px 10px 0px 0px;
+            
+        }
+        main{
+            padding:20px;
+            box-sizing: border-box;
+            display:flex;
+            justify-content: center;
+        
+        }
+        main>img{
+            width:30%;
+        }
+        #cntn{
+            padding:20px;
+            width:70%;
+            display:flex;
+            flex-direction: column;
+            gap:20px;
+        
+           
+            ;
+    
+   
+           
+        }
+        .foot{
+            /*
+            position:absolute;
+            bottom:10px;#cntn要relative
+            or
+            margin-top:auto;三小為什麼可以這樣
+
+             justify-self: flex-end;是grid在用的
+            */
+            margin-top: auto;
+            display:flex;
+            gap:10px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div id="sheet">
+
+        <nav>
+            <img src="logo.png"/>
+            <div id="more">more</div>
+        </nav>
+
+        <main>
+            <img src="pic.png"/>
+            <div id="cntn">
+                <div class="title">說真的，你到底為甚麼要代替你爹</div>
+                <div class="lorem">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi ipsa deleniti laudantium aliquid. Voluptatibus illo eaque nesciunt iusto commodi nam!</div>
+                <div class="foot">
+                    <a href="" target="_blank"><div class="feet">fb分享</div></a>
+                    <a href="" target="_blank"><div class="feet">小鈴鐺</div></a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

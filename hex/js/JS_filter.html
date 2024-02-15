@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*.filter只能用在array上
+    且.filter會返回一個filter後的新array
+    所以要復職
+    */
+        let obj = [
+      {gay:"雅集"},
+      {gay:"建伸"},
+      {gay:"俊宏"},
+    ]
+    obj = obj.filter((key)=>{return key.gay!="雅集"});
+    console.log(obj)
+
+    let lst = ["a", "b", "c", "a", "d"];
+let result = lst.filter(item => item !== "a");
+
+console.log(result); // 输出: ["b", "c", "d"]
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form action="">
+    <input type="email" name="email">
+    <input type="text" name="password">
+    <input type="submit" value="sutrue">
+  </form>
+  <script>
+    /*
+    都差不多
+    差別在上一張是用字串形式，以x-www-form-urlencoded形式送出
+    這邊是物件形式，以json形式送出，並且在送出之前又JSON.stringify;  
+    */
+
+    let email = document.querySelector("[type='email']");
+    let password = document.querySelector("[type='text']");
+    let submit = document.querySelector("[type='submit']");
+    let xml = new XMLHttpRequest();
+
+    submit.addEventListener("click",(e)=>{
+      e.preventDefault();
+      xml.open("post","https://hex-escape-room.herokuapp.com/api/user/signup",true);
+      xml.setRequestHeader("Content-type","application/json")
+      let info = {//把要送出的東西做成物件
+        email:email.value,
+        password:password.value,
+      }
+      info = JSON.stringify(info);//非字串記得JSON.stringify;
+      xml.send(info);
+    })
+
+    xml.onload = function(){
+      let div = document.createElement("div");
+      let ans = JSON.parse(xml.response);
+      div.textContent = ans.message;
+      document.body.appendChild(div)
+    }
+  </script>
+</body>
+</html>
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="email" >
+  <input type="text">
+  <button>submit</button>
+  <script>
+    let email = document.querySelector("[type='email']");
+    let passWord = document.querySelector("[type='text']");
+    let btn = document.querySelector("button");
+    btn.onclick = async()=>{
+      fetch("https://hex-escape-room.herokuapp.com/api/user/signup",{
+        method:"POST",
+        headers:{"Content-type":"application/json"},
+        //記得JSON.stringify
+        body:JSON.stringify({ 
+          email: email.value,
+          password: passWord.value
+        })
+      }).then(function(response){
+        return response.json()
+      }).then(function(data){
+        console.log(data)
+      })
+    }
+  </script>
+</body>
+</html>
+
+-->
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="email" >
+  <input type="text">
+  <button>submit</button>
+  <script>
+    let email = document.querySelector("[type='email']");
+    let passWord = document.querySelector("[type='text']");
+    let btn = document.querySelector("button");
+    btn.onclick = async()=>{
+      let temp = await fetch("https://hex-escape-room.herokuapp.com/api/user/signup",{
+        method:"POST",
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify({
+          email:email.value,
+          password:passWord.value
+        })
+      });
+      let data = await temp.json()//記得不是JSON.parse()啊 fetch適用.json()
+      //而且還要await
+      console.log(data)
+    }
+  </script>
+</body>
+</html>
+
+-->

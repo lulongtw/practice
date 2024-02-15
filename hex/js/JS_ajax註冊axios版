@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- 引入 Axios 库 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/axios.min.js" integrity="sha512-TjBzDQIDnc6pWyeM1bhMnDxtWH0QpOXMcVooglXrali/Tj7W569/wd4E8EDjk1CwOAOPSJon1VfcEt1BI4xIrA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+  <input type="text" class="a">
+  <input type="text" class="b">
+  <button>Submit</button>
+  <script>
+    let eml = document.querySelector(".a");
+    let pswrd = document.querySelector(".b");
+    let btn = document.querySelector("button");
+
+    btn.onclick = async () => {
+      let email = eml.value;
+      let password = pswrd.value;
+
+      //axios超爽  直接省略header和接收到資訊後的.json
+
+      try {
+        let response = await axios.post("https://hex-escape-room.herokuapp.com/api/user/signup", {
+          email: email,
+          password: password
+        });
+
+        let data = response.data;
+
+        let div = document.createElement("div");
+        div.textContent = data.message;
+        document.body.appendChild(div);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+  </script>
+</body>
+</html>

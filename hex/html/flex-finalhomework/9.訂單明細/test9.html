@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: black;
+        }
+
+        :root{
+            --clr1:rgb(233, 239, 226);
+            --clr2:green
+        }
+        main{
+            width:300px;
+            color:var(--clr2);
+            margin:50px auto;
+            background-color: white;
+        }
+        .title{
+            text-align:center;
+            height:50px;
+            line-height:50px;
+            color:var(--clr2);
+            background-color:var(--clr1)
+        }
+        .digit{
+            display:flex;
+            padding:10px;
+            justify-content: space-between;
+            color:var(--clr2)
+        }
+        .right{
+            text-align: right;
+        }
+        .insideright.a,.money{
+            font-weight:800;
+        }
+        .prdct{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            padding:10px;
+            gap:10px;
+            justify-content:center;
+            align-items:center;
+        }
+        .name,.money{
+            grid-column:2;
+
+        }
+        img{
+            display:block;
+         
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        <div class="title">訂單摘要</div>
+        <div class="digit">
+            <div class="left">
+                <div class="insideleft">小計</div>
+                <div class="insideleft">運費</div>
+                <div class="insideleft a">總計</div>
+            </div>
+            <div class="right">
+                <div class="insideright">NT $2000</div>
+                <div class="insideright">NT $2000</div>
+                <div class="insideright a">NT $2000</div>
+            </div>
+        </div>
+        
+    
+        <div class="title">購物清單</div>
+        <div class="list">
+
+            <div class="prdct">
+                <img src="pic.png"/>
+                <div>
+                    <div class="name">為什麼要</div>
+                    <div class="money">代替你爹</div>
+                </div>
+            </div>
+
+            <div class="prdct">
+                <img src="pic.png"/>
+                <div>
+                    <div class="name">為什麼要</div>
+                    <div class="money">代替你爹</div>
+                </div>
+
+            </div>
+
+            <div class="prdct">
+                <img src="pic.png"/>
+                <div>
+                    <div class="name">為什麼要</div>
+                    <div class="money">代替你爹</div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>

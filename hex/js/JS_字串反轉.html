@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let text = "abcdefghijk"
+    //.split 將字串依照（）內要求 返回序列
+    //如果是()則返回["abcdefghijk"]
+    //如果是(\d/)正則表示式  則依照數字打散
+    //如果是("")則每個字元都打散  如下所示
+    let lst = text.split("")
+    console.log(lst);
+    let revlst = lst.reverse();//顛倒
+    console.log(revlst);
+    //.join將字串依照()返回字串
+    //如果中間有需要加, 則是(",")
+    let revstr = revlst.join("");
+    console.log(revstr)
+
+    console.log("======分隔線 另一種方法======")
+
+    let text2 = "1234567";
+
+    let lst2 = [];
+    for (let indi of text2){
+      lst2.unshift(indi)
+    }
+    console.log(String(lst2).replace(/,/g,""))
+    console.log(lst2.join(""))
+
+  </script>
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>Document</title>
+  <style>
+    .box{
+      width:30px;height:30px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+    <input type='text' v-model='x'/>
+    {{y}}
+    <div class='box' @click='rev'></div>
+  </script>
+  <script>
+    let { createApp,ref} = Vue;
+    let app = createApp({
+      template:"#apphtml",
+      setup(){
+        let x = ref("")
+        let y = ref("")
+        function rev(){
+          y.value = getRef(x.value)
+      
+        }
+        function getRef(text){
+          console.log(text.split("").reverse())
+          return text.split("").reverse().join("111")
+
+
+          // let lst = [];
+          // for (let item of text){
+          //   lst.unshift(item)
+          // }
+       
+          // return (String(lst).replace(/,/g,""))
+        }
+        return{
+          x,rev,getRef,y
+        }
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html> -->

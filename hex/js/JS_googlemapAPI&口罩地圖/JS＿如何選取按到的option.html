@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <select name="" id="">
+        <option value="qwewqe">fsaf</option>
+        <option value="a1" data-idx="a2">AA</option>
+        <option value="b1" data-idx="b2">BB</option>
+        <option value="c1" data-idx="c2">CC</option>
+        <option value="d1" data-idx="d4">DD</option>
+    </select>
+    <script>
+        let se = document.querySelector("select");
+        se.onchange = function(e){
+            console.log(e.target.value);
+            console.log(e.target.dataset.idx)//沒屁用因為選到的事select
+            console.log(e.currentTarget.dataset.idx)//沒屁用因為選到的事select
+
+            let selectedOption = se.options[se.selectedIndex];//重點是這邊 .selectedIndex 這個方法
+            console.log(selectedOption.value);
+            console.log(selectedOption.dataset.idx);
+            console.log(selectedOption.textContent)
+        }
+    </script>
+</body>
+</html>

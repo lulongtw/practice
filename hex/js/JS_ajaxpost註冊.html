@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+    
+  <!--
+    這堂課是模擬表單送出後，給後端傳資料，並接收後端傳的回應
+    把回應反饋在螢幕上
+    單好像差了一點，
+    因為我按下submit是直送value到後端
+    這邊做法是 用變數取得 value  再送  我以為是直接用網址那個資料送
+  -->
+  <!--注意要name  後端靠name判斷資料誰是誰-->
+  <form action="">
+    <input type="email" name="email">
+    <input type="text">
+    <input type="submit" value="送出"><!--也可以在html設onclick="func(event)" 注意必須(event)不能簡寫 也要加上()-->
+  </form>
+  <script>
+    let email = document.querySelector("[type='email']");
+    let password = document.querySelector("[type='text']");
+    let submit = document.querySelector("[type='submit']");
+    let xml = new XMLHttpRequest();//痊癒變數方便之後onload
+
+
+
+    submit.addEventListener("click",(e)=>{
+      e.preventDefault();//否則會刷新
+      //先.open後.setRequestHeader
+      xml.open("post","https://hex-escape-room.herokuapp.com/api/user/signup",true);
+      xml.setRequestHeader("Content-type","application/x-www-form-urlencoded");//傳給後端之前要先確定資料發送格式
+      // 如果回傳格式不正確代表setRequestHeader寫錯
+      xml.send(`email=${email.value}&password=${password.value}`) 
+      //.send()裡面資料格式 是和後端討論的結果，這邊採用的格式是 x-www-form-urlencoded
+      //x-www-form-urlencoded格式的資料是這樣
+      
+           //email=lulongyoy@gmail.com&password=aaa
+  //input的  name =       值           ＆  name = 值
+
+      //每個name之間都用&連接
+      //這個send的格式是看按下submit後  網頁上方網址列會變這樣
+      
+    })
+
+    xml.onload = function(){
+      console.log(xml.response)
+      let div = document.createElement("div");
+      let res = JSON.parse(xml.response);//要在這邊parse 不能在xml.response.message  因為這邊才是物件
+      //484資料庫都要JSON.parse來解壓縮啊???
+      div.textContent = res.message;
+      document.body.appendChild(div);
+    }
+
+// 是的，使用 xml.open("post", ...) 
+// 傳送 POST 請求時，xml.onload 仍然會接收到伺服器的響應。
+// 無論是 GET 還是 POST 請求，xml.onload 事件都會在請求成功完成時觸發。
+
+// 在你的程式碼中，當你通過 xml.send 傳送 POST 請求時，伺服器會處理請求，
+// 然後將響應傳送回客戶端。這個響應將在 xml.onload 事件處理程序中獲取。
+
+// 在 xml.response 中，你得到的是伺服器傳送回來的響應資料。在你的例子中，
+// 使用 JSON.parse(xml.response) 對響應進行解析，因為伺服器的響應通常以 JSON 格式返回。
+
+  </script>
+</body>
+</html>

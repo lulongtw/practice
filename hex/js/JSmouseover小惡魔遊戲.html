@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {/*讓內容致中*/
+        display: flex;
+        height: 100vh;
+      }
+      @keyframes move {
+        0% {
+          top: 0;
+        }
+        50% {
+          top: calc(100% - 20px);/*不要超出畫外*/
+        }
+        100% {
+          top: 0px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      /*想把種花min郭怡進來，但困難點在
+      滑鼠是一小點，圖片是一片
+      目前想到是把小惡魔都變大，
+      比方說cursor設在min郭center,
+      那小惡魔就是width和height+ min郭的半徑
+      但這些加上的是看不到的事transpatent，而且看到的區域必須在整個小惡魔的center
+      
+      */
+      let lst = [];
+      let body = document.body;
+      let div = document.createElement("div");
+      let count = document.createElement("div");//時間計數器
+			let long = document.createElement("div");//最長存活計數器
+			let dead = document.createElement("div");//死亡計數器
+			let container = document.createElement("div");//只是包裹上面三個計數器
+      count.textContent = "存活時間:0秒";
+			long.textContent = "最長秒數:0秒"
+			dead.textContent = "鼠王次數:0次"
+			container.setAttribute("style", "position:absolute;top:-80px;left:0");
+			container.appendChild(count);
+			container.appendChild(long);
+			container.appendChild(dead);
+			div.appendChild(container);
+      
+			
+			div.setAttribute(//遊戲區域
+        "style",
+        "width:300px;height:200px;border:1px solid black;display:flex;justify-content:space-evenly;margin:auto;position:relative"
+      );
+      body.appendChild(div);
+
+
+
+      for (let i = 0; i < 10; i++) {//建造遊戲區域內小惡魔
+        lst[i] = document.createElement("div");
+        lst[i].setAttribute(
+          "style",
+          `width:25px;height:20px;background-color:red;position:relative;animation:move ${
+            i + 1
+          }s ease-in-out infinite`
+        );
+        lst[i].addEventListener("mouseover", hit);//撞到啟動hit
+        div.appendChild(lst[i]);
+      }
+
+      function hit() {//撞到小惡魔會發生什麼事
+        alert("shit");
+				if (time>longtime){
+					longtime = time;
+					long.textContent =`最長秒數:${longtime}秒`
+				};
+				deadtime++;
+				dead.textContent = `鼠王次數:${deadtime}次`;
+				time = 0;
+				count.textContent = "存活時間:0秒";
+
+
+      }
+
+      div.addEventListener("mouseover", startCount);
+      let start;
+			let time = 1;
+			let longtime = time;
+			let deadtime = 0
+
+      function startCount() {
+				/*
+				必須設置此setInterval啟動後，無法再次啟動
+				再次啟動的情況就是滑鼠一職mouseover，對電腦來說，滑鼠在上面就是一池啟動setINterval
+				所以這邊設置stat變數，一但第一次啟動此函式   
+				start就被interval賦值，一但被賦值，舊無法啟動setInterval
+				*/
+        if (!start) {
+          start = window.setInterval(function () {
+            count.textContent = `存活時間:${time++}秒`
+          }, 1000);
+        }
+      }
+			div.addEventListener("mouseout",stopCount);
+			function stopCount(){
+				window.clearInterval(start);
+				start = ""//一旦mouseout 讓Boolean(start) == false 讓下次mouseover時可以啟動setInterval
+			}
+    </script>
+  </body>
+</html>

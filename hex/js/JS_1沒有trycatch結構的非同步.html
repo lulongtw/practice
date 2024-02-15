@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.6/axios.min.js" integrity="sha512-CmAbe9oceGW5QqQ3m4+xHwUEILjqe3qxPkgdAsGL6mTDSqNcnoHDDdl+rZTwibMlnw0Sqf3IRvfsKNfIKqX/8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Document</title>
+  </head>
+  <body>
+<script>
+
+/*
+有人嫌catch會造成程式太冗長
+所以發明把所有catch寫在一起的方式
+但這方法會讓所有錯誤以同一種方式回報
+因為實際上只有寫一組catch
+*/
+
+/*
+有兩種方法
+下列是第一種
+針對單次執行  無法迭代執行
+a假裝是一個ajax行為
+b是promise物件
+等待a執行的結果
+現在就是要把b裡面的catch取代掉
+
+所以搞了一個noCatch函式
+因為b()函式回傳也是一個promise物件
+所以可以針對Promise物件使用Promise物件方法.catch
+就只是把.catch拿到外面寫而已
+意思是如果有需要  所有Promise都不用寫.catch
+直接到套用noCatch 像是c()
+*/
+
+function a(n){
+  return new Promise((ok,notok)=>{
+    setTimeout(()=>{
+      if (n){
+        ok("ok")
+      }else{
+        notok("notok")
+      }
+    },100)
+  })
+}
+
+async function b(n){
+  let ans = await a(n);
+  console.log(ans)
+  /*
+  這邊的結構應該是
+  try{
+
+  }catch(error){
+
+  }
+  但要把catch省略
+  */
+
+}
+function noCatch(asFn){
+  return asFn.catch(
+    res=>{
+      console.error("shit",res)
+    }
+  )
+}
+//注意  在這變傳入的是已經的執行函式  這樣方便傳入參數
+noCatch(b(2))
+noCatch(b(1))
+
+
+//這便是證明把noCatch拿來用在其他沒寫try catch結構的非同步程式也可以用
+async function c(){
+  let data = await axios.get("https://randomuser.me/api/?page=3&results=1&seed=abc");
+  console.log(data)
+}
+
+noCatch(c())
+
+
+
+</script>
+  </body>
+</html>

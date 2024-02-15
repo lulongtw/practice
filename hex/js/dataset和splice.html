@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    ul::before{
+      content:"100gay list"
+    }
+  </style>
+</head>
+<body>
+  <script>
+    /*
+    沒有筆記
+    不知道要衝三小的東西
+    建立一個物件，讓物件裡面的資料以函式的方式
+    在ul內部建立li，建立同時傳入data-資料，方便日後抓取
+    宣染ul完成後，
+    給ul裝click監聽
+    功能是按到li時，
+    以dataset取得data-num，建立時的index，
+    將原始obj序列內部的資料刪除，
+    刪除完後，用新obj重新渲染ul
+
+
+    用dataset處理資料一定注意JSON格式
+    因為所有取出來的全都是文字幹
+    下面這個例子因為splice也可以接受文字 像這樣
+       lst.splice("1",1)
+       但 實際上應該是要lst.splice(1,1)
+    而有些比較靠杯的像布林值
+    如果data存布林  之後取出要給他toggle !
+    就會取得相反的結果幹
+    ex
+    <div data-ckeck="false"></div>
+    let boolean = div.dataset.check
+    boolean = !boolean
+    這時就會烙賽
+    因為城市內部處理的事字串
+    上面相當於
+    boolean = !("false")
+    這央會變成false
+    因為"false" 是true
+    !true 就變false
+
+    */
+    let obj = [
+      {gay:"雅集"},
+      {gay:"建伸"},
+      {gay:"俊宏"},
+    ]
+
+    let ul = document.createElement("ul");
+    ul.setAttribute("style","padding:50px;background-color:blue");
+    
+    function addOnUl(){
+      let res = "";
+      for (let i=0;i<obj.length;i++){
+        res+=`<li style="background-color:red;margin:10px;" data-num="${i}">${obj[i].gay}</li>`
+      };
+      ul.innerHTML = res;
+    }
+    addOnUl()
+
+
+    ul.addEventListener("click",(e)=>{
+      if (e.target.tagName=="LI"){
+        let num = e.target.dataset.num;
+        obj.splice(num,1);
+        addOnUl();
+      }
+    });
+
+
+
+
+    document.body.appendChild(ul);
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    input{
+      width:200px;height:50px;
+    }
+    .btn{
+      width:200px;height:50px;
+      background-color: red;
+      line-height:50px;
+      border:1px solid black;
+    }
+    ul{
+      border:1px solid black;
+      padding:50px;
+    }
+  </style>
+</head>
+<body>
+  <input type="text">
+  <div class="btn">按我</div>
+  <ul></ul>
+  <script>
+    let input = document.querySelector("input");
+    let btn = document.querySelector(".btn");
+    let ul = document.querySelector("ul");
+    let data = JSON.parse(localStorage.getItem("info")) || [];//還在想JSON.parse要寫在window哪變，靠杯寫在這邊拉
+    window.addEventListener("load",()=>{
+      screenRefresh(data)
+    })
+
+
+    btn.addEventListener("click",()=>{
+      let newcnt = input.value;
+      data = writeNewData(data,newcnt);
+      screenRefresh(data)
+      putData(data);
+      input.value = "";
+
+    })
+
+    ul.addEventListener("click",(e)=>{
+      if (e.target.tagName == "SPAN"){//大小寫打錯
+        let num = e.target.dataset.num;
+        //原本有get(data)  蛋只要js的data跟local保持同步 就不用從local拿
+        data.splice(num,1);
+        screenRefresh(data);
+        putData(data);//透過這個函式保持同步
+      }
+    })
+
+    function writeNewData(data,newcnt){
+      data.push({thing:newcnt});//push本身就是把內容變成[]放進去了 還多家[]  寫成data.push([{thing:newcnt}])
+      return data
+    }
+
+    function screenRefresh(data){
+      ul.textContent = ""//一定要這個，不然會不斷append一直累積
+      for (let i=0;i<data.length;i++){
+        let li = document.createElement("li");
+        let del = document.createElement("span")
+        li.textContent = data[i].thing;
+        del.textContent = "del   "
+        del.style.color = "red";
+        del.dataset.num = i;
+        li.insertBefore(del,li.firstChild);//注意順序 不要放在寫del內容之前
+        ul.appendChild(li);
+      }
+    }
+    function putData(data){
+      localdata = JSON.stringify(data);//要另立一新變數 不然會污染到外面
+      localStorage.setItem("info",localdata)
+    }
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+    解構賦值
+    */
+   //使用解構賦值將值傳入序列中的變數
+   //不需一個一個丟
+    let lst = [1,2,3,4,5];
+    let [one,two,three] = lst;
+    console.log(one,two,three)
+    //如果中間有空白會跳過
+    let [a,,c] = lst;
+    console.log(a,c);
+
+    console.log("===分≈隔線====")
+    //幹你他媽也可以用預設值
+    let lst1 = ["pika","jayni"];
+    //皮卡預設值chu  種子預設值seed
+    let [皮卡="chu",傑尼,種子='seed'] = lst1;
+    
+    console.log(皮卡,傑尼,種子)
+
+
+    console.log("===分≈隔線====")
+    let first = "first";
+    let second = "second";
+    //直接交換雙方值
+    [first,second] = [second,first];
+    console.log(first);
+
+
+
+    console.log("===分≈隔線====")
+
+    //使用解構賦值取得字串的每個字
+    let str = "基紐特攻隊";
+    let [q,w,e,r,t] = str;
+    console.log(t,r,e,w,q)
+
+
+
+    console.log("===分≈隔線====")
+    //物件的解構賦值  他媽太神奇了吧
+    let obj = {
+      pork:"豬肉",
+      beef:"牛肉",
+      chicken:"雞肉💪"
+    }
+    //取物件屬性名加上{} 讓物件賦值
+    //屬性名變成變數
+    let {pork} = obj;
+    console.log(pork)
+
+    //如果變數要另外取名不想用屬性值，
+    //就用let {屬性:變數} = 物件
+    //變數就取得物件.屬性 的值了
+    let {chicken:g肉} = obj;
+    console.log(g肉)
+
+    console.log("===分≈隔線====")
+
+    //幹你娘物件解構賦值也有預設值
+    let {big:lp='懶趴'} = {};
+    //這段意思是從{}空物件取得big屬性復職到變數lp上面
+    //但是空物件他媽怎麼會有屬性big 更不用說值了
+    //所以lp使用預設值懶趴
+    console.log(lp)
+  </script>
+</body>
+</html>

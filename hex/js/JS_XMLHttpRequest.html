@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        border: 1px solid black;
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let a = new XMLHttpRequest(); //透過XMLHttpRequest 取得遠端資料
+
+      //此時看console.log(a)現在是一個XML物件，回去看ponpon的建構函式，建構函式會回傳一個物件
+      //用new 來搞事就是建構函式，這個XMLHttpRequest函式是js一開始就建立好的
+
+      //裡頭有個readtState屬性：其數字分別代表XML在各期間的不同狀態
+
+      //readyState:0 =>已產生XML 但還沒有連結
+      //readyState:1 =>以使用open 但還沒send
+      //readyState:2 => 偵測到使用send (2和3因為速度太快，通常不會顯示)
+      //readyState:3 => loading (2和3因為速度太快，通常不會顯示)
+      //readyState:4 => 取得資料ok
+
+      a.open("get", "https://hexschool.github.io/ajaxHomework/data.json", true);
+      //.open裡面可以傳入3個參數，分別是
+      //1.格式：get(讀取資料) post(傳送資料到後端，ex確認密碼是否使用過，確認存貨..)
+      //2.讀取的網址
+      //3.同步或非同步  true非同步 不等遠端資料回傳，直接往下跑  false同步 等完遠端才往下跑
+      //此時console.log(a)  readtState會變成1
+
+      a.send(null); //用get 參數為null  不需要傳資料給後端
+      //此時console readtState會變成4
+
+      //開始使用拉，要怎麼使用要看當初.open是同步或非同步
+      //通常情況是true非同步，因為網站東西通常很大，不可能等他跑完
+      //但直接使用又會回傳空值，所以要來搞個語法onload 
+      //console.log(a.response) 在非同步時true是空值
+			
+			//BUT!!你以為所有xml進來的東西一定要再onload之下嗎!!
+			//也可以在函式裡面使用啊我的天腦袋爆炸
+			//下面兩個  第一個是用函式叫資料  第二個是等onload之後叫
+			//寫法幾乎一樣，但要注意被JSON.parse要另外起變數，
+			//否則用相同變數  相同變數會被JSON.parse兩次會  報錯
+
+
+
+
+      let div = document.createElement("div");
+      document.body.appendChild(div);
+      div.onclick = function (e) {
+        text = JSON.parse(a.response);
+        e.target.textContent = text[0].name;
+      };
+
+
+
+
+
+			let div2 = document.createElement("div");
+      document.body.appendChild(div2);
+
+      a.onload = function () {
+        //需要使用時再使用.onload
+        if (a.status == 200) {
+          aa = JSON.parse(a.response);
+          div2.textContent = aa[0].name;
+        } else {
+          //要進到這邊網址也是不能錯太多= =
+          div2.textContent = "totally wrong";
+        }
+      };
+
+    </script>
+  </body>
+</html>

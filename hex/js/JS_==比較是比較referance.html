@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let lst = [
+        [1, 2],
+        [3, 4],
+      ];
+      if (lst[0] == [1, 2]) {
+        console.log("印不出來");
+      } else {
+        console.log("什麼!!這樣不相等!!");
+      }
+
+
+
+      if (JSON.stringify(lst[0]) == JSON.stringify([1, 2])) {
+        console.log("要JSON.stringify才能比教= =");
+      } else {
+        console.log("印不出來");
+      }
+      
+    
+    </script>
+  </body>
+</html>

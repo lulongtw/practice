@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .img{
+            background-image:url(https://guidetoiceland.imgix.net/487256/x/0/aapuffineioeaaaeuescyyasaiy-2.jpg?ixlib=php-3.3.0&w=883);
+            background-size: cover;/*觀察cover和contain的分別*/
+            background-position:center top;
+            background-repeat:no-repeat;
+
+        }
+        section{
+            height:200px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="img"></div>
+    <section></section>
+    <script>
+        /*
+        重點是開啟畫面時，圖片就是要滿版，不管瀏覽器的大小
+        所以要透過window.innHeight取得 （也有outterheight 整個瀏覽器視窗大小）
+        把視窗內部高度傳進元素後，
+        在用resize事件動態改變圖片高度
+        */
+
+        let img = document.querySelector(".img");
+        img.style.height = window.innerHeight + "px";//重點記得加px
+
+        window.addEventListener("resize",()=>{
+            img.style.height = window.innerHeight + "px";
+        })
+        window.onresize = function(){
+            console.log("這樣寫也可以")
+        }
+    </script>
+</body>
+</html>

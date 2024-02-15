@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+      let lst = [
+    {age:1},{age:6},{age:21},{age:12},{age:2}
+  ]
+  class newLst extends Array{
+    constructor(item){
+      super(...item)
+    }
+  }
+
+  let lst2 = new newLst(lst);
+  let x = lst2.reduce((accu,item)=>{
+    return accu+item.age
+  },0)
+  console.log(x)
+  let s = [...lst2]
+  let y = s.filter(item=>item.age>20);
+  console.log(y)
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+    目標是做一個備忘錄
+    可以輸入要做的事，
+    也可以刪除要做的事
+  
+    用的存取單元是localStorage，
+    所以存取時重點要注意JSON.stringify 和JSON.parse
+    另外如果localStorage一開始就有存東西
+    還有一開始就要出現
+    */
+    
+
+    let con1 = document.createElement("div");//con1是 輸入匡input 跟 加入按鈕btn 的容器
+    let input = document.createElement("input");//輸入匡
+    let btn = document.createElement("div");//加入鈕
+    
+    //無聊css
+    input.setAttribute("style","width:100px;height:50px;padding:10px;margin:5px");
+    btn.setAttribute("style","padding:10px;;height:50px;width:50px;display:inline-block;text-align:center;line-height:50px;background-color:red;border:1px solid black")
+    btn.textContent = "加入";
+    let ul = document.createElement("ul");
+    ul.setAttribute("style","width:300px;border:1px solid black;min-height:200px")
+
+
+    //畫面剛開啟時，確認localStorage是否有存東西，如果有存東西，就用addOnWeb把東西渲染到畫面上
+    window.addEventListener("load",()=>{
+      let qq = localStorage.getItem("事情");
+        if (qq){ //if qq != null
+          qq = JSON.parse(qq);
+          addOnWeb(qq);
+        }
+    })
+
+    
+    btn.addEventListener("click",(e)=>{//按下btn開始渲染畫面
+      let lst
+      if ((localStorage.getItem("事情"))==null){  
+         lst = []
+      }else{
+        lst = localStorage.getItem("事情")//lst必須是從localStorage存取，如果用js存取會bug
+        lst = JSON.parse(lst);//存取記得JSON
+      }
+
+      lst.push({
+        thing:input.value,  //輸入 input的資料
+      });
+      let data = JSON.stringify(lst); //存取記得JSON
+      localStorage.setItem("事情",data)
+      
+      //  脫褲放屁 = = let res = JSON.parse(localStorage.getItem("事情"));
+      addOnWeb(lst)
+      input.value = ""//做完事情後把輸入清空以便下次輸入;
+  
+    });
+
+    ul.addEventListener("click",(e)=>{  //在ul設刪除事件
+      if (e.target.tagName=="SPAN"){ //點到span時啟動
+        let lst = JSON.parse(localStorage.getItem("事情"));//存取記得ＪＳＯＮ
+        lst.splice(e.target.dataset.num,1);//改好資料後 
+        addOnWeb(lst)//重新渲染
+
+        //這便是重要差異，就是改好的資料會需要放在兩個地方，一個是畫面，一個是localStorage;
+        lst = JSON.stringify(lst);//把改好的資料  放回localStorage
+        localStorage.setItem("事情",lst)
+      }
+    });
+
+
+
+
+
+    function addOnWeb(lst){
+  
+      ul.innerHTML = ""//每次渲染都會寫 如果不""，會把以前的在寫一遍
+      for (let i=0;i<lst.length;i++){
+        let li = document.createElement("li");
+        li.textContent = lst[i].thing;
+        //li不需要設data 因為出發刪除的事del  要靠del給程式num
+        let del = document.createElement("span");
+        del.setAttribute("style","color:red")
+        del.textContent = "刪除  "
+        del.setAttribute("data-num",i);
+        //也可以這樣寫
+        //del.dataset.num = i
+        li.insertBefore(del,li.firstChild);//將del設為li的第一個子元素
+        ul.appendChild(li);
+      }
+    }
+
+    
+    document.body.appendChild(con1);
+    con1.appendChild(input);
+    con1.appendChild(btn);
+    document.body.appendChild(ul)
+  </script>
+</body>
+</html>

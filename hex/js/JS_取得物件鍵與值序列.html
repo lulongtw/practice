@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //Object.keys(物件) 和Object.values(物件)
+    //取得物件的鍵序列以及值序列
+    //變成序列之後就可以.reverse() 倒過來反過去 誒嘿
+    //靈活的
+    //像隻猴
+
+    let obj = {a:{a:1},b:{b:1},c:{c:1}};
+    let values = Object.values(obj);
+    let keys = Object.keys(obj);
+    console.log(values)
+    console.log(keys)
+    keys.reverse();
+    values.reverse();
+    console.log(values)
+    console.log(keys)
+  </script>
+</body>
+</html>

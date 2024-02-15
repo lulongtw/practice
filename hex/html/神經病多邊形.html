@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .a{
+      width:0;
+      height:0;
+      border-bottom:87px solid black;
+      border-right:50px solid transparent;
+      border-left:50px solid transparent;
+    }
+    .b{
+      width:100px;
+      border-top:100px solid red;
+    }
+    .c{
+      width:0px;
+      border:50px solid rgb(253, 186, 186)
+    }
+    .d{
+      position:relative;
+      width:0;height:0;
+      border-bottom:59px solid green;
+      border-right:81px solid transparent;
+      border-left:81px solid transparent;
+    }
+    .d:before{
+      position:absolute;
+      content:"";
+      width:100px;
+      border-top:95px solid green;
+      border-right:31px solid transparent;
+      border-left:31px solid transparent;
+      top:59px;
+      left:-81px;
+    }
+    /*
+    https://www.oxxostudio.tw/articles/201503/css-regular-polygon-transform.html
+    */
+  </style>
+</head>
+<body>
+  <div class="a"></div>
+  <br>
+  <div class="b"></div>
+  <div class="c"></div>
+  <br>
+  <div class="d"></div>
+
+</body>
+</html>

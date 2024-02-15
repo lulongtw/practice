@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.6/axios.min.js"
+      integrity="sha512-CmAbe9oceGW5QqQ3m4+xHwUEILjqe3qxPkgdAsGL6mTDSqNcnoHDDdl+rZTwibMlnw0Sqf3IRvfsKNfIKqX/8g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"
+      integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let lst = [
+        {
+          name: "aaa",
+          like: "皮卡丘",
+          age: 12,
+        },
+        {
+          name: "eee",
+          like: "大那妹",
+          age: 35,
+        },
+        {
+          name: "ooo",
+          like: "小刀男",
+          age: 3,
+        },
+        {
+          name: "fff",
+          like: "小靠吧",
+          age: 20,
+        },
+        {
+          name: "ppp",
+          like: "小高門",
+          age: 42,
+        },
+        {
+          name: "kkk",
+          like: "巨高女",
+          age: 70,
+        },
+      ];
+
+      // 使用既有的原生class 作為父class
+      // 讓新物件可以使用原生class的方法
+      //傳遞參數要注意
+      //super必須是...items 來打散序列
+      class newArray extends Array {
+        constructor(items) {
+          super(...items);
+        }
+
+        //自製方法的this指向物件本身
+        sumVal(props){
+          return this.reduce((accu,item)=>accu+item[props],0)
+        }
+
+        //.sort()
+        //list.sort((a,b)=>a-b) 升冪排例
+        //list.sort((a,b)=>b-a) 降冪排列
+        sortBy(props,ascending=true){
+          this.sort((a,b)=>ascending?a[props]-b[props]:b[props]-a[props])
+        }
+
+
+      }
+      let test = new newArray(lst);
+      //使用原生class array的方法.forEach
+      lst.forEach(item=>item.age+=1)
+      console.log(lst)
+      //也可使用自製方法
+      console.log(test.sumVal("age"))
+      test.sortBy("age",1)
+      test.forEach(item=>console.log(item.age))
+    </script>
+  </body>
+</html>

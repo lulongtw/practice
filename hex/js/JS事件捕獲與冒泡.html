@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS事件捕獲與冒泡</title>
+    <style>
+      .out {
+        width: 500px;
+        height: 500px;
+        background-color: red;
+        position: relative;
+      }
+      .mid {
+        width: 350px;
+        height: 300px;
+        background-color: green;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+      .inner {
+        width: 200px;
+        height: 200px;
+        background-color: blue;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="out" data-position="out">
+      <div class="mid" data-position="mid">
+        <div class="inner" data-position="inner"></div>
+      </div>
+    </div>
+
+    <script>
+      /*
+    所有事件都會貫穿整個畫面，而不只是點擊的目標而已，
+    預設是點擊事件從點擊目標，擴散到最外層的元素，也就是body;  稱為冒泡bubbling
+    但會有需求，讓點擊事件從外層元素往內跑道目標元素的需求，稱為捕獲capturing
+    可以改動下方addEventLIster裡面的false和true值 
+    來改變事件流動的方向 false就是預設值 冒泡
+    true是捕獲，會從點擊處最外層往內找到點擊目標
+
+    stopPropagation()可以防止冒泡事件往外傳播擴張
+    */
+
+      let out = document.querySelector(".out");
+      let mid = document.querySelector(".mid");
+      let inner = document.querySelector(".inner");
+
+      out.addEventListener("click", fout, false);
+      mid.addEventListener("click", fmid, false);
+      inner.addEventListener("click", finner, false);
+
+      //e.stopPropagation()
+      //上面者行阻止點擊事件往外擴張
+
+      //out.addEventListener("click",fout,true);
+      //mid.addEventListener("click",fmid,true);
+      //inner.addEventListener("click",finner,true);
+
+      function fout(e) {
+        //e.stopPropagation()
+        console.log("out");
+      }
+      function fmid() {
+        console.log("mid");
+      }
+      function finner() {
+        console.log("inner");
+      }
+    </script>
+  </body>
+</html>

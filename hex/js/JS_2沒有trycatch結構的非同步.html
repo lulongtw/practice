@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.6/axios.min.js" integrity="sha512-CmAbe9oceGW5QqQ3m4+xHwUEILjqe3qxPkgdAsGL6mTDSqNcnoHDDdl+rZTwibMlnw0Sqf3IRvfsKNfIKqX/8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 大家耳熟能詳
+
+      // ["a","b","c"].forEach(async(item)=>{
+      //   console.log(item)
+      // })
+
+      //現在繼上節課
+      //因為有時候會用這種方法多次進行api
+      //如果要多次迭代的話
+      //上節課的方法就無法使用
+      //癥結點在參數的問題
+      //上節課使用的是以執行的函式  在外頭帶入參數
+      //現在要想辦法把參數帶進noCatch函式內
+
+
+
+      //像這樣 會報錯  沒地方插變數
+      //所以要另外搞事
+      // function noCatch(asFn){
+      //   return asFn.catch(
+      //     res=>{
+      //       console.log("shit",res)
+      //     }
+      //   )
+      // }
+      // ["a","b","c"].forEach(noCatch(
+      //   async(item)=>{
+      //   console.log(item)
+      // }
+      // ))
+
+
+      // function noCatchEx(asFn){
+      //   return (n)=>{//這便怎麼運作的我還是不清楚 = =
+      //     return asFn(n).catch(
+      //       res=>{
+      //         console.log("shit",res)
+      //       }
+      //     )
+      //   }
+      // }
+      //注意 這邊結構是
+      //[序列].forEach(noCatchEx(非同步函式))
+      // ["a","b","c"].forEach(noCatchEx(
+      //   async(item)=>{
+      //   console.log(item)
+      // }
+      // ));
+
+
+      //好現在可以開始跑正式api了
+      [1,2,3].forEach(noCatchFinal(async(item)=>{
+        let data = await axios.get(`https://randomuser.me/api/?page=3&results=${item}&seed=abc`);
+        console.log(data)
+      }))
+
+      //其實要硬搞把這變也傳入參數
+      //可能是查看什麼輪到哪個數字時出錯用的吧??
+
+      function noCatchFinal(asFn){
+        return (item)=>{
+          return asFn(item).catch(
+            res=>{
+              console.log(item,res)
+            }
+          )
+        }
+      }
+      
+
+    </script>
+  </body>
+</html>

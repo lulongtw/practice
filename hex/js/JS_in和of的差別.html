@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let data = [
+            {a:1},
+            {b:1},
+            {c:1},
+            {d:1},
+            {e:1},
+            {f:1},
+            {g:1},
+        ]
+
+        for (let p of data){
+            console.log(p)//印出每個物件
+        }
+        let lst = [1,2,3,4,5,6,7]
+        for (let p of lst){
+            console.log(p)//印出數字1234567
+        }
+        let lst1 = ["a","b"];
+        for (let p in lst1){
+            console.log(p)//印出index
+        }
+        //of 和 in的差別
+        //of 迭代每次輪到的目標  
+        //in 迭代每次輪到的索引
+    </script>
+</body>
+</html>

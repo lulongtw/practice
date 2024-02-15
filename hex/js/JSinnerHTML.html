@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #a {
+        color: red;
+      }
+      .b {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="a">div</div>
+
+    <h1>每個名字</h1>
+    <ul class="list"></ul>
+
+    <script>
+      /*innerHTML*/
+      /*innerHTML跟textCONtent很像，蛋textCOntent只能處理內文
+    而賦值給innerHTML的，可以是Html內文，如下所示，
+    蛋innerHTML會取代原本該元素的所有innerHTML 包含內文，
+    如有需要，要先記錄在重新加進去
+    */
+      let a = document.querySelector("#a");
+      original = a.textContent;
+      a.innerHTML = original + "<span class='b'>span</span>";
+
+      /*動態地將物件導入html*/
+
+      var farms = [
+        {
+          farmer: "卡斯伯",
+          dogs: ["張姆士", "龐的"],
+        },
+        {
+          farmer: "查理",
+          dogs: ["皮皮"],
+        },
+      ];
+      let lst = document.querySelector(".list");
+      let lstcnt = lst.textContent;
+      for (let i = 0; i < farms.length; i++) {
+        lstcnt += "<li>" + farms[i].farmer + "</li>";
+      }
+      lst.innerHTML = lstcnt;
+    </script>
+  </body>
+</html>

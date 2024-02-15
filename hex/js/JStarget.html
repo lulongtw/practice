@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JStarget</title>
+  <style>
+    li{
+      background-color: blue;
+      color:white;
+    }
+  </style>
+</head>
+<body>
+  <ul>
+    <li>aa</li>
+  </ul>
+  <script>
+    //target代表目前畫面第一位被點擊的目標，
+    //currentTarget代表目前實際上觸發事件的目標
+    let ul = document.querySelector("ul");
+    ul.setAttribute("style","padding:30px;border:1px solid black")
+    ul.addEventListener("click",(e)=>{
+      console.log(e.target);//因為事件會貫穿，即使不是身上有觸發事件，也會被影響
+      console.log(e.currentTarget);//currenttarget是實際上觸發事件的元素
+    });
+  </script>
+</body>
+</html>

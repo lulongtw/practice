@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      *{
+        margin:0;padding:0;
+        box-sizing:border-box;
+      }
+      body{
+        display:flex;
+      }
+      nav{
+    
+        width:300px;
+        height:100vh;
+        box-shadow:1px 0px 2px 0px rgb(150, 150, 150);
+      }
+      .select{
+        height:150px;
+        box-shadow:0px 3px 2px 0px rgb(150, 150, 150);
+        padding:10px;
+      }
+      label{
+        display:block;
+        height:30%;
+        display:flex;
+        align-items: center;
+      }
+      input{
+        display:inline-block;
+        width:80%;
+        padding:20px 10px;
+      }
+      .pharmacyList{
+       
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        padding:10px;
+        height:calc(100vh - 150px);
+        overflow: scroll;
+      }
+      .pharmacy{
+        padding:10px;
+        border-radius: 10px;
+        border:1px solid black;
+      }
+      main{
+        width:calc(100vw - 300px);/*靠杯要給寬度*/
+        height:100vh;
+        background-color: red;
+      }
+      table{
+        border-collapse: collapse;
+        font-size:1rem;
+      }
+  
+      td,th{
+        border:1px solid black;
+        padding:5px;
+        position: relative;
+      }
+      .valid::after{
+        position:absolute;
+        content:"";
+        width:5px;height:5px;
+        border-radius:100%;
+        background-color: green;
+        top:0;bottom:0;right:0;left:0;
+        margin:auto
+      }
+      .invalid::after{
+        position:absolute;
+        content:"";
+        width:5px;height:5px;
+        border-radius:100%;
+        background-color: red;
+        top:0;bottom:0;right:0;left:0;
+        margin:auto
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <section class="select">
+        <label for="county">縣市<select id="county"></select></label>
+        <label for="town">地區<select id="town"></select></label>
+      </section>
+      <section class="pharmacyList">
+      </section>
+    </nav>
+    <main></main>
+    <script type="module" src="main.js"></script>
+
+    <!-- prettier-ignore -->
+    <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+        ({key: "AIzaSyDlatLRSFrNSwdA6J8i9JNIMW66VCCDIa8", v: "weekly"});</script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+ 
+  </body>
+</html>

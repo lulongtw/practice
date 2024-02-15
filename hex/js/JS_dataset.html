@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    li{
+      font-size:10rem;
+    }
+  </style>
+</head>
+<body>
+  <ul>
+    <li style="color:red" data-haha="哈哈" data-pypd="屁眼派對">PYPD</li>
+  </ul>
+  <script>
+    /*
+    一般寫在元素上的屬性都是直接影響元素
+    而data-讓元素可以攜帶資料，這個資料不直接影響元素
+
+    把資料寫入在元素的寫法是
+    data-名稱="資料"  像屬性一樣在元素身上放資料
+
+    之後取出寫法是
+    event.target.dataset.名稱
+    使用dataset 會回傳該元素所有屬性是data-名稱的DOMobject物件
+
+    */
+
+    let li = document.querySelector("li")
+    li.addEventListener("click",(e)=>{
+      let ha = e.target.dataset.haha;//取得資料
+      let py = e.target.dataset.pypd;//取得資料
+      let obj = e.target.dataset
+      console.log(obj);//印出DOM object物件
+      console.log(ha,py);//印出資料
+      console.log(e.target.style.color);//這邊再確認跟一班取出屬性的差別
+      console.log(e.target.style.fontSize);//這是寫在css的 沒有在寫在元素內部
+      let styles = window.getComputedStyle(li);
+      let fz = styles.getPropertyValue("font-size")
+      console.log(fz);
+    })
+  </script>
+</body>
+</html>

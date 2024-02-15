@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form action="">
+    <input type="email" name="email" >
+    <input type="text" name="password">
+    <input type="submit" value="export" onclick="func(event)">
+    <!--必須打event  不能縮寫 不能含糊 不能含滷蛋  也不能含懶趴-->
+  </form>
+  <script>
+    let xml = new XMLHttpRequest();//要在痊癒變數，不然無法下面xml.onload會undefinded
+
+    let a = document.querySelector("[type='email']")//忘了""
+    let b = document.querySelector("[type='text']")
+    function func(e){
+      e.preventDefault();
+      
+      xml.open("post","https://hex-escape-room.herokuapp.com/api/user/signin",true);
+      xml.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    
+      xml.send(`email=${a.value}&password=${b.value}`);
+      console.log(xml)
+    }
+    xml.onload = function(){
+      let cong = document.createElement("div");
+      ans = JSON.parse(xml.response)//要在這邊parse 因為這邊才剛好是物件  不能在下面一後parse 那行不是物件
+      cong.textContent = ans.message
+      document.body.appendChild(cong)
+    }
+  </script>
+</body>
+</html>

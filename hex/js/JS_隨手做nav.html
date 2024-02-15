@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      .wrap {
+        width: 300px;
+        background-color: gray;
+        padding: 10px;
+        height: 60px;
+        transition: height 1s;
+        overflow: hidden;
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgb(248, 114, 114);
+        padding:5px;
+      }
+      .item {
+        padding: 10px 0;
+      }
+
+      .toggle {
+        height: 178px;
+      }
+
+      .btn {
+        width: 30px;
+        height: 30px;
+        border: 1px solid black;
+        border-radius: 10px;
+      }
+      input{
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="head">
+        <div><input type="text"/></div>
+        <div class="btn">a</div>
+      </div>
+      <div class="body">
+        <div class="item">上</div>
+        <div class="item">中</div>
+        <div class="item">下</div>
+      </div>
+    </div>
+    <script>
+      /*
+      看到別人css發憤圖強做的
+      本來是想做慢慢出現的list而已
+      做法是整版做出來後
+      給父標籤.wrap固定高度 然後 overflow:none;
+
+      之後給btn上事件  按一下取得內部.item數量
+      計算後得出高度
+
+      然後看檢查目前是已經變高還是沒變高  這部分靠toggle
+      用三元運算決定height
+
+      input輸入 enter後可以增加item
+      
+      */
+      let btn = document.querySelector(".btn");
+      let body = document.querySelector(".body");
+      let wrap = document.querySelector(".wrap");
+      let head = document.querySelector(".head");
+      let input = document.querySelector("input");
+      let height;
+
+      input.addEventListener("change",(e)=>{
+        let div = document.createElement("div");
+        div.classList.add("item")
+        div.textContent = e.target.value;
+        body.appendChild(div);
+        dealHeight();
+
+        
+      })
+  
+      let styles = getComputedStyle(head);
+      let originalHeight = parseInt(styles.getPropertyValue("height")) + 20
+
+      let toggle = true
+      btn.addEventListener("click", () => {
+        let items = document.querySelectorAll(".item");
+        let count = items.length;
+        height = count * 42 + originalHeight + "px";
+   
+
+        height = toggle? count * 42 + originalHeight + "px" : originalHeight + "px"
+        toggle = !toggle
+        wrap.style.height = height;
+        body.classList.toggle("show");
+      });
+
+
+      function dealHeight(){
+        let items = document.querySelectorAll(".item");
+        let count = items.length;
+        height = count * 42 + originalHeight + "px";
+        wrap.style.height = height;
+        toggle=false
+      }
+    </script>
+  </body>
+</html>

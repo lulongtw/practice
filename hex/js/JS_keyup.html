@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>keyup 事件示例</title>
+</head>
+<body>
+  <label for="inputField">输入框：</label>
+  <input type="text" id="inputField">
+  <div onkeyup.enter="func"></div>
+
+  <script>
+    // 获取输入框元素
+    const inputField = document.getElementById('inputField');
+
+    // 添加 keyup 事件监听器
+    //keyup是   当用户按下并释放一个键盘上的键时，就会触发 keyup 事件。
+    inputField.addEventListener('keyup', function(event) {
+      // 在键盘按键释放时触发的处理代码
+      console.log('Key released:', event.key);
+    });
+  </script>
+</body>
+</html>

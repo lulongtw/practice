@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        nav{
+            width:200px;
+            position:fixed;
+            background-color: rgb(236, 240, 227);
+            padding:0px 10px;
+            padding-top:50px;
+        }
+        img{
+            object-fit: cover;
+            width:100%;
+        }
+        #scroll{
+            height:calc(100vh - 100px);
+            overflow:scroll;
+        }
+        a{
+            height:50px;
+            line-height: 30px;
+            text-align:center;
+            display:block;
+        }
+        main{
+            width:500px;
+            margin-left:200px;
+            padding:50px;
+            display:grid;
+            gap:20px;
+        }
+        #a{
+            font-size:25px;
+            font-weight: 800;
+        }
+        .pics{
+            width: 600px;
+            display:flex;
+            flex-wrap:wrap;
+        }
+        .pics>img{
+            width:30%;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <img src="logo.png"/>
+        <div id="scroll">
+            <a href="#a"><div class="navs">11你爲什麼</div></a>
+            <a href="#b"><div class="navs">代替你爹</div></a>
+            <a href="#c"><div class="navs">我真的要</div></a>
+            <a href="#d"><div class="navs">完全崩潰</div></a>
+            <a href="#e"><div class="navs">藍白大戲</div></a>
+            <a href="#f"><div class="navs">武漢肺炎</div></a>
+            <a href="#g"><div class="navs">中國吃屎</div></a>
+            <a href="#h"><div class="navs">好的投柯</div></a>
+            <a href="#a"><div class="navs">你爲什麼</div></a>
+            <a href="#b"><div class="navs">代替你爹</div></a>
+            <a href="#c"><div class="navs">我真的要</div></a>
+            <a href="#d"><div class="navs">完全崩潰</div></a>
+            <a href="#e"><div class="navs">藍白大戲</div></a>
+            <a href="#f"><div class="navs">武漢肺炎</div></a>
+            <a href="#g"><div class="navs">中國吃屎</div></a>
+            <a href="#h"><div class="navs">22好的投柯</div></a>
+        </div>
+    </nav>
+
+    <main>
+        <div id="a">為什麼要代替你爹</div>
+        <div class="cntn">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestias suscipit assumenda amet obcaecati tenetur officia illo aspernatur explicabo, aut debitis soluta esse tempora cupiditate quae id neque unde ad illum!</div>
+        <div class="cntn">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugit pariatur illo aspernatur. Mollitia blanditiis sed sequi numquam commodi neque quos.</div>
+        <div class="pics">
+            <img src="pic.png"/>
+            <img src="pic.png"/>
+            <img src="pic.png"/>
+            <img src="pic.png"/>
+            <img src="pic.png"/>
+            <img src="pic.png"/>
+        </div>
+    </main>
+
+</body>
+</html>

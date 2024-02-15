@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    ul{
+      padding:30px;/*增加父元素範圍*/
+    }
+  </style>
+</head>
+<body>
+
+  <script>
+    /*
+    這節課教獲取取目標子元素的textContetn(當然也可以是其他東西，比方錢，權力，土地，女人)
+    當然也可以一個一個在子元素家監聽器，
+    蛋也可以在父元素新增
+    但在父元素新增有缺點
+    就是按到父元素的時候整車會跑出來
+    我們不需要父元素的內容
+    所以就用e.target.tagName或 e.target.nodeName 來過濾，取得目標值
+    */
+
+
+    let ul = document.createElement("ul");
+    let text = "Lorem."
+
+    for (let i=0;i<5;i++){
+      let li = document.createElement("li");
+      li.textContent = "this is "+i +text 
+      text+=text;
+      ul.appendChild(li)
+    }
+    document.body.appendChild(ul);
+    ul.addEventListener("click",(e)=>{
+      
+      if (e.target.tagName === "LI"){//不能寫  if (e.target == "li"){  太懶惰了 
+                                  //因為e.target是一個DOM元素對象  不是字串
+        console.log(e.target.textContent)
+      }
+      //console.log(e.target.textContent)
+    })
+  </script>
+</body>
+</html>

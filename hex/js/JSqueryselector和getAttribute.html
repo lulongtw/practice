@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .c{
+      color:rgb(229, 229, 229);
+    }
+    #d{
+      background-color: green;
+    }
+
+  </style>
+</head>
+<body>
+  <input type="text">
+  <div id="a"><span></span></div>
+  <div class="b"><span></span></div>
+  <div class="b"><span></span></div>
+  <div id="d" style="color:yellow">dd</div>
+</body>
+<script>
+  /*把querySelector當css selector用未id,class的元素取出*/
+  let input = document.querySelector("input")/*直接取出input標籤  屌吧*/
+  input.value = "test"
+  let a = document.querySelector("#a>span");
+  a.textContent = "aa";
+  /*用setAttribute設定元素屬性*/
+  let b = document.querySelectorAll(".b span")/*用all取得所有 跟getEleByCls一樣 只是多了css選擇器*/
+  for (let i=0;i<b.length;i++){
+    b[i].textContent = `${i}號機啟動`
+    b[i].setAttribute("class","c")/*setAttribute帶入兩個參數  第一個元素屬性 第二個是值*/
+    b[i].setAttribute("style","background-color:red")/*引入style的方式*/
+  }
+
+  /*
+  用.textContent返回取得.b span的內文
+  什麼有這種操作*/
+  for (let i=0;i<b.length;i++){
+    console.log(b[i].textContent);
+  };
+
+
+  /*
+    用getAttribute取得元素屬性值
+    注意，只能取得 在html標籤"裡面"的屬性，像上面<style>給的css就印不出來
+  */
+  let ans = document.querySelector("#d").getAttribute("style");
+  console.log(ans)
+  
+
+
+
+  /*
+  這個跟上面有點像，也是取屬性，但只有取style，只是這個屬性是包含<style>給的css屬性
+  所以現在才知道拿style就拿style為啥還要ComputedStyle 因為這方法是拿到該元素所有的style
+  */
+  let d = document.querySelector("#d");
+  let styles = window.getComputedStyle(d);
+  let backcolor = styles.getPropertyValue("background-color");
+  console.log(backcolor)
+
+</script>
+</html>

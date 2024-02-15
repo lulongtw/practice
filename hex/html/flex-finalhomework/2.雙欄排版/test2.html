@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #con{
+            display:flex;
+            width:calc(300px * 2 + 30px);
+            margin:0 auto;
+            justify-content: space-evenly;
+        }
+        .items{
+            width:300px;
+            background-color: antiquewhite;
+            border-radius:10px;
+            position:relative;
+            height:600px;
+        }
+        img{
+            position:absolute;
+            top:0;bottom:0;right:0;left:0;
+            margin:auto;
+            object-fit:cover;
+        }
+        .items.a{
+            display:flex;
+            flex-direction: column;
+            justify-content:center;
+            padding:20px;
+            box-sizing:border-box;
+            gap:20px;
+        }
+        .title{
+            color:green;
+            font-size:1.3rem;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="con">
+        <div class="items"><img src="./logo.png"></div>
+        <div class="items a">
+            <div class="title">為什麼要代替你爹</div>
+            <div class="cntn">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo quas quod culpa est vitae cum incidunt similique natus asperiores libero!</div>
+            <div class="cntn">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum, quidem?</div>
+            <div class="title">為什麼要代替你爹</div>
+        </div>
+    </div>
+</body>
+</html>

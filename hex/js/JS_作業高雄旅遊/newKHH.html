@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+		<link rel="stylesheet" href="newKHH.css">
+  </head>
+  <body>
+		<div class="wrap">
+			<header id="head">
+				<div  class="headtitle">高雄旅遊資訊</div>
+				<select name="select" id="select">
+					<option value="" selected disabled>--請選行政區--</option>
+				</select>
+			</header>
+			<nav class="firstnav">
+				<div class="navtitle">熱門行政區</div>
+				<div class="navwrap">
+					<div class="hotnavs" data-idx="802">苓雅區</div>
+					<div class="hotnavs" data-idx="807">三民區</div>
+					<div class="hotnavs" data-idx="800">新興區</div>
+					<div class="hotnavs" data-idx="803">鹽埕區</div>
+				</div>
+			</nav>
+			<main>
+				<div class="divide"></div>
+				<div class="dist">
+					<div class="distname"></div>
+					<div class="distwrap"></div>
+					<div class="totop"><a href="#head"><img src="./assets/btn_goTop.png" alt=""></a></div>
+				</div>
+				
+				<nav class="secondnav">
+					<div class="prev" data-step="minus">prev</div>
+					<div class="pagewrap"></div>
+					<div class="next" data-step="plus">next</div>
+				</nav>
+			</main>
+			<footer>
+				<div class="ft1">高雄旅遊網</div>
+				<div class="ft2">資料來源：高雄市政府</div>
+			</footer>
+		</div>
+		<script src="newKHH.js"></script>
+  </body>
+</html>

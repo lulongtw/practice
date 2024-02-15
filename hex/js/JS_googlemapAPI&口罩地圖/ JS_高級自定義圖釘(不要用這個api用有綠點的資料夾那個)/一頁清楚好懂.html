@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <title>Advanced Markers with HTML</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://use.fontawesome.com/releases/v6.2.0/js/all.js"></script>
+    <style>
+      #qq {
+        width: 500px;
+        height: 500px;
+      }
+      .marker {
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="qq"></div>
+    <script type="module">
+/*
+
+
+
+不要搞這個幹你娘浪費時間幹
+困難點在於無法使用initMap()
+因為defer拿掉
+會"不一定"能載入自定義座標  不是 一定 或是 不能 喔  是不一定喔屌吧
+
+只能用window.initialize = initMap
+
+但是這樣一來我就無法等data抓完再initMap() = =
+同樣也無法傳入參數 = = 
+意思是一個函示裡面我只能出一張圖  然後有很多座標
+一張圖就要寫一個函示= =
+
+
+
+*/
+
+
+
+      //做標籤實體
+      function buildContent() {
+        let div = document.createElement("div");
+        div.classList.add("marker");
+        return div;
+      }
+
+      //做地圖
+      async function init2() {
+        const center = {
+          lat: 37.34576403052,
+          lng: -122.04455090047453,
+        };
+        let map = await new google.maps.Map(document.getElementById(`qq`), {
+          zoom: 14,
+          center,
+          mapId: "4504f8b37365c3d0",
+        });
+
+        let advmkview = new google.maps.marker.AdvancedMarkerView({
+          map,
+          content: buildContent(), // content 是要传入整个已经创建好的元素
+          position: center, // 传入坐标
+          title: "qq", // 传入描述
+        });
+      }
+      window.init2 = init2;
+    </script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlatLRSFrNSwdA6J8i9JNIMW66VCCDIa8&callback=init2&libraries=marker&v=beta"
+      defer
+    ></script>
+  </body>
+</html>

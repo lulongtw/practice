@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/axios.min.js" integrity="sha512-TjBzDQIDnc6pWyeM1bhMnDxtWH0QpOXMcVooglXrali/Tj7W569/wd4E8EDjk1CwOAOPSJon1VfcEt1BI4xIrA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+
+      //這節課上如何優化非同步函式 
+      //以及最重要的!!!!!
+      //同時取得兩個api!!!!!!
+
+
+      //下面有三種方法
+      //前面兩種主要是希望可以每次都取得相同的json
+      //因為ａｐｉ網站每次派發出來的json都是隨機的
+      //透過.then的方式取得第一次的seed並.then執行下去
+      //因為有相同的seed就可以取得相同的資料
+      
+  		//同時第二個方法使用return 
+		//減少一個.then使用  好看一點
+
+      //最屌是第三個  靠杯前面寫這麼多 你他媽直接完成  
+      //是同事console出，但是不會是一樣的seed
+
+
+ 	   //同時可以看到====分隔了案三地每次都不一樣  
+      //因為非同步的關係
+
+      let data = [];
+      let seed
+      
+      //第一種  大家都會
+      axios.get("https://randomuser.me/api")
+      .then(function(res){
+         seed = res.data.info.seed;
+         console.log(res.data.results)
+      }).then(function(){
+        axios.get(`https://randomuser.me/api/?seed=${seed}`)
+        .then((res)=>{
+          data = res.data.results;
+          console.log(data)
+          console.log("=====分隔兩岸三地門=====")
+
+        })
+      })
+    
+
+      //第二種  少一個then
+      axios.get("https://randomuser.me/api")
+      .then((res)=>{
+        console.log(res.data.results)
+        seed = res.data.info.seed;
+        return axios.get(`https://randomuser.me/api/?seed=${seed}`)
+      }).then((res)=>{
+        console.log(res.data.results)
+      console.log("=====分隔兩岸三地門=====")
+
+      })
+
+    
+
+
+      //第三種 
+      let url = "https://randomuser.me/api"
+      Promise.all([axios.get(url),axios.get(url)])
+      .then(([res1,res2])=>{
+        console.log([res1,res2])
+      })
+
+
+
+
+
+//  奇行種
+
+async function getSeed(){
+  try{
+   let temp = await axios.get("https://randomuser.me/api")
+    seed = temp.data.info.seed
+    console.log(temp.data.results)
+  }catch(error){
+    console.error("shit",error)
+  }
+}
+
+function show(){
+  try{
+    let url = `https://randomuser.me/api/?seed=${seed}`;
+    axios.get(url)
+    .then((res)=>{
+      console.log(res.data.results)
+    })
+  }catch(error){
+    console.error("shit",error)
+  }
+}
+
+window.onload = async()=>{
+  data  = await getSeed()
+  show()
+}
+
+
+
+
+
+
+    </script>
+  </body>
+</html>

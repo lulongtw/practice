@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSkey和貝茲曲線</title>
+    <style>
+      .wrap {
+        width: 100vw;
+        display: flex;
+        justify-content: space-evenly;
+
+        align-items: flex-end;
+        height: 100vh;
+      }
+      .a,
+      .b,
+      .c {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        bottom: 0px;
+        /* ///必須要設bottom 因為transition是需要起始狀態和結束狀態
+        
+        //如果他嗎沒有一開始設bottom只有在結果設  他媽transition就不會動 */
+      }
+      .a {
+        background-color: red;
+      }
+      .b {
+        background-color: green;
+      }
+      .c {
+        background-color: blue;
+      }
+      .rocket {
+
+        transition: bottom 0.6s cubic-bezier(1, 0.13, 1, 1.08),
+        /* //可以在開發人工具的中間的style 點擊到該元素可以看到怎麼跳整該素值 
+            注意()內不要多打東西
+        */
+          background-color 1s;
+      }
+      .white {
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="a rocket"></div>
+      <div class="b rocket"></div>
+      <div class="c rocket"></div>
+    </div>
+    <script>
+      let rocket = document.querySelectorAll(".rocket");
+
+      function cng(elm) {
+        elm.classList.toggle("white");
+        elm.style.bottom = "700px";//.style.xxx適合一項一項匯入 
+        //如果用elm.setAttribute("style","...")
+        //setAttribute是用一次性將整個style匯入，因為一蛋setAttr 會all reset
+      }
+
+      window.addEventListener("keydown", fire);
+
+      function fire(e) {
+        switch (e.key) {
+          case "1":
+            cng(rocket[0]);
+            break;
+          case "2":
+            cng(rocket[1]);
+            break;
+          case "3":
+            cng(rocket[2]);
+            break;
+          case "Enter":
+            rocket.forEach((item) => {
+              item.classList.remove("white");
+              item.style.bottom = "0px";
+            });
+        }
+      }
+    </script>
+  </body>
+</html>

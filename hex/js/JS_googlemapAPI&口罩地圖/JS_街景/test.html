@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>Street View split-map-panes</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #map,
+      #pano {
+        float: left;
+        height: 100%;
+        width: 50%;
+      }
+ 
+    </style>
+    <!-- https://developers.google.com/maps/documentation/javascript/streetview?hl=zh-tw#maps_streetview_simple-javascript -->
+    <script type="module">
+      function initialize() {
+        const fenway = { lat: 42.345573, lng: -71.098326 };
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: fenway,
+          zoom: 14,
+        });
+        const panorama = new google.maps.StreetViewPanorama(
+          document.getElementById("pano"),
+          {
+            position: fenway,
+            pov: {
+              heading: 34,
+              pitch: 10,
+            },
+          }
+        );
+      //  這行讓一夾人出現
+        map.setStreetView(panorama);
+      }
+
+      window.initialize = initialize;
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="pano"></div>
+
+     <!--這行是街景api 也一樣要打金鑰 -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlatLRSFrNSwdA6J8i9JNIMW66VCCDIa8&callback=initialize&v=weekly"
+      defer
+    ></script>
+  </body>
+</html>

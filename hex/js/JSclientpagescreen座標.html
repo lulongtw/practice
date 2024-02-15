@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        height: 1000px;
+      }
+      #qq {
+        position: fixed;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="qq">
+      <div class="a"></div>
+      <div class="b"></div>
+      <div class="c"></div>
+    </div>
+
+    <script>
+      let body = document.body;
+      body.addEventListener("mousemove", show);
+      function show(e) {
+        let a = document.querySelector(".a");
+        let b = document.querySelector(".b");
+        let c = document.querySelector(".c");
+        /*
+      clientXY代表目前視窗口的座標;以視窗左上為(0,0)
+      page代表目前網頁的座標;以網頁本身左上為(0,0)
+      screenXY代表整個螢幕;以螢幕左上為0,0
+      */
+        a.textContent = `clientX = ${e.clientX} , clientY = ${e.clientY}`;
+        b.textContent = `pageX = ${e.pageX} , pageY = ${e.pageY}`;
+        c.textContent = `screenX = ${e.screenX} , screenY = ${e.screenY}`;
+      }
+    </script>
+  </body>
+</html>

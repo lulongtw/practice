@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;padding:0;box-sizing:border-box;
+            scroll-margin-top:90px;
+        }
+        nav{
+            top:0;/*為啥要這樣對我*/
+            position:fixed;/*fixed時，下面那個section 的margin-top會發生效用 所以會騰空*/
+            height:90px;
+            display:flex;
+            justify-content: flex-end;
+            align-items: center;
+            width:100%;
+            background-color: antiquewhite;
+            box-shadow:10px 0px 10px black;
+            gap:30px;
+            padding-right:30px;
+        }
+        a{
+            color:green;
+            text-decoration: none;
+            font-size:1.3rem;
+
+        }
+        nav>img{
+            position:absolute;
+            top:0;bottom:0;
+            left:30px;
+            margin:auto;
+            object-fit:cover;
+            width:300px;
+        }
+        #a{
+            margin:0 auto;/*第一個section不能射margin-top,不然很好玩*/
+            margin-bottom:50px;
+            padding-top:100px;
+        }
+        section{
+            width:min(70%,600px);
+            margin:50px auto;
+        }
+        .title{
+            font-size:2rem;
+            margin:10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <img src="logo.png"/>
+        <a href="#a"><div class="navs">home</div></a>
+        <a href="#b"><div class="navs">about</div></a>
+        <a href="#c"><div class="navs">product</div></a>
+        <a href="#d"><div class="navs">contact</div></a>
+    </nav>
+    <main>
+        <section id="a">
+            <div class="title">為什麼要代替你爹</div>
+            <div class="cntn">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit optio repellat laborum asperiores perspiciatis accusantium iste. Temporibus libero maiores blanditiis!</div>
+            <img src="pic.png">
+            <div class="cntn">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores incidunt laudantium ut veritatis asperiores adipisci iure molestias quos fugiat blanditiis!</div>
+        </section>
+
+        <section id="b">
+            <div class="title">為什麼要代替你爹</div>
+            <div class="cntn">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit optio repellat laborum asperiores perspiciatis accusantium iste. Temporibus libero maiores blanditiis!</div>
+            <img src="pic.png">
+            <div class="cntn">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores incidunt laudantium ut veritatis asperiores adipisci iure molestias quos fugiat blanditiis!</div>
+        </section>
+
+        <section id="c">
+            <div class="title">為什麼要代替你爹</div>
+            <div class="cntn">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit optio repellat laborum asperiores perspiciatis accusantium iste. Temporibus libero maiores blanditiis!</div>
+            <img src="pic.png">
+            <div class="cntn">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores incidunt laudantium ut veritatis asperiores adipisci iure molestias quos fugiat blanditiis!</div>
+        </section>
+
+        <section id="d">
+            <div class="title">為什麼要代替你爹</div>
+            <div class="cntn">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit optio repellat laborum asperiores perspiciatis accusantium iste. Temporibus libero maiores blanditiis!</div>
+            <img src="pic.png">
+            <div class="cntn">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores incidunt laudantium ut veritatis asperiores adipisci iure molestias quos fugiat blanditiis!</div>
+        </section>
+
+        <section id="e">
+            <div class="title">為什麼要代替你爹</div>
+            <div class="cntn">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit optio repellat laborum asperiores perspiciatis accusantium iste. Temporibus libero maiores blanditiis!</div>
+            <img src="pic.png">
+            <div class="cntn">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores incidunt laudantium ut veritatis asperiores adipisci iure molestias quos fugiat blanditiis!</div>
+        </section>
+
+        <section id="d">
+            <div class="title">為什麼要代替你爹</div>
+            <div class="cntn">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit optio repellat laborum asperiores perspiciatis accusantium iste. Temporibus libero maiores blanditiis!</div>
+            <img src="pic.png">
+            <div class="cntn">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores incidunt laudantium ut veritatis asperiores adipisci iure molestias quos fugiat blanditiis!</div>
+        </section>
+
+        <section id="d">
+            <div class="title">為什麼要代替你爹</div>
+            <div class="cntn">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit optio repellat laborum asperiores perspiciatis accusantium iste. Temporibus libero maiores blanditiis!</div>
+            <img src="pic.png">
+            <div class="cntn">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores incidunt laudantium ut veritatis asperiores adipisci iure molestias quos fugiat blanditiis!</div>
+        </section>
+    </main>
+    <footer>
+        <div class="feet">home</div>
+        <div class="feet">sweet</div>
+        <div class="feet">home</div>
+    </footer>
+</body>
+</html>

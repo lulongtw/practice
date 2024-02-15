@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        :root{
+            --clr:rgb(233, 239, 226)
+        }
+
+        #one,#two{
+            margin:30px 0;
+            display:flex;
+            width:900px;
+        }
+
+        .ones{
+            display:grid;
+            grid-template-columns:50px 1fr;
+            padding:20px;
+            background-color: var(--clr);
+        }
+        .onesitem>img{
+            width:100%;
+        }
+
+        .title{
+            margin-bottom:20px;
+        }
+
+        .twos{
+            display:flex;
+            flex-direction:column;
+            text-align:center;
+            align-items: center;
+            gap:20px;
+            padding:20px;
+            background-color: var(--clr);
+        }
+        .twos img{
+            width:50%;
+        }
+        #three{
+            width:900px;
+        }
+        .threes{
+            display:flex;
+            align-items: center;
+            background-color: var(--clr);
+            margin:20px 0;   
+            padding:20px;
+        }
+        .threes.a{
+            flex-direction: row-reverse;
+        }
+
+
+    </style>
+</head>
+<body>
+    <main>
+
+        <div id="one">
+
+            <div class="ones">
+                <div class="onesitem a">
+                    <img src="logo-small.png"/>
+                </div>
+                <div class="onesitem">
+                    <div class="title">為什麼要代替你爹</div>
+                    <div class="cntn">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum, dicta? Molestias facere, optio blanditiis soluta ratione aperiam porro. Repellat, deserunt!</div>
+                </div>
+            </div>
+
+            <div class="ones">
+                <div class="onesitem a">
+                    <img src="logo-small.png"/>
+                </div>
+                <div class="onesitem">
+                    <div class="title">為什麼要代替你爹</div>
+                    <div class="cntn">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum, dicta? Molestias facere, optio blanditiis soluta ratione aperiam porro. Repellat, deserunt!</div>
+                </div>
+            </div>
+
+            <div class="ones">
+                <div class="onesitem a">
+                    <img src="logo-small.png"/>
+                </div>
+                <div class="onesitem">
+                    <div class="title">為什麼要代替你爹</div>
+                    <div class="cntn">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum, dicta? Molestias facere, optio blanditiis soluta ratione aperiam porro. Repellat, deserunt!</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="two">
+            <div class="twos">
+                <img src="logo-medium.png"/>
+                <div class="title">為什麼要代替你爹</div>
+                <div class="cntn">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum, dicta? Molestias facere, optio blanditiis soluta ratione aperiam porro. Repellat, deserunt!</div>                
+            </div>
+            <div class="twos">
+                <img src="logo-medium.png"/>
+                <div class="title">為什麼要代替你爹</div>
+                <div class="cntn">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum, dicta? Molestias facere, optio blanditiis soluta ratione aperiam porro. Repellat, deserunt!</div>                
+            </div>
+            <div class="twos">
+                <img src="logo-medium.png"/>
+                <div class="title">為什麼要代替你爹</div>
+                <div class="cntn">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum, dicta? Molestias facere, optio blanditiis soluta ratione aperiam porro. Repellat, deserunt!</div>                
+            </div>
+        </div>
+
+        <div id="three">
+
+            <div class="threes">         
+                <div class="threesitem a"> <img src="logo-big.png"/></div>
+                <div class="threesitem">
+                    <div class="title">為什麼要代替你爹</div>
+                    <div class="cntn">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum, dicta? Molestias facere, optio blanditiis soluta ratione aperiam porro. Repellat, deserunt!</div>                    
+                </div>
+            </div>
+
+            <div class="threes a">         
+                <div class="threesitem a"> <img src="logo-big.png"/></div>
+                <div class="threesitem">
+                    <div class="title">為什麼要代替你爹</div>
+                    <div class="cntn">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum, dicta? Molestias facere, optio blanditiis soluta ratione aperiam porro. Repellat, deserunt!</div>                    
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+</body>
+</html>

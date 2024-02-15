@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>Simple Map</title>
+    <style>
+      .map {
+        /*一定要給map上長度*/
+        height: 300px;width:300px;
+      }
+    </style>
+  </head>
+  <body>
+<!--先去看googlemapAPI--><!--先去看googlemapAPI--><!--先去看googlemapAPI--><!--先去看googlemapAPI--><!--先去看googlemapAPI-->
+<!--先去看googlemapAPI--><!--先去看googlemapAPI--><!--先去看googlemapAPI--><!--先去看googlemapAPI-->
+<!--先去看googlemapAPI
+		口罩地圖就是google map 的API應用
+		要搞口罩地圖首先要取得一個JSON資料，裡面有各個醫院的名字座標營業時間等等
+		取出需要的資料後，透過google map API 即可在網站上使用googlemap的服務 加上醫院的JSON資料就可以變成口罩地圖
+-->
+<script src="temp.js"></script>
+<script src="initmap.js"></script>
+<script type="module" src="main.js"></script> <!--必須引入module  我也不知道為啥-->  
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script><!--google要求-->
+<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+  ({key: "AIzaSyDlatLRSFrNSwdA6J8i9JNIMW66VCCDIa8", v: "weekly"});</script>
+  <!--google要求  key是金鑰-->
+  <!--金鑰從這邊拿  https://console.cloud.google.com/google/maps-apis/credentials?utm_source=Docs_Credentials&hl=zh-tw&_gl=1*s7q47g*_ga*MTkyNDY5MzA4OC4xNzAyNDY4Mjg1*_ga_NRWSTWS78N*MTcwMjkwOTE4Mi4zLjEuMTcwMjkwOTE4NS4wLjAuMA..&project=silicon-light-408511-->
+</body>
+</html>

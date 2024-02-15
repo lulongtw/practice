@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>a</div>
+  <div>f</div>
+  <div>g</div>
+  <div>v</div>
+  <div>r</div>
+  <div>
+    ...args 其餘參數總結<br>
+    ...args可以將類陣列變成真陣列<br>
+    類陣列有些array方法無法使用filter map....等等<br>
+    let x = [...lst] 將lst淺複製給x <br>
+    let c = [...x,...y] x序列和序列結合給c  <br>
+    函式內使用arguments  取得所有參數的類陣列 <br>
+    一樣使用let args = [...arguments] 取得所以參數真陣列<br>
+    不知道有多少參數要引入時  <br>
+    function(...args){} 引入不定數目參數  <br>
+    ...也可以使用在物件上作為淺複製使用 <br>
+  </div>
+  <script>
+    let lst1 = [1,2,3,4,5]
+    let lst2 = ["a","b","c"];
+    //傳統做法 使用.concat
+    let old = lst1.concat(lst2);
+    console.log(old)
+    //新人使用...lst
+    let new1 = [...lst1,...lst2];
+    console.log(new1)
+    console.log(...lst1)
+    //等同於 下方 意思是一個一個取出後return
+    console.log(1,2,3,4,5);;
+    //可以作為淺複製使用 
+    //淺複製使用 for ,forEach Object.assign ...lst
+    let lst3 = [...lst1];
+    lst3[0] = "ass";
+    console.log(lst1,lst3);
+    console.log("=======分隔線=====")
+
+    //這邊講類陣列  類陣列可使用的方法不如陣列多  就像不能使用上面的.concat
+    //所以使用
+    let divs = document.querySelectorAll("div")
+    let divLst  =[...divs].concat(lst1);
+    console.log(divLst)//變成真陣列融合
+   console.log(divLst.map(item=>item.baseURI)) 
+  //這行會報錯 console.log( divs.map(item=>item.baseURI))
+    function shout(){
+      console.log(arguments);//韓式使用argument常數引入所有的參數  形式是類序列
+      let args = [...arguments]//使用...變成真array
+      return args.reduce((accumulator,item)=>accumulator+item,0)
+    }
+    console.log(shout(3,7,8))
+
+    console.log("=======分隔線=====")
+    //當不確定要傳入幾個參數時 使用其餘參數引入不定數目的參數
+    //形式為序列
+    function say(para,...args){
+      console.log(para,args)
+    }
+    say("min",1,2,3,45,6)
+
+    console.log("=======分隔線=====")
+
+    //其餘參數也可以用在物件上面做淺複製
+    let obj1 = {a:1,b:2};
+    let obj2 = {...obj1};
+    obj2.a = 69;
+    console.log(obj1,obj2)
+
+
+    console.log("=======分隔線=====")
+    //使用.map 與其餘參數 取得和 .forEach相同結果
+    let ob = [
+      {a:"one",cash:100},
+      {a:"two",cash:150},
+      {a:"five",cash:75}]
+
+      let ob1 = [...ob];
+      ob1.forEach(item=>item.pocket = item.cash+3);
+      console.log(ob1)
+
+      let ob2 = ob.map(item=>{return{
+        ...item,
+        pocket:item.cash+3
+      }});
+      console.log(ob2)
+  </script>
+</body>
+</html>
