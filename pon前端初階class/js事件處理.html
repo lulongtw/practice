@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        
+        <title>js事件處理</title> 
+        <style>
+            .orgn{
+                padding:10px;
+                background-color:blue;
+                cursor:pointer;
+                border-radius:10px;
+                width:76px;
+                text-align:center
+            }
+            .chng{
+                padding:10px;
+                background-color:red;
+                cursor:pointer;
+                border-radius:10px;
+                width:76px;
+                text-align:center
+            }
+        </style>
+    </head>
+    <body>
+        <h3>事件處理</h3>
+        <!--
+        <buccton
+            onclick="console.log('hitmeee')"
+            onmouseover="console.log('mouseover')"
+            onmouseout="console.log('mouseout')"
+            onmousedown="console.log('down')"
+            onmouseup="console.log('up')"
+            
+            >hitme</buccton>-->
+        <div 
+            class="orgn"
+            onclick="oncl()"
+            onmouseover="onov(this)"
+            onmouseout="onou(this)"
+            onmousedown="ondo(this)"
+            onmouseup="onup(this)"
+            
+        >hitme</div>
+
+        <span>count:
+            <span id="hey">0</span>
+        </span>
+
+        <script>
+            function onov(x){
+                x.innerHTML="點我"
+                x.className="chng"
+            }
+            function ondo(x){
+                x.innerHTML="點下去了"                
+            }
+            function onou(x){
+                x.innerHTML="hitme"
+                x.className="orgn"
+            }
+            function onup(x){
+                x.innerHTML="點我"             
+            }
+
+            let con = document.querySelector("#hey")
+            let n = 0
+            function oncl(){                
+                n++
+                con.innerHTML=n
+            }
+            console.log(n)
+
+        </script>
+        
+        
+    </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width , initial-scale = 1.0">
+
+    <title>proxy</title>
+</head>
+<body>
+    <script>
+/*        //建立proxy代理物件
+        //下面有物件data
+        //希是能夠取得price*count 
+        //於是console.log(data.price*data.count)  <--笨笨的方式
+        let data ={
+            price:100,
+            count:5,
+        };
+        //建立代理物件proxy   第一個參數是data  第二個參數是處理函式的物件{get..}
+        let proxy=new Proxy(data,{
+            get:function(target,property){   //get是使用代理物件取得屬性資料時 會對應的函式
+                console.log("代理的目標物件",target);
+                //==> data
+                console.log("想取得的屬性名稱",property);
+                //==> abc
+                return "屬性對應的資料";
+            }
+        });
+        //取得代理物件的abc屬性
+        console.log(proxy.abc)
+        //==>屬性對應的資料
+        
+*/
+
+        let data={
+            price:100,
+            count:5,
+        }
+        let proxy = new Proxy(data,{
+            get:function(target,property){
+                if (property=="total"){ //如果要取的屬性是total 就做一個if確定property是否是total
+                    return target.price+target.count
+                }else{          //如果要取單一屬性 就如下 靠杯明明是物件不好好寫應該寫target.property啊
+                    return target[property]
+                }
+            }
+        })
+
+        console.log(proxy.total)
+        console.log(proxy.price)
+
+    </script>
+</body>
+</html>

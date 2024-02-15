@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <title>if for while</title>
+    </head>
+    <body>
+        <script>
+            let n = 0
+ /*    不懂為啥會錯誤       while(n<10){
+                console.log(n)
+                if(n%2 == 0){
+                    n += 1
+                    continue
+                    
+                }else if(n==5){
+                    let x = prompt("input","預設")
+                    n += 1
+                }else{
+                    n += 1
+                }
+ 
+            }
+            console.log(x)
+            因為要在回圈外宣告 這牽扯到區區域跟全域變數
+            先在圈外宣告x
+            然後再回圈內將x賦值
+            然後在圈外宣告
+            */
+            n = 0     //while
+            while(n<5){
+                n+=1                
+                if(n==3){
+                    continue
+                }
+                else if(n==4){
+                    x = prompt("","")
+                }
+                console.log(n)
+            }
+            y = prompt("input","")
+            z = prompt("input","")
+            y = parseInt(y)
+            z = parseInt(z)
+            console.log(y+z)  //不懂為啥不能用加的  
+
+            for(n=0;n<5;n+=1){   //for
+                if(n==3){
+                    continue
+                }
+                console.log(n)
+            }
+
+        </script>
+    </body>
+<html>

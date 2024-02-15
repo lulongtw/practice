@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!--<link rel="stylesheet" type="text/css" href="style/first.css">-->
+        <meta name="viewport" content="initial-scale=1.0 width=device-width">
+    </head>
+    <body>
+        <script>
+            function add(n1,n2){ // 建立函式
+                let z = n1 + n2
+                return z
+            }
+            console.log(add(3,5))
+
+            
+            let sm = function(n1,n2){  //建立函式的另一種方法
+                let z = n1 + n2
+                return z
+            }
+            console.log(sm(2,9))
+
+            let smm = (x,y) => {  //建立函式的另一種方法
+                let res=x+y
+                return res
+            }
+            console.log(smm(333,444))
+
+
+            
+            let s = {     //物件內部可以繼續建立物件
+                x:3
+            }
+            let m = {
+                y:s
+            }
+            console.log(m.y.x)  //叫出m物件裡的y物件裡的x屬性裡的資料
+
+            
+            let obj1 = new Object()
+            obj1.name = "wang"
+            obj1.age = 18
+            obj1.test = function(){        //在物件內建立函式
+                let z = this.name + "今年" + this.age + "歲"  //物件內的方法內可以使用this代表物件本身
+                return z
+            }
+            console.log(obj1.test())
+       
+            obj2 = {     //建立物件的另一種方法：json法
+                name:"wan",
+                age:12,
+                te:function(){
+                    let z = this.name + " this year " + this.age + " years old"
+                    return z
+                }
+            }
+            console.log(obj2.te())
+            
+        </script>
+    </body>
+</html>

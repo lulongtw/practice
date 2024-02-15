@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>toggle</title> 
+        <style>
+            .op{
+                display:none
+            }
+        </style>
+    </head>
+    <body style="margin:0px" onload = init()> <!--onload代表 一旦body標籤內部所有內容都被載入完成 執行init()函式-->
+        <h3 onclick="hide(1)">11</h3>
+            <div id="m1" class="op">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+            </div>
+        <h3 onclick="hide(2)">22</h3>
+            <div id="m2" class="op">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+            </div>
+        <h3 onclick="hide(3)">33</h3>
+            <div id ="m3" class="op">
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+            </div>
+        <script>   
+        //還有x.classList.add 和 x.classList.remove喔
+            function hide(n){
+                let x = document.getElementById("m"+n)
+                x.classList.toggle("op")
+            }
+        </script>
+    </body>
+</html>
+<!--
+  純script
+    <script>
+      let ul1 = document.createElement("ul");
+      ul1.textContent = "11";
+      ul1.style.fontWeight = "800";
+      let lis = document.createElement("div")
+      for (let i=0;i<3;i++){
+        let li = document.createElement("li")
+        li.textContent = i;
+        lis.appendChild(li)
+      }
+      ul1.appendChild(lis)
+      lis.classList.add("a")
+
+      ul1.addEventListener("click",()=>{
+        lis.classList.toggle("a")
+      })
+      document.body.appendChild(ul1)
+    </script>
+
+-->

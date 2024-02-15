@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="">
+        <title>深淺拷貝</title> 
+    </head>
+    <body>
+        <script>
+            /*淺 複製*/
+            let x = {a:4,b:6,data:[1,2,3]}
+            //如果x是序列 x=[2,3,{t:4,y:5}]
+            //此時淺複製用 let y = [...x] or let y = Object.assign([],x) 
+            let y = {...x}
+            /* or let y = Object.assign({},x) */
+            y.data[0]=10
+            y.a=88888
+            console.log(x.data[0])//淺複製無法區分更深成資料
+            console.log(x.a)//淺複製只可以針對第一層資料進行區分
+           
+
+            /*深 複製*/
+
+            let h = {n:3,m:5,dat:[9,8]}
+
+            let strr = JSON.stringify(h)
+            let l = JSON.parse(strr)
+
+            //也可以省略strr寫成 let l = JSON.parse(JSON.stringify(h))
+            l.dat[0]=99999
+
+            console.log(h.dat[0])
+            console.log(l.dat[0])
+
+            let p = {s:function(){
+                console.log("x")
+            }}
+
+            /*JSON深複製無法複製function和symbol*/
+            let g = JSON.stringify(p)
+            let ans = JSON.parse(g)
+            console.log(ans)
+            console.log(p.s)
+
+        </script>
+    </body>
+</html>

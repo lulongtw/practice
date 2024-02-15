@@ -1,0 +1,38 @@
+<!DOCtype html>
+<html>
+    <head>
+        <meta charset = "utf-8">
+        <meta name = "wiewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="/Users/lulong/Desktop/hello/style/first.css">
+        <title>arrey</title>
+    </head>
+    <body>
+        <script>
+        let lst = [10,20,30]  //建立序列arrey
+
+        dic = {              // 建立物件
+            x:40,
+            y:50,
+            add:function(n1,n2){
+                let ans = n1 + n2
+                return ans
+            }
+        }
+        res = dic.add(dic.x,lst[2])  //把序列中特定數字和物件中特定數字用物件中的函式處理
+        lst.push(res)         //把res加進lst內
+        console.log(lst)
+        sum = 0
+          // 把sum設在回圈內雖然是錯的 但程式會跑出undefind 因為回圈內不可一直宣告回圈內使用的變數
+        for(n=0;n<lst.length;n+=1){   //將序列中的數字平均
+            //let sum = 0
+            sum += lst[n]
+            
+            
+            
+        }
+        console.log(sum/lst.length)
+
+
+        </script>
+    </body>
+</html>

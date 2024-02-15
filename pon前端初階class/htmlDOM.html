@@ -1,0 +1,26 @@
+<!DOCtype html>
+<html>
+    <head>
+        <meta charset = "utf-8">
+        <meta name = "wiewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="/Users/lulong/Desktop/hello/style/first.css">
+        <title>htmldom</title>
+    </head>
+    <body>
+        <script>
+        console.log(window)//觀看window物件的內容
+        console.log(window.innerWidth,window.innerHeight) //取得視窗長寬
+        console.log(window.screen.width,window.screen.height) //取得螢幕長寬
+        console.log(window.location.href)//取得網址
+        //  window.location.href="https://www.google.com/"  把網址改變 也就是一進網頁就轉去google
+        console.log(window.document.title)//取得網頁分頁的名字
+        console.log(document.title)//window可省略不寫
+        console.dir(window.document)//document的詳細
+        
+        document.title = "屁眼派對" //變更網頁名字
+        
+        document.body.innerHTML = "哈哈<div>屁眼派對</div>" //直接在body家東西
+        console.log(document.body.innerHTML)        //取得body的內文
+        </script>
+    </body>
+</html>

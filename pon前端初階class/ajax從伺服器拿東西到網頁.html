@@ -1,0 +1,33 @@
+<!DOCtype html>
+<html>
+    <head>
+        <meta charset = "utf-8">
+        <meta name = "wiewport" content="initial-scale=1.0 , width=device-width">
+
+        <title>ajax從伺服器</title>
+    </head>
+    <body>
+        <button onclick="test()">hh</button>
+        <hr>
+        <div id="x"></div>
+        <script>
+            n=0
+            function test(){
+                fetch("https://cwpeng.github.io/live-records-samples/data/products.json")
+                .then(function(response){
+                    return response.json()
+                    .then(function(data){      
+                        let y = document.querySelector("#x")
+                        let c = n%4   
+                        if(c==3){
+                            y.innerHTML=""
+                        }else{
+                            y.innerHTML+="<div>"+data[c].name+","+data[c].price+"</div>"                           
+                        }
+                        n++                       
+                    })
+                })
+            }
+        </script>
+    </body>
+</html>

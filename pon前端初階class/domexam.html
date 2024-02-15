@@ -1,0 +1,132 @@
+<!DOCtype html>
+<html>
+    <head>
+        <meta charset = "utf-8">
+        <meta name = "viewport" content="initial-scale=1.0 , width=device-width">
+        <link rel="stylesheet" type="text/css" href="/Users/lulong/Desktop/hello/style/first.css">
+        <title>dom操作考試</title>
+        <style>
+            .test{
+                text-decoration:underline;
+                font-weight:bold;
+            }
+            .rev{
+                text-decoration:none;
+                font-weight:none;
+            }
+            
+        </style>
+    </head>
+    <body>
+            <!----------------html pt1-------------------->
+            <div id="h">一開始</div> <!--設下飛雷神印記id=h-->
+            <button onclick="change();plus()">hit me</button><!--建立button 並對button設onclick屬性 
+                                                               屬性內的資料可以多種 用;分開-->
+            
+            <!----------------html pt2-------------------->
+            <hr>
+            <div style="display:flex">
+                <div  style="margin:10px" onclick="aboutme()">關於我 </div>
+                <div  style="margin:10px" onclick="schoolme()">未來</div>
+            </div>
+            <hr>
+            <div style="display:none" id="about">我是攝影大助</div>
+            <div style="display:none"  id="school">我會成為工程師</div>
+            <!----------------html end------------------->
+            <script>
+                ////////////////js第一部分////////////////////////////////
+                let x = document.querySelector("#h") //尋找印記
+                n = 0                               //設定計數器
+                function change(){                  //設定change函式 不要忘了函式後的()
+                    if (n%2==0){
+                        x.innerHTML="我變拉"
+                        x.style.color="red"
+                        x.className="test"   // 在屬性裡無法用-所以用大寫代替
+                    }else{
+                        x.innerHTML="我又變回來啦"
+                        x.style.color="green"
+                        x.className="rev"
+                    }
+                    n+=1
+                }
+                function plus(){
+                    x.style.fontSize = "60px"
+                }
+                ///////////////////js第二部分///////////////////////////////////
+                let about = document.querySelector("#about")
+                let school = document.querySelector("#school")
+                function aboutme(){
+                    about.style.display="block"
+                    school.style.display="none"
+                }
+                function schoolme(){
+                    about.style.display="none"
+                    school.style.display="block"
+                }
+            </script>
+    </body>
+</html>
+
+<!-- 全js寫喔
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .a{
+      font-size:3rem;
+      color:red
+    }
+    .b{
+      font-size:2rem;
+      color:green;
+    }
+    .c{
+      padding:20px
+    }
+  </style>
+</head>
+<body>
+  <script>
+    let first = document.createElement("div")
+    first.textContent = "一開始"
+    let c = true
+    let btn = document.createElement("button")
+
+    btn.textContent = "asdsad"
+    btn.innerHTML += "<hr>"
+    btn.addEventListener("click",()=>{
+      first.classList = c?"a":"b"
+      c = !c
+    })
+    let about = document.createElement("div")
+    let future = document.createElement("div")
+    let ans = document.createElement("div")
+    about.textContent = "關於"
+    future.textContent = "未來"
+    about.classList.add("c")
+    future.classList.add("c")
+    about.addEventListener("click",()=>{
+      ans.textContent = "a focus puller"
+    })
+    future.addEventListener("click",()=>{
+      ans.textContent = "a computer engineer"
+    })
+    let hr = document.createElement("hr")
+    document.body.appendChild(first)
+    document.body.appendChild(btn)
+    document.body.appendChild(about)
+    document.body.appendChild(future)
+    document.body.appendChild(hr)
+    document.body.appendChild(ans)
+    
+
+
+  </script>
+</body>
+</html>
+
+-->
