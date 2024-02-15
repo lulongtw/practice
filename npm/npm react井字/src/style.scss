@@ -1,0 +1,45 @@
+.board{
+    width:300px;
+    height:300px;
+    border:2px solid black;
+    position:relative;
+    margin:20px auto;
+    /*這變不能border-box
+    因為會把border往內放
+    這樣一來board的寬高就要剪去border
+    */
+  }
+  .cell{
+    width:100px;
+    height:100px;
+    border:2px solid black;
+    line-height:100px;
+    text-align:center;
+    vertical-align:middle;
+    box-sizing:border-box;
+    display:inline-block;
+    transition:background-color 0.5s
+  }
+  .svg{
+    width:300px;
+    height:300px;
+    top:0px;
+    left:0px;
+    position:absolute;
+  }
+  .cell:hover{
+    background-color: grey;
+  }
+  .re{
+    width:100px;
+    height:60px;
+    line-height:60px;
+    text-align:center;
+    background-color: grey;
+    transition:background-color 0.5s;
+    border-radius:10px;
+    margin:10px auto
+  }
+  .re:hover{
+    background-color: red;
+  }

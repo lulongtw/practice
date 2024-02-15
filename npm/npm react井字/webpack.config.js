@@ -1,0 +1,37 @@
+let path = require("path")
+module.exports={
+    mode:"development",
+    entry:"./src/index.js",
+    output:{
+        filename:"main.js",
+        path:path.resolve(__dirname,"dist")
+    },
+    devServer:{
+        static:"./dist"
+    },
+    module:{
+        rules:[
+            {
+                test:/\.css$/i,
+                use:["style-loader","css-loader"]
+            },
+            {
+                test:/\.scss$/i,
+                use:["style-loader","css-loader","sass-loader"]
+            },
+            {
+                test:/\.m?js$/i,
+                exclude:/node_module/,
+                use:{
+                    loader:"babel-loader",
+                    options:{
+                        presets:[
+                            "@babel/preset-env",
+                            "@babel/preset-react"
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}
