@@ -1,0 +1,91 @@
+//在輸入錯誤格式的資料時，無法取得錯誤訊息來和class bind
+
+// <template>
+//   <DynamicForm :schema="formSchema" />
+// </template>
+
+// <script setup >
+// import DynamicForm from '@/components/DynamicForm.vue';
+// import * as Yup from 'yup';
+// //npm install --save yup
+
+// const formSchema = {
+//   fields: [
+//     // {
+//     //   label: 'Your Name',
+//     //   name: 'name',
+//     //   as: 'input',
+//     //   rules: Yup.string().required(),
+//     // },
+//     {
+//       label: 'Your Email',
+//       name: 'email',
+//       as: 'input',
+//       rules: Yup.string().email().required(),
+//     }
+//     // ,{
+//     //   label: 'Your Password',
+//     //   name: 'password',
+//     //   as: 'input',
+//     //   type: 'password',
+//     //   rules: Yup.string().min(6).required(),
+//     // },
+//   ],
+// };
+// </script>
+
+
+
+
+
+
+
+// <template>
+//   <Form @submit.prevent="handleSubmit">
+//     <div
+//       v-for="{ as, name, label, children, ...attrs } in schema.fields"
+//       :key="name"
+//     >
+//       <label :for="name">{{ label }}</label>
+//       <Field :as="as" :id="name" :name="name" v-bind="attrs" :class="['form-control', { 'is-invalid': hasError(name) }]">
+//       </Field>
+//       <ErrorMessage :name="name" style="color:red" />
+//     </div>
+//     <button type="submit">Submit</button>
+//   </Form>
+// </template>
+
+// <script>
+// import { Form, Field, ErrorMessage, useForm ,useField} from 'vee-validate';
+
+
+// export default {
+//   name: 'DynamicForm',
+//   components: {
+//     Form,
+//     Field,
+//     ErrorMessage
+//   },
+//   props: {
+//     schema: {
+//       type: Object,
+//       required: true,
+//     },
+//   },
+//   setup() {
+//     const { errors,handleSubmit } = useForm();
+
+//     // 检查特定名称的字段是否有错误
+//     const hasError = (fieldName) => {
+//       console.log(errors)
+//       return errors.value[fieldName] !== undefined;
+     
+//     };
+  
+//     return {
+//       hasError,handleSubmit
+//     };
+//   },
+// };
+// </script>
+

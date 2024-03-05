@@ -1,32 +1,24 @@
-import {createRouter, createWebHashHistory} from "vue-router";
-import Dashboard from "../components/pages/Dashboard.vue";
-import Index from  "../components/pages/Index.vue";
-import Login from  "../components/pages/Login.vue";
+import {createRouter,createWebHashHistory} from "vue-router";
+import Login from "@/components/Login.vue";
+import Dashboard from "@/components/Dashboard.vue";
+import Product from "@/components/Product.vue";
 
 const router = createRouter({
   history:createWebHashHistory(),
   routes:[
     {
-      path:"/",
-      components:{
-        view1:Dashboard
-      }
-    },
-    {
-      path:"/login",
-      components:{
-        view1:Login
-      }
-    },
-    {
-      path:"/index",
-      components:{
-        view1:Index
-      },
-      meta:{
-        requiredAuth:true
-       
-      }
+      path:"/:pathMaytch(.*)*",
+      component:Login,
+    },{
+      path:"/dashboard",
+      component:Dashboard,
+      children:[
+        {
+          path:"product",
+          component:Product,
+          meta:{requiredAuth:true}
+        }
+      ]
     }
   ]
 });

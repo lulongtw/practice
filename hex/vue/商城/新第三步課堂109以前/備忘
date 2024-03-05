@@ -1,0 +1,27 @@
+問題
+非同步都要乖乖加上async跟await 不然會有先刷新頁面然後取得新資料的顛倒情況
+
+addNewItemModal 的props要用array引入 才能做出正確動作
+  因為watch是觀察值的變化，
+  如果將動作(create,edit,del)和資料(item)分開引入
+  會出現edit資料時 data.value變成空白
+  因為對modal的watch來說item傳入值沒有變，就不會變動
+  但會受到內部當act是create時 data.value = {}影響
+  變成{} 
+  所以情況是 先點edit 引入item1 data = item1
+  再點create data = {} 此時watch的item不變
+  在進相同的edit時  data就會空白
+  但以上情形在建立product.vue建立事件時 順便建立引入資料的樣子
+  包括create的空白資料  就不會有上面問題了
+  靠杯怎麼那麼聰明
+
+  所以伊斯是兩種方法  只用一種就可以解決了 一個是array引入
+  以個是在create時也要引入{}
+  
+  
+做模擬訂單
+轉圈圈 右側nav連結
+
+
+
+

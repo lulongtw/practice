@@ -1,0 +1,31 @@
+<script setup>
+  import {useForm,useField,defineRule} from "vee-validate";
+  //引入方法
+  import {required,email} from "@vee-validate/rules";
+  //引入規則
+
+  defineRule("required",required);
+  defineRule("email",email);
+  //莫名其妙的一段
+
+  let {handleSubmit} = useForm();
+  //從useForm方法取出handleSubmit函式 處理送出資料
+  let {value:emailValue,errorMessage:emailError} = useField("email","required|email");
+  //透過useField規定方法 
+  //先看後方useField  引入兩個參數  第一個參數是表單的type 第二個是引入的規則
+  //在看前面是 定義表單的value  和回傳的錯誤的資訊
+
+  let onSubmit = handleSubmit(values=>{
+    console.log(values);
+  })
+</script>
+
+<template>
+  <form @submit.prevent="onSubmit">
+    <input type="text" v-model="name">
+    <input type="email" v-model="emailValue" :class="['form-control',{'is-invalid':emailError}]">
+    <div v-if="emailError" class="text-danger">{{emailError}}</div>
+    <input type="submit" value="送出訂單">
+  </form>
+
+</template>

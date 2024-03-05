@@ -1,0 +1,41 @@
+a: 
+App.vue 
+  只是router-view 窗口 以及 向後端發送token(注1)
+Login.vue 
+  規劃外的路徑都會跑到login.vue 這點在router index.js處理
+  login.vue負責登入api 以及接收登入成功後 後端傳來的token和expired
+  把這小倆口做成此網頁的token
+  //出錯的地方  
+    發送登入api時要記得帶上輸入的帳號密碼給後端= = 
+product.vue
+  需要登入才能出現的頁面  router.beforeEach 處理
+  登入後  後端檢查前端的request header 使否夾帶token 
+  檢查token後  出現產品頁面
+dashboard.vue
+  目前沒啥作用  只是體內router-view提供PRODUCT.VUE出現
+main.js
+  負責開啟axios夾帶token選項
+  以及router.beforeEach  
+  router.beforeEach在跳轉頁面前執行指定動作
+  這變得作用是拿來檢查跳轉到product或是其他需登入頁面時  是否登入
+
+router
+  如果path設為"/:pathMatch(.*)*" 就是沒有指定的入境豆會跑的這來
+
+
+注1
+  以前是後端將token設在前端網頁，但現在跨網域限制，這項工作開始由前端處理
+  在登入成功後，後端向前端發送token，token代表用戶的登入資訊，透過此token
+  後端才能辨認用戶，以及確認用戶是否具有取用資料資格，意思是在每次前端發送請求時
+  都必須夾帶此token，所以流程如下
+  login.vue登入成功後，跳轉頁面前，取得後端送來的token和expired
+  把他們做成token 存在瀏覽器中
+  接著 在main.js開啟axios發送token選項  
+  axios.defaults.withCredentials = true
+  接著在app.vue 處理發送token事宜
+  先取得需要的token 在送出
+  axios.defaults.headers.common.authrization = token
+  
+
+
+  

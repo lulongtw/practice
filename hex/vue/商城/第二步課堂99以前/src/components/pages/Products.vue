@@ -19,7 +19,7 @@ onMounted(() => {
   noCatch(
     axios.get(url).then((res) => { 
       data.value = res.data.products;
-     // console.log(data.value)
+    // console.log(res)
     })
   );
 });

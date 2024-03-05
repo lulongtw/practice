@@ -2,7 +2,7 @@
   import {useRouter} from "vue-router";
   import {ref,onMounted} from "vue";
   import axios from "axios";
-  import {noCatch} from "/Users/lulong/Desktop/hello/HTML/hex/vue/商城/test/src/assets/function.js"
+  import {noCatch} from "@/assets/function.js"
 
   let userData = ref({
     username:"",

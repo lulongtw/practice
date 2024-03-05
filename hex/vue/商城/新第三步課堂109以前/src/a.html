@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input onchange="callDate(event)" type="date">
+  <script>
+    function callDate(e){
+      console.log(e.target.value)
+    }
+    /*
+    // 給定的Unix時間戳記
+let unixTimestamp = 1645488000;
+
+// 將Unix時間戳記轉換為毫秒
+let timestampInMilliseconds = unixTimestamp * 1000;
+
+// 創建一個新的Date對象
+let date = new Date(timestampInMilliseconds);
+
+// 使用Date對象來格式化日期
+// 以下是一些常用的格式化選項：
+
+// 以YYYY-MM-DD格式顯示日期
+let formattedDate = date.toISOString().split('T')[0];
+
+// 顯示完整的日期和時間（根據瀏覽器的時區設置）
+let fullDate = date.toString();
+
+// 顯示UTC的日期和時間
+let utcDate = date.toUTCString();
+
+console.log("Formatted Date: " + formattedDate);
+console.log("Full Date: " + fullDate);
+console.log("UTC Date: " + utcDate);
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="date" id="dateInput">
+  <script>
+    let now = new Date(); // 獲得當前日期和時間的Date對象
+    let nowTimestamp = now.getTime(); // 這行主要用於展示，實際上在這個案例中不是必需的
+    console.log(nowTimestamp); // 輸出時間戳（毫秒）
+
+    let format = now.toISOString().split('T')[0]; // 將當前日期轉換為YYYY-MM-DD格式
+    console.log(format); // 輸出格式化的日期
+
+    // 將獲得的格式化日期設置為input元素的值
+    document.getElementById('dateInput').value = format;
+
+
+
+    */
+    // let now = new Date();
+    // //let now = new Date().getTime()獲取時間戳
+    // console.log(now)
+    // let format1 = now.toISOString()
+    // console.log(format1);
+    // let format2 = now.toISOString().split('T')[0];
+    // console.log(format2);
+
+  </script>
+</body>
+</html>
