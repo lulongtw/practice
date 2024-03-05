@@ -1,0 +1,4 @@
+@import "bootstrap/scss/bootstrap";//印入bootstrap
+@import "./variables.scss";//引入bootstrap的變數
+@import "bootstrap/scss/functions";//引入bootstrap函式才能使用bootstrap變數
+//要照順序引入復則會報炸

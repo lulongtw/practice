@@ -1,0 +1,47 @@
+@import "./style.scss";
+
+.productWrap{
+  padding:30px;
+}
+table{
+  width:min(600px,100%);
+  margin:0 auto;
+  text-align:center;
+}
+thead{
+  border:1px solid black;
+}
+
+td{
+  padding:5px;
+  border-right:1px solid gray;
+}
+td:last-of-type{
+  border-right:none
+}
+tr{
+  border-bottom:1px solid gray;
+}
+tr:last-of-type{
+  border-bottom:none;
+}
+.btn{
+  display:inline-block;
+  border:1px solid gray;
+  border-radius:3px;
+  margin-right:5px;
+  padding:3px !important;
+
+}
+.del{
+  color:red;
+  border-color:red
+}
+.edit{
+  color:green;
+  border-color:green
+}
+.addNew{
+  color:white !important;
+  margin-bottom:30px;
+}
