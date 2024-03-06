@@ -1,82 +1,66 @@
-問題
-v-validate
-表單驗證的鬼東西
-使用方法  要先安裝 
-
-第一步
-npm i vee-validate 和  npm install @vee-validate/rules
-引入套件 與 套件既有的規則
-
-第二步
-接著import {useForm,useField,defineRule} from "vee-validate"
-和 import {email,required} from "@vee-validate/rules";
-說明：
-第一個{useForm,useField,defineRule}是引入v-validate套件的函式
-useForm 不知道是啥 目前已知是處理表單送出的動作
-useField 針對name為xxx的input標籤  對其設置 規則 與 建立響應式value和errormessage
-defineRule 建立規則 規則可以自訂 也可以引入套件既有的規則
-第二個{email,required}是套件既有的規則
-
-第三部
-defineRule("required",required);
-defineRule("email",email)
-說明：defineRule定義規則 第一個引入的參數規則變數  意思是可以打"shit"
-代表"shit" 就是 required規則
-
-第四部
-let {handleSubmit} = useForm();
-let {value:emailValue,errorMessage:emailError} = useField("email","required|email")
-說明：
-let {handleSubmit} = useForm();從useForm方法引入handleSubmit
-透過handleSubmit 客製化處理表單送出的動作 
-因為handleSubmit有個變數values可以取得所有使用useFIeld的value功能的input的value;
-方便打包處理
-let {value:emailValue,errorMessage:emailError} = useField("email","required|email")
-意思是將name為email的表單元素的規則設為required和email 這裡的｜代表"和"的意思 而不是"或"
-並將name為email的表單元素的value設為emailValue 相當於設一個let emailValue = ref("");
-並將name為email的表單元素的不合規則而產生的錯誤訊息 設為emailError
-
-第五部
-let onSubmit = handleSubmit(values=>{
-  console.log(values);
-})
-透過onSubmit變數 來回乎handleSubmit函式 
-handle函式取得使用useField的表單元素的value相當方便
-
-第六部
-<form @submit.prevent=onSubmit>
-  <input name="email" type="email" :class="['form-control',{is-invalid:emailError}]">
-  <div>{{emailError}}</div>
-  <input type='submit'/>
-說明：
-在submit時 執行onSubmit函式
-input 的name和useField的第一個參數相呼應
-並透過emailError的產生決定是否是顯示輸入錯誤的css
-
-第七部 中文化
-https://vee-validate.logaretm.com/v4/guide/i18n/
-npm install @vee-validate/i18n
-import {configuare} from "vee-validate";
-import {localize} from "vee-validate/i18n";
-
-configuare({
-  generateMessage:localize("zh-tw",{
-    messages:{
-      規則1:說明錯誤文字
+用store處理狀態
+新玩意getters
+在composition API不好用
+直接computed store裡面的東西還比較快
+建立方式
+在createStore(
+  {
+    state(){
+      return{
+        orderList:[]
+      }
+    },
+    getters:{
+      orderList(state){
+        return state.orderList
+      }
     }
-  })
-})
+  }
+)
+取用方式
+ let data = computed(()=>store.getters.orderList)
+ 幹 脫褲放怕 直接 let data = computed(()=>{
+  return store.state.orderList
+ })就好
 
 
-然後官方有個更複雜的  但無法將取得錯誤資訊的響應式資料  無法觸發輸入錯誤的css 所以方氣  
-東西在無法bindclass裡面
+ 比較屌的事vuex也有module模組化
+ 看vuex.js 
+ import xxx1 from "./xxx1";
+ import xxx2 from "./xxx2"
+ 在createStore({
+  module:{
+    xxx1,xxx2
+  }//此為解構復職 意思是{xxx1:xxx1,xxx2:xxx2}
+ })
 
+ xxx1檔案
+ export default物件
+ {
+  state(){
+    return{
 
+    },
+    actions:{
 
+    },
+    mutations:{
 
-==========================================
-環境變數有分開發與產品模式
-build會使用產品模式的變數
-所以要設兩個環境變數檔案 .env.development 和 .env.production
+    }
+  }
+ }
+重點是state裡的變數都是區域變數  要引用要加上module的變數名稱
 
+ex 如果要使用couponList 必須
+ store.state.couponStore.couponList
+不能直接store.state.couponList
 
+而每個module的actions和mutations都是全域變數
+也就是可以store.commit(xxx)使用每個module的action和mutation
+如果要讓他們變區域變數 
+則在蓋module裡面攝namespace:true
+那麼該module內的mutation和actions都會變區域
+之後要呼叫要變
+store.commit("modle名/mutation名")
+store.dispatch("module名/actions名")
+看couponStore內呼叫isLoading

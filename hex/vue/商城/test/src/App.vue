@@ -1,5 +1,5 @@
 <script setup>
-  import {ref,provide,watch} from "vue";
+  import {ref,provide,watch,computed} from "vue";
   import axios from "axios";
   //取得在login ok時做好的cookie
 //在每次向伺服器送請求時加上cookie
@@ -22,6 +22,8 @@
   })
   axios.defaults.headers.common.authorization = beforeShootingToken
 
+
+
   let data = ref([]);
   provide("addToStack",(item)=>{
     data.value.push(item)
@@ -29,8 +31,7 @@
       data.value.splice(0,1)
     },3000)
   });
-  let checkLoading = ref(store.state.isLoading)
-
+  
   watch(data.value,
     ()=>{
       //不能watch data.value控制setTimeout
@@ -45,13 +46,30 @@
     }
   )
 
-  watch(()=>store.state.isLoading,
-    ()=>{
-      console.log(store.state.isLoading)
-      checkLoading.value = store.state.isLoading
-    }
- 
-  )
+
+
+
+
+  //使用computed取代下面ref和watch
+  let checkLoading = computed(()=>{
+    //注意
+    //這裡引入的vuex狀態是模組中的，所以要引入模組名 再引入模組名的變數
+    return store.state.isLoadingStore.isLoading
+  })
+
+  //let checkLoading = ref(store.state.isLoadingStore.isLoading)
+  // watch(()=>store.state.isLoadingStore.isLoading,
+  //   ()=>{
+  //     checkLoading.value =store.state.isLoadingStore.isLoading
+  //   }
+  // )
+
+
+
+
+
+
+
   function delThis(idx){
     data.value.splice(idx,1)
   }

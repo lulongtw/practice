@@ -1,20 +1,40 @@
 <script setup>
-  import {ref,onMounted} from 'vue'
+  import {ref,onMounted,computed} from 'vue';
+  import {mapGetters} from "vuex";//mapGetters 在composition api不好用
 
   import {getData} from "@/assets/functions";
-  import store from "@/store/vuex.js"
+  import store from "@/store/vuex.js";
+
 
 
   let headAPI = import.meta.env.VITE_headAPI;
   let myAPI = import.meta.env.VITE_myAPI;
-  let data = ref({})
 
-  onMounted(async()=>{
-    store.commit("toggleLoading");
-    let url = `${headAPI}/api${myAPI}/admin/orders?page=:page`
-    let temp = await getData("get",url);
-    store.commit("toggleLoading");
-    data.value = temp.data.orders
+
+  
+  //這行也可以
+  // let data = computed(()=>{
+  //   return store.state.orderList
+  // })
+
+  let data = computed(()=>store.getters.orderList)
+
+
+  // watch(()=>store.state.orderList,
+  //   ()=>{
+  //     // 如果loading出現是跟非同步程式一起的話
+  //     // 那麼切換loading的動作要寫在非同步程式裡面
+  //     // 如果寫在同步程式裡面會因為非同步慢點執行的關係
+  //     // 導致切換loading瞬間完成 連loading畫面都來不及出現就切回來了
+  //     //store.commit("toggleLoading");
+  //     data.value = store.state.orderList
+  //     //store.commit("toggleLoading");
+  //   }
+  // )
+
+  onMounted(()=>{
+    let info = ["get",`${headAPI}/api${myAPI}/admin/orders?page=:page`]
+    store.dispatch("fetchOrderListData",info)
   })
 </script>
 

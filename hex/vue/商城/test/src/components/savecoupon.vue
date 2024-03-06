@@ -1,44 +1,39 @@
 <script setup>
   import axios from "axios";
-  import {ref,onMounted,inject,computed} from "vue";
+  import {ref,onMounted,inject} from "vue";
+  import Loading from 'vue-loading-overlay';
+  import 'vue-loading-overlay/dist/css/index.css';
 
   import {noCatch} from "@/assets/functions";
   import {modalAct} from "@/assets/functions";
   import addCouponModal from "@/components/modal/addCouponModal.vue";
-  import store from "@/store/vuex";
 
 
-  // let data = ref([]);
+  let data = ref([]);
   let headAPI = import.meta.env.VITE_headAPI;
   let myAPI = import.meta.env.VITE_myAPI;
   let isLoading = ref(false);
   let editId = ref("");
   let editData = ref({});
   let addToStack = inject("addToStack");
-  // let data = ref([]);
-  let data = computed(()=>{
-    return store.state.couponStore.couponData
-  })
 
-  onMounted(()=>{
-     refreshCoupon()
+  onMounted(async()=>{
+    await refreshCoupon()
   });
 
   
 
-  function refreshCoupon(){
-    //store.commit("isLoadingStore/toggleLoading");
+  async function refreshCoupon(){
+    isLoading.value = true;
     let url = `${headAPI}/api${myAPI}/admin/coupons?page=:page`;
-    store.dispatch("fetchCouponListData",url);
-    //store.commit("toggleLoading");
-    // await noCatch(axios.get(url)
-    //   .then(res=>{
-    //     if (res.data.success){
-    //       isLoading.value = false
-    //       data.value = res.data.coupons;
-    //     }
-    //   })    
-    // )
+    await noCatch(axios.get(url)
+      .then(res=>{
+        if (res.data.success){
+          isLoading.value = false
+          data.value = res.data.coupons;
+        }
+      })    
+    )
   }
   function editCoupon(item){
     editId.value = item.id;
@@ -83,6 +78,7 @@
 
 <template>
   <div class="couponWrap">
+    <loading v-model:active="isLoading"/>
     <button @click="modalAct('show','addCouponModal')" type="button" class="btn btn-primary">新增coupon</button>
   <table>
     <thead>
