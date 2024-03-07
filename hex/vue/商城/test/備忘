@@ -1,0 +1,29 @@
+1.
+computed直接命名變數
+要注意在一開始從onMounted dispatch到真正取得檔案有段時間
+所以用computed直接取得資料要注意結構 例如firstPage的allproducts
+也要注意不能用if直接探查該檔案 要往上層探查 = = 五告北七
+所以解決問題是一開始在vuex時就給定切確的檔案  不要在組件裡面.data.products
+
+2.靠杯
+vue3 loading overlay安裝後的位址檔跟官網的不一樣  要手動改
+    import Loading from 'vue3-loading-overlay';
+    // Import stylesheet
+    import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
+官網的只有vue 沒有vue3
+
+3.v-for不能和v-if放一起
+
+4.
+:style="`background-image:url('${item.imageUrl}')`"
+不是
+:style="'background-image:url(`${item.imageUrl}`)'"
+
+因為最外層的符號最屌  最大 最猛
+
+5.
+watch A目標
+裡面不能用setTimeout處理A目標
+因為watch一樣會觀測到setTimeout的處理過後的A目標
+造成無限循環
+對  就是在說提示AllHints
