@@ -27,3 +27,60 @@ watch A目標
 因為watch一樣會觀測到setTimeout的處理過後的A目標
 造成無限循環
 對  就是在說提示AllHints
+
+
+6.onMounted後才有dom元素
+有dom元素才能querySelector
+所以querySelector要在onMountd
+而如果有funciton內部使用dom元素
+那一開始就要let dom元素變數
+然後在onMounted內給dom元素變數賦值
+這樣function內才能使用dom元素變數
+
+7他媽太牛了  真的是母牛進門 牛逼到家了
+checkOutPage.vue那個side compoennt checkOutCartsTable
+就是準備結帳時顯示購物車內容的table
+要做可以按紐呈現出現消失 且帶有捲軸效果
+靠杯一開始就用v-if v-show 這樣根本和捲軸效果出同
+如果v-if v-show 對dom元素都是直接消失的概念
+但是height不太一樣
+height是慢慢檢少像素直到看不到
+一開始用v-if v-show 會直接消失 變成無法呈現漸漸消失的感覺
+中間還是了用toggle class的方法  感覺也不錯  但就是會跟v-if show衝突
+
+重點就是不能用if show
+
+最後是用變數去決定dom元素的高度
+這樣反而比較簡單
+除了程序複雜了點  看checkoutpage.vue
+
+
+7.
+ref_checkoutPage.vue 勢將AllCarts改成ref取得
+媽的下面行為也變了
+一開始onMounted會抓不到cartTable正確的高度  始終維持在沒有內容的高度
+這時又用setTimeout
+心得是
+在vue 用js抓dom元素會有時間差
+所以結論是要用<transition> ?????
+但是transition把行為寫在css裡面
+做法完全無法想像= = 
+
+
+
+
+結帳行為
+建立訂單 (結帳頁面)
+輸入買家資料後
+將目前購物車內容打包成一個訂單後
+取得訂單id
+
+然後進入結帳付款
+使用訂單id結帳付款
+
+
+
+取得訂單列表
+這設在免驗證有點衝突
+因為目前假設客戶是同一個人
+所以他不應該取得所有訂單

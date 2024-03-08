@@ -43,6 +43,7 @@
 
 <style scoped>
   .hints{
+    z-index:99999;
     position:fixed;
     top:30px;right:30px;
   }

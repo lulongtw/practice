@@ -9,6 +9,10 @@ let router = useRouter();
 let headAPI = import.meta.env.VITE_headAPI;
 let myAPI = import.meta.env.VITE_myAPI;
 
+let showingSmallCartStatus = computed(()=>{
+  return store.state. smallCartShowing
+})
+
 onMounted(()=>{
   let url = `${headAPI}/api${myAPI}/cart`
   let payload2 = ["get",url];
@@ -19,17 +23,17 @@ let showingCartList = ref(false)
 
 
 let allCarts = computed(()=>{
- // console.log(store.state.AllCarts)
   return store.state.AllCarts;
 })
 function showSmallCartList(){
   showingCartList.value = !showingCartList.value
 }
 function deleteProductFromCarts(id){
-  let url = `${headAPI}/api${myAPI}/cart/${id}`;
-  let payload = ["delete",url];
-  store.dispatch("deleteProductFromCarts",payload)
-  store.dispatch("getAllCart",)
+  // let url = `${headAPI}/api${myAPI}/cart/${id}`;
+  // let payload = ["delete",url];
+  // store.dispatch("deleteProductFromCarts",payload)
+  store.dispatch("deleteProductFromCarts",id)
+  store.dispatch("getAllCart")
 }
 </script>
 
@@ -37,17 +41,18 @@ function deleteProductFromCarts(id){
   <header>
     <div class="topping">
       <div class="firstPageNav"><i class="fa-solid fa-paw"></i>肥狗超商</div>
-      <div class="currentCart">
+      <div v-show="showingSmallCartStatus" class="currentCart">
         <button @click.prevent="showSmallCartList()" type="button" class="btn btn-light">
           <div class="cartpic"><i class="fa-solid fa-cart-shopping"></i></div>
           <div class="digit">{{allCarts.length}}</div>
         </button>
       </div>
       <div v-if="showingCartList" class="smallCartList">
+        <div>    購物車內商品</div>
             <table>
-              <th>
-                購物車內商品
-              </th>
+              <tr v-if="!allCarts.length">
+                無商品
+              </tr>
               <template v-for="(item,idx) in allCarts">
                 <tr>
                   <td @click="deleteProductFromCarts(item.id)"><i class="fa-solid fa-trash"></i></td>
@@ -57,6 +62,7 @@ function deleteProductFromCarts(id){
                 </tr>
               </template>
             </table>
+            <div @click="router.push(`/checkOutPage`);showingCartList = false" class="checkOutButton"><i class="fa-solid fa-paw"></i> 結帳去</div>
           </div>
     </div>
   </header>

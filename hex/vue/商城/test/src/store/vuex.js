@@ -12,7 +12,8 @@ const store = createStore({
     return{
       AllProducts:[],
       AllCarts:[],
-      AllHints:[]
+      AllHints:[],
+      smallCartShowing:true,
     }
   },
   mutations:{
@@ -30,6 +31,12 @@ const store = createStore({
     },
     mutations_getAllCarts(state,newVal){
       state.AllCarts = newVal
+    },
+    noShowSmallCart(state){
+      state.smallCartShowing = false
+    },
+    showSmallCart(state){
+      state.smallCartShowing = true
     }
   },
   actions:{
@@ -37,13 +44,19 @@ const store = createStore({
       let temp = await getData(payload[0],payload[1],payload[3])
       context.commit("mutations_getAllProducts",temp.data.products)
     },
-    async getAllCart(context,payload){
+    async getAllCart(context){
+      let url = `${headAPI}/api${myAPI}/cart`;
+      let payload = ["get",url]
       let temp = await getData(...payload);
-      context.commit("mutations_getAllCarts",temp.data.data.carts)
+      context.commit("mutations_getAllCarts",temp.data.data.carts);
+  
     },
-    async deleteProductFromCarts(context,payload){
+    async deleteProductFromCarts(context,id){
+      let url = `${headAPI}/api${myAPI}/cart/${id}`
+      let payload = ["delete",url]
       let temp = await getData(...payload);
-      console.log(temp)
+      context.commit("mutations_addToHints",temp.data.message)
+      store.dispatch("getAllCart");
     }
   },
   modules:{

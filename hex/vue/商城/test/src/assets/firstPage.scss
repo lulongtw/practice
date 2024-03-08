@@ -149,10 +149,23 @@ border-top-right-radius: 0;
 
 .smallCartList td{
   text-align: center;
+  padding:5px 2px;
 }
-.smallCartList>td:first-of-type{
+.smallCartList td:first-of-type{
   width:20px;
-}
+  color:red;
 
+}
+.smallCartList tr{
+  border-bottom:1px solid rgb(219, 219, 219);
+}
+.checkOutButton{
+  background-color: rgb(255, 208, 0);
+  margin-top:10px;
+  border-radius:10px;
+  text-align: center;
+  padding:5px 10px;
+  font-size:15px;
+}
 
 

@@ -114,4 +114,87 @@
       }
     </script>
   </body>
+
 </html>
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+    .wrap{
+      width:500px;
+      padding:15px;
+      background-color: gray;
+      height:60px;
+      /* height:95px;1 */
+      /* height:130px; 2*/
+      overflow: hidden;
+      transition: height 1s;
+    }
+    .inputCol{
+      background-color: red;
+      padding:15px;
+      display: flex;
+      justify-content: space-between;
+     
+    }
+    .button{
+      width:30px;height:30px;
+      border:1px solid black;
+      box-sizing: border-box;
+    }
+    .content{
+     
+    }
+    .item{
+      margin-top:15px;
+      height:20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="inputCol">
+      <input type="text">
+      <div class="button">aa</div>
+    </div>
+    <div class="content">
+      <div class="item">上</div>
+      <div class="item">上</div>
+      
+    </div>
+  </div>
+  <script>
+    let lst = [];
+    let button = document.querySelector(".button");
+    let wrap = document.querySelector(".wrap");
+    let input = document.querySelector("input");
+    let content = document.querySelector(".content");
+    let height = 130
+
+    input.addEventListener("change",()=>{
+      let div = document.createElement("div");
+      div.textContent = input.value;
+      div.classList.add("item");
+      content.appendChild(div)
+      height+=35;
+      wrap.style.height = height + "px"
+    })
+
+    button.onclick=()=>{
+      if (wrap.style.height == "60px"){
+        wrap.style.height = height + "px" 
+      }else{
+        wrap.style.height = "60px" 
+      }
+       
+    }
+  </script>
+</body>
+</html> -->
