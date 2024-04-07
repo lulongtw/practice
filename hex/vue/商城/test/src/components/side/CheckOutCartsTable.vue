@@ -1,9 +1,19 @@
 <script setup>
+  import {computed} from "vue";
+
   import store from "@/store/vuex";
 
   let props = defineProps({
     cartList:Array
   });
+
+  let finalTotal = computed(()=>{
+    let ans = props.cartList.reduce((accumulate,currentItem)=>{
+      return accumulate+currentItem.final_total
+    },0);
+    return ans
+  });
+
 
   function deleItemFromCart(id){
     store.dispatch("deleteProductFromCarts",id);
@@ -33,9 +43,10 @@
         </tr>
       </template>
     </tbody>
-    <div>運費</div>
-    <div>合計</div>
   </table>
+
+  <div class="price">運費 $60元</div>
+  <div class="price">合計 ${{finalTotal+60}}</div>
   </div>  
 </template>
 <style scoped>
@@ -54,8 +65,14 @@
   }
   tr>td:first-of-type{
     text-align: center;
+    width:50px;
   }
   td{
     padding:5px 0;
+  }
+  .price{
+    padding:5px 20px;
+    text-align: right;
+
   }
 </style>

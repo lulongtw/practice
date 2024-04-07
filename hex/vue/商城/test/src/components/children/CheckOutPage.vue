@@ -2,7 +2,8 @@
   import {onMounted,computed,ref,watch} from "vue";
 
   import store from "@/store/vuex";
-  import checkOutCartsTable from "@/components/side/CheckOutCartsTable.vue"
+  import checkOutCartsTable from "@/components/side/CheckOutCartsTable.vue";
+  import dallasBuyer from "@/components/side/DallasBuyer.vue"
 
 
   let finalTotal = ref(0);
@@ -88,7 +89,7 @@
         </div>
       <!-- </transition> -->
       <div class="dallasBuyer">
-        v-validate的地方
+        <dallasBuyer></dallasBuyer>
       </div>
       <button type="button" class="btn btn-success">Success</button>
       <button type="button" class="btn btn-danger">Danger</button>
