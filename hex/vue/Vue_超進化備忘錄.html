@@ -98,3 +98,78 @@
   </script>
 </body>
 </html>
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>Document</title>
+  <style>
+    .box{
+      border:1px solid black;
+      width:30px;
+      height:30px;
+      text-align:center;
+      line-height:30px;
+    }
+    .done{
+      color:green
+    }
+    .undone{
+      color:red
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <input @keyup.enter="()=>{all.push(text);states.push(false);text=''}" type="text" v-model="text">
+    <div>{{currentLst}}</div>
+    <ul>
+      <template  v-for="(item,index) in all" :key="index">
+      <li v-show="check(index)" :class="states[index]?'done':'undone'" @click="toggle(index,item)">{{item}}</li>
+      </template>
+    </ul>
+    <div @click="()=>{currentLst='all'}">showall</div>
+    <div @click="()=>{currentLst='ok'}">showOk</div>
+    <div @click="()=>{currentLst='notok'}">shownotOk</div>
+  </div>   
+  <script>
+    let {ref,createApp} = Vue;
+    let app = createApp({
+      setup(){
+        let all = ref(["吃飯","睡覺","打東東"]);
+        let currentLst = ref("all");
+        let states = ref([false,false,false])
+
+        let text = ref("");
+
+        function toggle(index,item){
+          states.value[index] = !states.value[index];
+        }
+        function check(idx){
+          let ans
+          switch (currentLst.value){
+            case 'ok':
+              return states.value[idx]
+            case 'notok':
+              return !states.value[idx]
+            default:
+              return true
+          }
+        }
+
+        return{
+          all,text,toggle,states,check,currentLst
+        }
+      }
+    });
+    app.mount("#app")
+
+  </script>
+</body>
+</html>
+
+-->

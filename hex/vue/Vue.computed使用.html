@@ -53,3 +53,68 @@
 	</script>
 </body>
 </html>
+
+<!--	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    a重<input type="text" v-model="obj.a">公斤
+    <br>
+    b種 <input type="text" v-model="obj.b">公斤
+    <br>
+    {{res}}
+    {{avg}}
+  </div>
+  <script>
+    let {createApp,ref,computed,reactive} = Vue;
+    let app = createApp({
+      setup(){
+        let obj = reactive({
+
+        });
+        let res = computed(()=>{
+          if (obj.a&&obj.b){
+            obj.a = parseFloat(obj.a)
+            obj.b = parseFloat(obj.b);
+            switch (true){
+            case obj.a>obj.b:
+              return `a比b肥${obj.a-obj.b}kg`
+            case obj.b>obj.a:
+              return `b比a肥${Math.abs(obj.a*1-obj.b*1)}kg`
+            default:
+              return "一樣肥"
+          }
+          }
+
+
+
+        })
+        let avg = computed(()=>{
+            if (obj.a&&obj.b){
+              obj.a = parseFloat(obj.a)
+            obj.b = parseFloat(obj.b);
+            return (obj.a+obj.b)/2
+            }
+          })
+
+        return{
+          obj,res,avg
+        }
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html>
+
+-->
+

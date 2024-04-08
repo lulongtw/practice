@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    {{num}}
+    <div @click="add">click</div>
+  </div>
+  <script>
+    let {createApp,ref,onBeforeMount,onBeforeUpdate,onUpdated,onMounted} = Vue;
+    let app = createApp({
+   
+      setup(){
+        let div = document.querySelector("div");
+        let num = ref(0);
+        function add(){
+          num.value++
+        }
+        onBeforeMount(()=>{
+          console.log("onBeforeMounted");
+          console.log(div.textContent)
+          console.log(num.value)
+        })
+        onMounted(()=>{
+          console.log("onMounted");
+          console.log(div.textContent)
+          console.log(num.value)
+        })
+
+        onUpdated(()=>{
+          console.log("onUpdated")
+          console.log(div.textContent)
+          console.log(num.value)
+        })
+        onBeforeUpdate(()=>{
+          console.log("onBeforeUpdated")
+          console.log(div.textContent)
+          console.log(num.value)
+
+        })
+
+
+        return {
+          num,add
+        }
+      },
+      
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html>

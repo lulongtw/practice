@@ -26,6 +26,11 @@
     //重點是看下方
     //在data(){}裡面的資料似乎直接具有響應特性  不ref就可以了
     //但在setup建立的變數就必須使用ref 才能響應
+    
+    //如果app建立組件的方式是用另一種 就是在createApp裏面componnents:{com:com}
+    //這樣一來會由com的組成更清楚的看到  在單頁式用法內 vue組件資料的建立  都是靠物件
+    //let com = {template="xxxxx",setup(){return{}}}
+    //com是一個物件 裡面資料型態都事健值對 不然就是一個函式
     let app = Vue.createApp({
       template:"<com></com><com></com><com></com><com></com><com></com><com></com>"
     });

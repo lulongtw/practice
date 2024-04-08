@@ -34,7 +34,7 @@
     ////template代表目前階層組件的html
     //cpnt 代表的就是一個組件 
     //永遠注意 幹你娘老雞掰操你媽的逼幹
-    //組件不可以使用既有的html標籤 例如main 和nav....
+    //組件名稱不可以使用既有的html標籤 例如main 和nav....
     //他媽直接沒反應還不會報錯幹你鳥老幾掰操你媽的逼我真的藥崩潰幹
     let a = {template:"<div>this is a component</div><div>this is a component</div>"}
  
@@ -80,6 +80,11 @@
     let son = {template:"<div>son</div>"}
     
     let app3 = Vue.createApp({
+      //在組件內建立components鍵值對後
+      //就不能在外部建立了
+      //像app3已經components:{}
+      //就不能在createApp({})外部  app3.component()建立組件
+      //只能選其一
       components:{
         dad:
           {

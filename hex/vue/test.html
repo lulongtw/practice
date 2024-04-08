@@ -3,260 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <script src="https://kit.fontawesome.com/33d145f0f9.js" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    *{
-      margin:0;padding:0;box-sizing: border-box;
+    body{
+      margin:0;
+      padding:0
     }
     .wrap{
-      width:70%;
-      min-height: 200px;
-      margin:20px;
-      padding:10px;
-      border: 1px solid gray;
-      border-radius: 20px;
       display:flex;
-      flex-wrap:wrap;
-      justify-content: center;
-      align-items: center;
+      
     }
-    .wrap::after{
-      content:"";
-      width:200px;
-      /* 不能射height 會很high
-      其他站位方式要跟item一樣 */
-      margin:10px;
-    }
-    .item{
-      margin:10px;
-      width:200px;
-      height:250px;
-      padding:15px;
-      border:1px solid gray;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      /* flex-grow: 1; */
-    }
-    .name{
-      display:flex;
-      justify-content: space-between;
-    }
-    .item>div{
-      border-bottom: 1px solid gray;
-    }
-    .blue{
+    .right{
       background-color: blue;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      padding:30px;
+      width:70%
     }
-    .green{
-      background-color: green;
-    }
-    .yellow{
-      background-color: yellow;
-    }
-    .orange{
-      background-color: orange;
-    }
-    .purple{
-      background-color: blueviolet;
-    }
-    .red{
+    .left{
       background-color: red;
+      border:3px solid black;
+      box-sizing:border-box;
+      width:30%;
+      position:relative;
+
+    }
+    .a{
+      color:green;
+      position:absolute;
+      margin:auto;
+      top:0;bottom:0;right:0;left:0;
+  
     }
   </style>
 </head>
 <body>
   <div id="app"></div>
   <script type="text/x-template" id="apphtml">
-    <select v-model='sel'>
-      <option v-for='item in countLst' :value='item'>{{item}}</option>
-    </select>
-    <!-- 媽的又臭又長
-    總覺得可以在短
-    但要大洞
-    癥結點在取得data的來源
-    因為分上下兩段 各式不同的lst 
-    上面是喜歡favlst  下面未喜歡normallst
-    一開始還沒normalLst  是直接用data
-    因為不想把全部資料丟盡local
-    所以先針對favlst處理 把有喜歡的丟進favlst
-    但出現問題
-    重新整理時
-    favlst取得local檔案 data取得全新檔案
-    如果local有存擋 可能會出現上下都相同的地點
-    這樣不對
-    所以分了normal處理
-
-    所以應該是取得ajax 取得全新data
-    檢查local資料 去區分.show要true還是false?
-    
-    瘋掉  弄完了
-    在判斷時裡面的if沒有上到else
-    會造成 已經有local 但不在favLst裡面的item沒有.show
-  
-    然後上下兩個的愛心圖示出現的條件要相反 = =
-
-    本來還想弄成有子元件的
-    蛋好像只有state可以用
-    因為name和.item都有條件不同
-    而且需要props和emit 寫起來應該會更長
-    所以懶得寫了@@
-  -->
-    
-    <div class='wrap' >
-
-          
-
-      <template v-for='item in data'>
-        <div :class="['item',checkClass(item.status)]"  v-if='item.county==sel&&item.show' >
-
-          <div class="name">
-            <span>{{item.county}}-{{item.sitename}}</span>
-            <i v-if='item.show' @click='send(item)'  class="fa-solid fa-heart" ></i>
-            <i v-else  @click='send(item)' class="fa-regular fa-heart"></i>
-          </div>
-
-          <div class="state">
-            <div>AQI指數: {{item.aqi}}</div>
-            <!-- <div>PM2.5: {{item.pm2.5}}</div> -->
-            <div>污染情形 {{item.pollutant||"ok的拉"}}</div>
-            <div>說明: {{item.status||"沒有回傳"}}</div>
-          </div>
-          
-          <div class='date'>{{item.publishtime}}</div>
-        </div>
-      </template>
+    <div class='wrap'>
+      <div class="right">
+        <ul>
+          <li @click='cng(idx)' v-for='(item,idx) in lst' :key='idx'>我是{{item}}號角色</li>
+        </ul>
+      </div>
+      <div class="left">
+        <component class='a' :is='currentcpnt'></component>
+      </div>
     </div>
-      <hr>
-      <div class='wrap' >
-      <template v-for='item in data'>
-
-        <div :class="['item',checkClass(item.status)]"  v-if='item.county==sel && !item.show' >
-
-          <div class="name">
-            <span>{{item.county}}-{{item.sitename}}</span>
-               <i v-if='!item.show' @click='send(item)' class="fa-regular fa-heart"   ></i>
-            <i v-else  @click='send(item)' class="fa-solid fa-heart" ></i>
-          </div>
-
-          <div class="state">
-            <div>AQI指數: {{item.aqi}}</div>
-            <!-- <div>PM2.5: {{item.pm2.5}}</div> -->
-            <div>污染情形 {{item.pollutant||"ok的拉"}}</div>
-            <div>說明: {{item.status||"沒有回傳"}}</div>
-          </div>
-          
-          <div class='date'>{{item.publishtime}}</div>
-        </div>
-      </template>
-      <hr>
-    </div>
-
   </script>
-
   <script>
-    let {createApp,ref,onMounted,computed,watch} = Vue;
+    let {createApp,ref} = Vue;
+    let buyer = {
+      template:"<div>buyer</div>"
+    }
+    let seller = {
+      template:"<div>seller</div>"
+    }
+    let judge = {
+      template:"<div>judge</div>"
+    }
     let app = createApp({
       template:"#apphtml",
+      components:{
+        buyer:buyer,seller:seller,judge:judge
+      },
       setup(){
-        let data = ref([]);
-        let sel = ref("苗栗縣");
-        let countLst = ref([]);
-        let favLst = ref([]);
-        let normalLst = ref([]);
-        let selLst = computed(()=>{
-          let newlst = ref([]);
-          data.value
-        })
-        function send(item){
-          console.log(item)
-          item.show = !item.show;
-          if (item.show){
-            favLst.value.push(item);
-          }else{
-            let idx = favLst.value.indexOf(item);
-            favLst.value.splice(idx,1);
-          }
-
-          let toLocal = JSON.stringify(favLst.value);
-          localStorage.setItem("polution",toLocal)
-          return item.show
+        let lst = ['buyer','seller','judge'];
+        let currentcpnt = ref(lst[0])
+        function cng(idx){
+          currentcpnt.value = lst[idx]
         }
-        
-        watch(()=>sel.value,
-              ()=>{
-                let toLocal = JSON.stringify(sel.value);
-                localStorage.setItem("county",toLocal)
-              }
-        )
-
-        // watch(()=>favLst.value,
-        //       ()=>{
-        //         console.log(favLst.value)
-        //         let toLocal = JSON.stringify(favLst.value);
-        //         localStorage.setItem("polution",toLocal)
-        //       }
-        // )
-
-        function noCatch(asFn){
-          return asFn.catch(
-            res=>{
-              console.log("shit")
-            }
-          )
-        }
-        function checkClass(status){
-          switch (status){
-            case "良好":
-              return "blue"
-            case "普通":
-              return "green"
-            case "對敏感族群不健康":
-              return "yellow"
-            case "對所有族群不健康":
-              return "orange"
-            case "非常不健康":
-              return "purple"
-            default:
-              return "red"
-          }
-        }
-
-        onMounted(async ()=>{
-          let temp = await noCatch(fetch("https://data.moenv.gov.tw/api/v2/aqx_p_432?api_key=e8dd42e6-9b8b-43f8-991e-b3dee723a52d&limit=1000&sort=ImportDate%20desc&format=JSON"));
-          temp = await temp.json()
-          favLst.value = localStorage.getItem("polution")?JSON.parse(localStorage.getItem("polution")):[];
-          // console.log(favLst.value)
-          temp.records.forEach(item=>{
-            if (favLst.value){
-              if (favLst.value.some(elm=>elm.sitename==item.sitename)){
-                item.show = true
-              }else{
-                item.show = false
-              }
-            }else{
-              item.show = false
-            }
-            //includes一樣會受到傳參考 與傳值 影響
-            //如果是.icludes(item) 那麼永遠false
-            //因為兩者在記憶體中的位置不一樣
-            if (!countLst.value.includes(item.county)){
-              countLst.value.push(item.county)
-            }
-          })
-          data.value = temp.records
-
-          sel.value = localStorage.getItem("county")?JSON.parse(localStorage.getItem("county")):"高雄市"
-        })
-
-        return{ 
-          data,checkClass,sel,countLst,send,favLst,normalLst
+        return {
+          lst,cng,currentcpnt
         }
       }
-    });
+    })
     app.mount("#app")
   </script>
 </body>

@@ -1,115 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      
-      .ok{
-        outline: none;
-        border-color: rgb(146, 254, 146);
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vuex@4"></script><!--引入vuex-->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+    <input type="text" v-model='appword'>
+    <br>
+    <input  @click='refresh' type="button" value='submit'>
+    <hr>
+    <son></son>
+  </script>
+  <script type="text/x-template" id="sonhtml">
+    {{sonWord}}
+  </script>
+  <script>
+    let {createApp,ref,watch} = Vue;
+    let {createStore} = Vuex
+    let store = createStore({
+      state(){
+        return{
+          word:"vuex"
+        }
+      },
+      mutations:{
+        updtWord(state,newVal){
+          state.word = newVal
+        }
       }
-      .notok{
-        outline: none;
-        border-color: rgb(255, 161, 161);
-      }
-    </style>
-  </head>
+    })
 
-  <body>
-    <div id="app"></div>
-    <!--
-    這節課上directive 
-    概念是  在標籤上directive  給標籤設定生命週期  並在特定生命週期做事
-    像是input標籤 需要一mount好 就ｏｎＦｏｃｕｓ的藍色邊框
-    或是在輸入email時 隨時檢查輸入的東西是否符合格式 隨時輸出對應的邊框顏色 提示使用者正不正確
-    感覺可以被bind 上函式取代
-
-    使用方法
-
-    在組件內
-    directives:{
-      directive名稱:{
-        //此處的生命週期都是函式 意思是在該生命週期執行該函式
-        //el代表被綁定的標籤 可以直接操作DOM元素
-        //其他代表....https://cn.vuejs.org/guide/reusability/custom-directives.html 自己看=  =
-        
-        生命週期1hooker(el,binding,vnode){  
-          函式1
+    let son = {
+      template:"#sonhtml",
+      setup(){
+        let sonWord = ref(store.state.word)
+        watch(()=>store.state.word,
+          ()=>{sonWord.value = store.state.word}
+        )
+        return{
+          sonWord
         }
       }
     }
-    在標籤使用 <標籤 v-directive名稱></標籤>
-
-    
-    以上是在這種cdn式寫法
-    以下是在sfa使用
-    let vSex = {
-      mounted:(el)=>{...}
-    }
-    使用駝峰命名蔽掉- 在標籤上表示就是v-sex 並且省略了directives
-    
-
-  -->
-    <script type="text/x-template" id="apphtml">
-      <input type="text" v-model='text' v-sex>
-      <div>這個是輸入時監控value updated 更改背景顏色</div>
-      <hr>
-      <input type="text" v-model='text1' v-check>
-      <div>這個是標籤一mount 馬上focus 並且檢查輸入的email是否符合格式</div>
-    </script>
-    <script>
-          let {createApp,ref} = Vue;
-          let app = createApp({
-            template:"#apphtml",
-        
-            directives:{
-              sex:{
-                updated(el){//當綁定標籤的value改動後  執行下面程式
-                  //注意  標籤必須使用響應式  因為他監控的事value 沒響應式的話感覺不到update
-                  let lst = ["rgb(255, 255, 255)","rgb(255, 0, 255)","rgb(255, 255, 0)","rgb(255, 0, 0)","rgb(0, 255, 255)"]
-                  let styles = getComputedStyle(el);
-                  let clr = styles.getPropertyValue("background-color");
-                  let idx = lst.indexOf(clr);
-                  el.style.backgroundColor = lst[(idx+1)%5]
-                }
-              },
-              check:{
-                mounted(el){
-                  el.focus()
-                },
-                updated(el){
-                  let ok = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
-                  if(el.value.search(ok)!= -1){
-                      el.className="ok"
-                  }else{
-         
-                    el.className="notok"
-                  }
-                }
-              }
-            },
-            setup(){
-              let text = ref("");
-              let text1 = ref("")
-            return{
-              text,text1
-            }
-          }
-          });
-          //也可以在全局使用 代表app的所有子組件都可以使用sex directive
-          // app.directive("sex",{
-          //   mounted(){
-          //     xxx
-          //   }
-          // })
-
-
-
-          app.mount("#app")
-    </script>
-  </body>
+    let app = createApp({
+      template:"#apphtml",
+      components:{son:son},
+      setup(){
+        let appword = ref("");
+        function refresh(){
+          store.commit("updtWord",appword)
+          console.log(store.state.word)
+        }
+        return {
+          appword,refresh
+        }
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
 </html>
