@@ -84,5 +84,6 @@ watch(
   <hr />
   {{ fromStoreText }}
   <hr>
+
   {{fromStoreData}}
 </template>

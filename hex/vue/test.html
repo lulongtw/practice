@@ -7,78 +7,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    body{
-      margin:0;
-      padding:0
-    }
-    .wrap{
-      display:flex;
-      
-    }
-    .right{
-      background-color: blue;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      padding:30px;
-      width:70%
-    }
-    .left{
-      background-color: red;
-      border:3px solid black;
-      box-sizing:border-box;
-      width:30%;
-      position:relative;
-
-    }
-    .a{
-      color:green;
-      position:absolute;
-      margin:auto;
-      top:0;bottom:0;right:0;left:0;
-  
+    .aa{
+      color:red
     }
   </style>
 </head>
 <body>
   <div id="app"></div>
+  <script type="text/x-template" id="com1">
+    <slot><div class='aa'>預設</div></slot>
+  </script>
+  <script type="text/x-template" id="com2">
+    <slot name='a'></slot>
+    <slot name='b'></slot>
+
+  </script>
+  <script type="text/x-template" id="com3">
+    com3
+  </script>
   <script type="text/x-template" id="apphtml">
-    <div class='wrap'>
-      <div class="right">
-        <ul>
-          <li @click='cng(idx)' v-for='(item,idx) in lst' :key='idx'>我是{{item}}號角色</li>
-        </ul>
-      </div>
-      <div class="left">
-        <component class='a' :is='currentcpnt'></component>
-      </div>
-    </div>
+      <com1></com1>
+      <com2>
+        <template v-slot:a>
+          <div>
+            你他媽
+          </div>
+        </template>
+        <template #b>
+          <com3></com3>
+        </template>
+      </com2>
+
   </script>
   <script>
     let {createApp,ref} = Vue;
-    let buyer = {
-      template:"<div>buyer</div>"
+    let com1 = {
+      template:"#com1"
     }
-    let seller = {
-      template:"<div>seller</div>"
+    let com2 = {
+      template:"#com2"
     }
-    let judge = {
-      template:"<div>judge</div>"
+    let com3 = {
+      template:"#com3"
     }
     let app = createApp({
       template:"#apphtml",
       components:{
-        buyer:buyer,seller:seller,judge:judge
+        com1:com1,
+        com2:com2,
+        com3:com3
       },
       setup(){
-        let lst = ['buyer','seller','judge'];
-        let currentcpnt = ref(lst[0])
-        function cng(idx){
-          currentcpnt.value = lst[idx]
-        }
-        return {
-          lst,cng,currentcpnt
-        }
+        return {}
       }
     })
     app.mount("#app")

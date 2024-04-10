@@ -12,7 +12,7 @@
       畫到畫面上
 
       重點是如何在子組件使用父組件的函式，而且是需要傳入變數的情況下
-      解答是用子組件的另一個函式去包裹
+      解答是用子組件的另一個函式去包裹  然後父組件是要return答案  不然子組件函式只會接到undefined
       */
   </script>
   <title>Document</title>
@@ -74,3 +74,78 @@
   </script>
 </body>
 </html>
+<!--
+  這個是加上對props屬性檢查的版本  注意子組件引入props時檢查的{}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+    <son :func='add' :num='obj.a'></son>
+    <son :func='add' :num='obj.b'></son>
+    <son :num='qq'></son>
+  </script>
+
+  <script type="text/x-template" id="sonhtml">
+    {{n}}
+    <div @click='cal'>click</div>
+    
+  </script>
+
+  <script>
+    let {createApp,ref,reactive} = Vue;
+    let son = {
+      template:"#sonhtml",
+      props:{
+        func:{
+          Function,
+          default:()=>{
+            console.log("no call")
+            }
+        },
+        num:{type:Number,validator:(val)=>{
+          return val>8
+        },default:function(){
+          return 69
+        }}
+      },
+      setup(props){
+        let n = ref(props.num);
+        function cal(){
+          n.value = props.func(n.value)
+        }
+        return{
+          n,cal
+        }
+      }
+    }
+    let app = createApp({
+      template:"#apphtml",
+      components:{son:son},
+      setup(){
+        let qq
+        let obj = reactive({
+          a:1,
+          b:10
+        });
+        function add(num){
+          return ++num
+        }
+        return {
+          obj,add,qq
+        }
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html>
+
+-->

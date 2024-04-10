@@ -1,4 +1,4 @@
-import {createRouter,createWebHistory} from "vue-router";
+import {createRouter,createWebHashHistory} from "vue-router";
 import com1 from "../views/com1.vue"
 import com2 from "../views/com2.vue";
 
@@ -6,7 +6,7 @@ import com2 from "../views/com2.vue";
 
 
 const router = createRouter({
-  history:createWebHistory(),
+  history:createWebHashHistory(),
   routes:[
     {
       path:"/",

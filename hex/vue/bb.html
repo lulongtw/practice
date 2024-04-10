@@ -1,69 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <script src="https://unpkg.com/vuex@4"></script><!--引入vuex-->
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="https://unpkg.com/vue@3"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        transition: all 0.3s;
+        text-align: center;
+      }
+      .red{
+        color:red
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div> 
+    <script type="text/x-template" id="apphtml">
+      <com1>      
+        <div >
+          不具名標籤情況<br>
+          子組件只有一個不具名slot標籤 <br>
+          父組件可以使用既有html標籤傳入<br>
+        </div>
+      </com1>
+      <hr>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div id="app"></div>
-  <script type="text/x-template" id="apphtml">
-    <input type="text" v-model='appword'>
-    <br>
-    <input  @click='refresh' type="button" value='submit'>
-    <hr>
-    <son></son>
-  </script>
-  <script type="text/x-template" id="sonhtml">
-    {{sonWord}}
-  </script>
-  <script>
-    let {createApp,ref,watch} = Vue;
-    let {createStore} = Vuex
-    let store = createStore({
-      state(){
-        return{
-          word:"vuex"
-        }
-      },
-      mutations:{
-        updtWord(state,newVal){
-          state.word = newVal
-        }
-      }
-    })
+        <hr>
+ </script>
 
-    let son = {
-      template:"#sonhtml",
-      setup(){
-        let sonWord = ref(store.state.word)
-        watch(()=>store.state.word,
-          ()=>{sonWord.value = store.state.word}
-        )
-        return{
-          sonWord
-        }
+    <script type="text/x-template" id="com1html">
+      <slot>當父組件沒有對不具名slot傳資訊<br>
+        不具名slot可提供預設內容</slot>
+    </script>
+
+
+   
+    <script>
+      let { createApp, ref, reactive, computed, watch, onMounted } = Vue;
+      let com1 = {
+        template:"#com1html"
       }
-    }
-    let app = createApp({
-      template:"#apphtml",
-      components:{son:son},
-      setup(){
-        let appword = ref("");
-        function refresh(){
-          store.commit("updtWord",appword)
-          console.log(store.state.word)
-        }
-        return {
-          appword,refresh
-        }
+      let com2 = {
+        template:"#com2html"
       }
-    })
-    app.mount("#app")
-  </script>
-</body>
+      let com3 = {
+        template:"#com3html"
+      }
+      let app = createApp({
+        template: "#apphtml",
+        components:{
+          com1:com1,
+    
+        }
+      });
+      app.mount("#app");
+    </script>
+  </body>
 </html>

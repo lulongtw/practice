@@ -71,3 +71,64 @@
   </script>
 </body>
 </html>
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+    <com1>{{text}}</com1><br>
+    <com2>{{text}}</com2><br>
+    <com3>{{text}}</com3><br>
+  </script>
+
+  <script type="text/x-template" id="com2html">
+    this is com2
+    
+  </script>
+  <script type="text/x-template" id="com3html">
+    this is com3 <slot></slot>
+    
+  </script>
+  <script>
+    let com1 = {
+      
+      setup(){
+        return{}
+      }
+    }
+    let com2 = {
+      template:"#com2html"
+    }
+    let com3 = {
+      template:"#com3html"
+    }
+    let {createApp,ref} = Vue;
+    let app = createApp({
+      template:"#apphtml",
+
+      setup(){
+        let text = 'fromDad'
+        return {
+          text
+        }
+      }
+    })
+    app.component('com1')
+    app.component('com2',com2)
+    app.component('com3',com3)
+    app.mount("#app")
+  </script>
+</body>
+</html>
+
+-->

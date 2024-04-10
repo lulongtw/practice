@@ -10,13 +10,14 @@ import { ref, watch ,onMounted,computed} from "vue"
 
 // 使用 useRoute 获取当前路由实例
 const route = useRoute();
-console.log(route)
+// console.log(route)
 let data = ref([]);
 let clsidx = ref("")
 // console.log(route.params.id)
 
 function getData(newVal) {
   let url = `https://randomuser.me/api/?page=3&results=1&seed=${newVal}`;
+  console.log(url)
   fetch(url)
     .then((res) => res.json())
     .then((res1) => {
@@ -32,14 +33,14 @@ let cls = computed(()=>{
 })
 
 onMounted(()=>{
-  //console.log(route.params.id)
+  // console.log(route)
 
   getData(route.params.id)
 })
 
 watch(() => route.params.id,
   (newVal) => {
-    console.log(newVal)
+    // console.log(newVal)
     //避免在離開此view時取得route id
     //如果取得 id 會因出undefine 進而渲染data
     //因為keepalive的關係  渲染過的資料會留在畫面

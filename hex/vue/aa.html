@@ -9,9 +9,14 @@
 </head>
 <body>
   <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+
+    
+  </script>
   <script>
     let {createApp,ref} = Vue;
     let app = createApp({
+      template:"#apphtml",
       setup(){
         return {}
       }

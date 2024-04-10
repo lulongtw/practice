@@ -65,7 +65,10 @@
   </template> -->
 
   <template v-for="(item,index) in lst">
-    <RouterLink :to="{name:'com',params:{id:item},query: { idx: index }}">{{item}}</RouterLink>
+
+    <RouterLink :to="{name:'com',params:{id:item},query: { idx: index }}">
+    {{item}}
+    </RouterLink>
     <br>
   </template>
 

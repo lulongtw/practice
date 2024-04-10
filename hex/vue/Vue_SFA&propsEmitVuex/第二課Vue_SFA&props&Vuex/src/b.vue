@@ -9,6 +9,7 @@
  watch(() => store.state.msg, 
        () =>{ans.value = store.state.msg})
        //也可以這樣寫
+       //() => store.state.msg, 
       // (newValue) => {ans.value = newValue;})
 
   /*

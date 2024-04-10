@@ -1,6 +1,6 @@
 import {createRouter,createWebHashHistory} from "vue-router";
-import com1 from "../views/com1.vue"
-import com2 from "../views/com2.vue";
+import com1 from "@/views/com1.vue"
+import com2 from "@/views/com2.vue";
 /*
 這節課上 router裡面的 mode,base,linkActiveClass 屬性
 
@@ -28,12 +28,12 @@ vue自動會給被點擊到的RouterLink一個className
 
 
 const router = createRouter({
-  base:"/",
+  base:"/box",
   history:createWebHashHistory(),
   linkActiveClass:"active",
   routes:[
     {
-      path:"/",
+      path:"/box",
       components:{
         view1:com1
       }

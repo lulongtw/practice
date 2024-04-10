@@ -1,3 +1,79 @@
+
+<!--
+
+  我覺得這個比較清楚簡單
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .aa{
+      color:red
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-template" id="com1">
+    <slot><div class='aa'>預設</div></slot>
+  </script>
+  <script type="text/x-template" id="com2">
+    <slot name='a'></slot>
+    <slot name='b'></slot>
+
+  </script>
+  <script type="text/x-template" id="com3">
+    com3
+  </script>
+  <script type="text/x-template" id="apphtml">
+      <com1></com1>
+      <com2>
+        <template v-slot:a>
+          <div>
+            你他媽
+          </div>
+        </template>
+        <template #b>
+          <com3></com3>
+        </template>
+      </com2>
+
+  </script>
+  <script>
+    let {createApp,ref} = Vue;
+    let com1 = {
+      template:"#com1"
+    }
+    let com2 = {
+      template:"#com2"
+    }
+    let com3 = {
+      template:"#com3"
+    }
+    let app = createApp({
+      template:"#apphtml",
+      components:{
+        com1:com1,
+        com2:com2,
+        com3:com3
+      },
+      setup(){
+        return {}
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html>
+
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -41,7 +117,7 @@
             加上 name='變數' <br>
             <br>
             父組件 只能 使用template標籤 <br>
-            加上 v-slot:變數 <br>
+            加上 v-slot:變數 幹你媽注意他媽是： 不是= 媽的看到眼睛脫窗<br>
             或者#變數 <br>
           </div>
         </template>
@@ -55,7 +131,7 @@
       </com2>
       <hr>
       <div class="red">
-        template標籤裡面就可以使用既有的html標籤了<br>
+        template標籤裡面就可以使用標籤 包括既有html標籤 還有組件也可以傳進去<br>
         也可以上class <br>
         &lt;template #x&gt;    or <br>
         &lt;template v-slot:x &gt;<br>
@@ -65,9 +141,9 @@
       <hr>
       <div style='color:blue'>
         !!!!!!!!!!!注意!!!!!!!!!!! <br>
-        slot 不能上class 每個slot都應該有被指定與指定的目標  不能亂掉<br>
-        會爆炸 子組件內部的slot就乖乖的引入name='名稱A' 就好  也不要寫標籤內文  會爆炸<br>
-        &lt;slot name=x&gt;這樣就好<br>
+        slot標籤 不能上class 每個slot都應該有被指定與指定的目標  不能亂掉<br>
+        會爆炸 子組件內部的slot就乖乖的引入name='名稱A' 就好  但可以寫標籤內文<br>
+        &lt;slot name=x&gt;  &lt;div&gt; qq &lt;/div&gt;  &lt;/slot&gt;<br>
     
         哪個slot='名稱A'對應哪個slot name='名稱A'  標籤對應要寫好 一個對一個 位置也要對好</div>
     </script>
@@ -111,3 +187,5 @@
     </script>
   </body>
 </html>
+
+
