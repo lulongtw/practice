@@ -65,7 +65,20 @@
   </template> -->
 
   <template v-for="(item,index) in lst">
-
+    <!--
+      name這邊取代原本path的引導出哪些組件的作用，
+      而path變成攜帶資訊的工具
+      另外
+      注意導入的物件與內部鍵值對的形式
+      {
+        name:'com',
+        params:{id:item},
+        query: { idx: index }
+      }
+      name的值是字串
+      params的值必須是物件，重要的是他的鍵必須是id 不能自訂其他名字
+      query的值也必須是物件 而他的鍵可自訂
+    -->
     <RouterLink :to="{name:'com',params:{id:item},query: { idx: index }}">
     {{item}}
     </RouterLink>

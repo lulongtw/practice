@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-template" id="apphtml">
+    <son :func='add' :num='obj.a'></son>
+    <son :func='add' :num='obj.b'></son>
+    <son :num='qq'></son>
+  </script>
+
+  <script type="text/x-template" id="sonhtml">
+    {{n}}
+    <div @click='cal'>click</div>
+    
+  </script>
+
+  <script>
+    let {createApp,ref,reactive} = Vue;
+    let son = {
+      template:"#sonhtml",
+      props:{
+        func:{
+          Function,
+          default:()=>{
+            console.log("no call")
+            }
+        },
+        num:{type:Number,validator:(val)=>{
+          return val>8
+        },default:function(){
+          return 69
+        }}
+      },
+      setup(props){
+        let n = ref(props.num);
+        function cal(){
+          n.value = props.func(n.value)
+        }
+        return{
+          n,cal
+        }
+      }
+    }
+    let app = createApp({
+      template:"#apphtml",
+      components:{son:son},
+      setup(){
+        let qq
+        let obj = reactive({
+          a:1,
+          b:10
+        });
+        function add(num){
+          return ++num
+        }
+        return {
+          obj,add,qq
+        }
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html>

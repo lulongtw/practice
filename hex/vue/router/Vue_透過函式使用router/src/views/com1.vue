@@ -28,5 +28,5 @@
 </script>
 
 <template>
-  com{{n}}
+  com{{n}}qq
 </template>

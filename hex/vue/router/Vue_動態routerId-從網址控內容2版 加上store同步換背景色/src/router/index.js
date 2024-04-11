@@ -1,18 +1,18 @@
 import {createRouter,createWebHashHistory} from "vue-router";
-import com1 from "@/com1.vue";
-import com2 from "@/com2.vue";
+import com1 from "@/views/com1.vue";
+import com2 from "@/views/com2.vue";
 
 const router = createRouter({
   history:createWebHashHistory(),
-  base:"/com2",
-  linkActiveClass:"qq",
-  // linkActiveClass:"active",
+  box:"/com1",
+  linkActiveClass:"active",
   routes:[
     {
       path:"/com1",
       component:com1
     },{
-      path:"/com2",
+      name:"/com2",
+      path:"/com2/:id",
       component:com2
     }
   ]
