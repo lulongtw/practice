@@ -1,31 +1,93 @@
 <script setup>
-  import database from "@/firebase.js";
-  import {ref as Fref,get,set,push,onValue} from "firebase/database";
-  import {ref } from "vue"
+  import {useRoute} from "vue-router";
+  import {ref} from 'vue';
 
-  let testRef = Fref(database,"test");//取得路徑
-  
-
-  let text = ref("");
-  let data = ref("")
-
-  function send(){
-    let newRef = push(testRef);//發送資料
-    set(newRef,text.value)
-  }
-
-  onValue(testRef,(ss)=>{//監控資料
-    let ans = ss.val();
-    data.value = ans
-  })
-
-
-
-
+  let lst = ["雞", "豬", "牛", "狗", "熊"];
+          let check = ref([]);
+          let dick = ref("陽痿")
+          let radio = ref("");
+          let select = ref("");
+          let select2 = ref([]);
+          let lst2 = ["漂亮阿姨","大奶妹","婆系美眉"]
+          let test1 = ref(false);
+          let test2 = ref(false);
+          let test3 = ref(false);
+          let test = ref([]);
+          let lzy = ref("");
+          let numb = ref("");
+          let trm = ref("")
 </script>
 <template>
-  <input type="text" v-model="text" @keyup.enter="send()">
-  <div v-for="item in data">
-      {{item}}
-  </div>
+   
+
+
+<!-- checkbox是多選項  所以將v-model放到各個input 取得各個input的value
+因為是多選項 所以checkbox的v-model必須是ref([])
+其他單選擇radio select為ref("")
+-->
+<div v-for='item in lst'>
+<input type="checkbox" :value='item' v-model='check'>{{item}}
+</div>
+<div>checkbox鍋裡面有<span v-for='item in check'> {{item}}</span></div>
+<hr>
+
+<!-- 但如果是想要讓checkbox去toggle true和false 則不需設置value
+但是V-MODEL必須是ref([]) 不能指定成true 或是 false 
+此時value是checkbox的勾選狀態  而v-model則綁定一個屬於自己的響應式變數 -->
+<input type="checkbox" v-model='test1'>
+<input type="checkbox" v-model='test2'>
+<input type="checkbox" v-model='test3'>
+{{[test1,test2,test3]}}
+<hr>
+
+check也可以自定義回傳的true和false值<br>
+checkbox 一樣是回傳true和false 但回傳過程被<br>
+true-value 以及 false-value轉譯了 變成自定義的值  <br>
+<input type="checkbox" v-model='dick' true-value="勃起" false-value="陽痿">{{dick}}
+
+<hr>
+
+<!-- 原本for放在 input裡面 但是v-for作用域是在標籤裡面
+放在input這個自閉兒item根本傳不出去所以用label上v-for
+然後radio的value是用迭代取得的  是一種變數  所以要:value
+還有 radioItem取代原本的name 選取後大家的name都變成選取者的value-->
+<label v-for='item in lst' :for="item">
+<input type="radio" :id='item' :value=item v-model=radio>{{item}}
+</label>
+<div>checkbox鍋裡面有 {{radio}} </div>
+<hr>
+
+
+
+<select v-model='select'>
+<option value="" disabled>---choose--</option>
+<option v-for='item in lst' :value="item">{{item}}</option>
+</select>
+<div>select鍋裡有 {{select}}</div>
+<hr>
+
+
+他媽select標籤加上multiple可以多選是怎樣拉幹<br>
+但是使用者要使用command選取
+<select v-model='select2' multiple>
+<option v-for='item in lst2' :value="item" >{{item}}</option>
+</select> 
+<div>肥狗喜歡{{select2}}</div>
+<hr>
+
+這邊是講修飾符 .lazy .number .trim  <br>
+.lazy相當於變成onchange 在blur時才會渲染<br>
+.number將輸入鬼東西變成數字<br>
+.trim是去除空格  但其他沒有trim也自動清空格了<br>
+<input type="text" v-model.lazy='lzy'>
+{{lzy}}<br>
+<input type="text" v-model.number='numb'>
+{{typeof(numb)}}{{numb}}<br>
+<input type="text" v-model.trim='trm'>
+{{trm+"      多餘"}} <br>
+
+
 </template>
+<style>
+
+</style>

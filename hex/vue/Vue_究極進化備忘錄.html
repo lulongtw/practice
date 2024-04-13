@@ -70,9 +70,11 @@
           <input v-if='item.editable' v-model='item.editText' @keyup.enter='finEdit(item)' class='editInput' type="text">
           
           
-          del不能直接del 要檢查獨一無二的timeStape才可以刪除
+          <!-- 
+           注 回來重新看   timestamp根本用不到啊 用index就好拉 ＝＝
+            del不能直接del 要檢查獨一無二的timeStape才可以刪除
           這裡使用findIndex找到lst 裡的timeStampe和item.timeStampe一樣的物件的index
-          用.splice刪掉
+          用.splice刪掉 -->
           <span @click='del(item,index)'>x</span>
         </li>
 
@@ -159,3 +161,114 @@
   </script>
 </body>
 </html>
+
+<!--
+
+  timestamp根本用不到啊 用index就好拉
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .done{
+      color:green
+    }
+    .undone{
+      color:red
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+  </div>
+  <script type="text/x-template" id="apphtml">
+
+    <input @keyup.enter='addItem' type="text" v-model="text">
+    <ul>
+      <template  v-for="(item,idx) in data">
+        <li v-if='check(item)' :class='item.states?"done":"undone"'>
+
+          <input type="checkbox" v-model='item.states'> 
+
+          <span v-if='!item.ediable'>
+            {{item.cntn}}
+            <span @dblclick='toggleEdit(item,idx)'> edit</span>
+          </span>
+          <span v-else>
+            <input type="text" v-model='item.cntn' @keyup.enter='finEdit(item,idx)'>
+          </span>
+          <span @click='del(item.timeStamp,idx)'> x</span>
+        </li>
+      </template>
+    </ul>
+    <hr>
+    <div @click="setCurrentView(item)" v-for='item in views'>
+      {{item}}
+    </div>
+  </script>
+
+  <script>
+    let {createApp,ref,watch} = Vue;
+    let app = createApp({
+      template:"#apphtml",
+      setup(){
+        let text = ref("");
+        let data = ref([]);
+        let views = ['all','done','undone'];
+        let currentView = ref(views[0]);
+        function addItem(){
+          data.value.push(
+            {
+              cntn:text.value,
+              ediable:false,
+              timeStamp:getTime(),
+              states:false
+            }
+          );
+          text.value = ""
+        }
+        function getTime(){
+          let time = new Date()
+          return time.getTime()
+        }
+        function toggleEdit(item,idx){
+          data.value[idx].ediable = !data.value[idx].ediable
+          console.log(item)
+        }
+        function del(stamp,idx){
+          data.value.splice(idx,1)
+        }
+        function finEdit(item,idx){
+          data.value[idx].ediable = !data.value[idx].ediable
+        }
+        function setCurrentView(item){
+          currentView.value = item;
+          console.log( currentView.value)
+        }
+        function check(item){
+          switch (currentView.value){
+            case "done":
+              return item.states
+            case "undone":
+              return !item.states
+            default:
+              return true
+          }
+        }
+
+        return{
+          text,data,addItem,getTime,toggleEdit,del,finEdit,setCurrentView,currentView,views,check
+        }
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html>
+
+-->

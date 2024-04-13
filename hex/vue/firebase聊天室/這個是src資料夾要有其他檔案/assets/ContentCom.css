@@ -1,0 +1,14 @@
+.ContetComWrap{
+  padding:30px;
+  border:1px solid gray;
+  border-radius:20px;
+}
+.ContetComWrap>div{
+  display:flex;
+  padding:10px;
+  border-bottom:1px solid gray;
+  align-items:center;
+}
+.rev{
+  flex-direction:row-reverse;
+}

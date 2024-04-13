@@ -1,67 +1,62 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/33d145f0f9.js" crossorigin="anonymous"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .a{
+      background-color: green;
+    }
+    .b{
+      transform:rotate(45deg);
+      width:50px;
+    }
+    .c{
+      width:30px;height:30px;
+      border:1px solid black;
+    }
+  </style>
 </head>
 <body>
-  <div id="app"></div>
-  <script type="text/x-template" id="apphtml">
-    <son :func='add' :num='obj.a'></son>
-    <son :func='add' :num='obj.b'></son>
-    <son :num='qq'></son>
-  </script>
-
-  <script type="text/x-template" id="sonhtml">
-    {{n}}
-    <div @click='cal'>click</div>
-    
-  </script>
-
+  <div id="app">
+    <div :class="[obj,'c']"></div>
+    <input type="checkbox" v-model="clr">clr
+    <br>
+    <input type="checkbox" v-model="rtt">rtt
+  </div>
   <script>
-    let {createApp,ref,reactive} = Vue;
-    let son = {
-      template:"#sonhtml",
-      props:{
-        func:{
-          Function,
-          default:()=>{
-            console.log("no call")
-            }
-        },
-        num:{type:Number,validator:(val)=>{
-          return val>8
-        },default:function(){
-          return 69
-        }}
-      },
-      setup(props){
-        let n = ref(props.num);
-        function cal(){
-          n.value = props.func(n.value)
-        }
-        return{
-          n,cal
-        }
-      }
-    }
+    let {createApp,ref,watch,computed} = Vue;
     let app = createApp({
-      template:"#apphtml",
-      components:{son:son},
       setup(){
-        let qq
-        let obj = reactive({
-          a:1,
-          b:10
-        });
-        function add(num){
-          return ++num
-        }
-        return {
-          obj,add,qq
+        let clr = ref(false);
+        let rtt = ref(false)
+        let obj = computed(()=>{
+          return {
+            a:clr.value,
+            b:rtt.value
+          }
+        })
+        return{
+          obj,clr,rtt
         }
       }
     })
