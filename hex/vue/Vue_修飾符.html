@@ -54,6 +54,10 @@
         像下面add(item) 不能add(item.cash) <br>
         因為牽扯到 傳值 跟 傳參考  如果只傳值<br>
         就只是改那個值  傳參考 才能達到改動物件本身的目的<br>
+        <hr>
+        <br>不是吧？？？？是因為改動的事物件的值
+        <br>這個值再取出時就和物件本身無關連
+        <br>而不是物件本身啊
       </div>
       <div v-for='item in obj' :key='item.cash'>
         {{item.name}}有{{item.cash}}
@@ -100,9 +104,9 @@
       <div class="red">
         你以為.keyup後面只能加.enter??<br>
         媽的還可以加一大堆<br>
-        下面要shift和enter和shift一起按才會出現
+        下面要shift和enter和shift一起按才會出現。
       </div>
-      <input type="text" v-model='prefix' @keyup.enter.shift.up='send'>
+      <input type="text" v-model='prefix' @keyup.enter.shift='send'>
       {{text}}  
       <hr>
 

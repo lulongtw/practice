@@ -53,6 +53,7 @@
           let lst = [{ name: "min" }, { name: "koko" }, { name: "tyson" }];
           let revlst = computed(() => {
             let newlst = JSON.parse(JSON.stringify(lst));
+            //這行在脫褲放屁唷= =
             return newlst.reverse();
           });
 

@@ -35,14 +35,44 @@
 </head>
 <body>
   <div id="app"></div>
-  簡單的說 多個class引入就是序列[a,b,c]
-  <br>
-  a,b,c都是獨立的className
-  <br>
-  其中可以使用判斷式 如需使用判斷式 則以物件形式引入{"className":判斷式}
-  <!-- 這節課上導入元素的style的方法 -->
-  <script type="text/x-template" id="apphtml">
 
+  <script type="text/x-template" id="apphtml">
+    簡單的說 多個class引入就是序列[a,b,c]
+    <!-- 
+      第一個方法
+    <div :class="lst"></div> 這樣一個標籤 使用computed物件引入class
+    obj = computed(()=>{
+      return {
+        classA:布林,
+        classB:布林
+      }
+          })
+
+      第二個方法
+      <div :class="lst"></div>
+      let lst = ['a','b','c']
+      然後裡面的abc可以透過 使用同一個v-model的checkbox們各自的value增減
+
+      第三個方法
+      不是透過class 而是直接對標籤指定style
+      <div :style='obj'> </div>
+      let obj = {
+        width:'10px',
+        height:'30px',
+        border:'1px solid black'
+      }
+      
+      或是
+      <div :style='[{backgroundColor:'red'},{color:'blue'}]'></div>
+      以序列包裹物件方式對標籤指定多個css屬性
+
+      第三個方法重點是:stlye 不管他有沒有用上js的資料
+ -->
+    <br>
+    a,b,c都是獨立的className
+    <br>
+    其中可以使用判斷式 如需使用判斷式 則以物件形式引入{"className":判斷式}
+    <!-- 這節課上導入元素的style的方法 -->
     <div>以computed物件型態導入判斷式</div>
     <!-- <div :class="['box',{'red':isRed,'rotate':isRotate}]"></div> -->
     <!-- 上面可以簡寫成下面 因為那個其實物物件型態

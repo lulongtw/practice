@@ -60,7 +60,10 @@
         <tbody>
           <!-- template以及template的子標籤是看不到的
           如果v-for放在tr就全部都沒有
-          所以必須讓tempalte有事做 把v-for放那邊 -->
+          所以必須讓tempalte有事做 把v-for放那邊 
+          回頭看 按  不是啊那放template幹嘛
+          tempplate拿掉直接放在tr上就好拉
+        -->
           <template v-for='item in lst'>
             <tr>
               <td>{{item.name}}</td>
@@ -117,6 +120,10 @@
           )
           watch(()=>dueAscendant.value,
                 ()=>{
+                  //這是沒有寫出return的寫法幹
+                  //xx.sort((a,b)=>())
+                  //xx.sort((a,b)=>{return xxx})
+                  //幹你娘
                   lst.value.sort((a,b)=>
                     dueAscendant.value?a.due-b.due:
                     b.due-a.due

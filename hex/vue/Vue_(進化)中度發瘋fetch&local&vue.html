@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.js"></script>
+  <script src="https://kit.fontawesome.com/33d145f0f9.js" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .wrap{
+      width:80%;
+      padding:30px;
+      border-radius:20px;
+      border:1px solid black;
+      margin-bottom:30px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .spot{
+      width:40%;
+      padding:10px;
+      border:1px solid black;
+      background-color: green;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <select v-model="currentCounty" name="" id="">
+      <option v-for="(item,idx) in county" :key="idx" :value="item">{{item}}</option>
+    </select>
+
+    <div class="wrap">
+      <template v-for="(item,idx) in data">
+        <div v-if="(item.county==currentCounty)&&(item.likeStates)" class="spot">
+
+          <i v-if="item.likeStates" @click="toggleLike(item)" class="fa-solid fa-heart"></i>
+          <i v-else @click="toggleLike(item)" class="fa-regular fa-heart"></i>
+          <div>{{item.county}}-{{item.sitename}}</div>
+          <div>{{item.aqi}}</div>
+          <div>{{item.pollutant}}</div>
+          <div>{{item.states}}</div>
+          <div>{{item.publishtime}}</div>
+        </div>
+      </template>
+    </div>
+    <div class="wrap">
+      <template v-for="(item,idx) in data">
+        <div  v-if="(item.county==currentCounty)&&(!item.likeStates)" class="spot">
+          <i v-if="item.likeStates" @click="toggleLike(item)" class="fa-solid fa-heart"></i>
+          <i v-else @click="toggleLike(item)" class="fa-regular fa-heart"></i>
+          <div>{{item.county}}-{{item.sitename}}</div>
+          <div>{{item.aqi}}</div>
+          <div>{{item.pollutant}}</div>
+          <div>{{item.states}}</div>
+          <div>{{item.publishtime}}</div>
+        </div>
+      </template>
+    </div>
+
+
+  </div>
+  <script>
+    /*
+    簡單的吧嘻嘻
+    抓完data後
+    先設置data裡各個物件的likeStates屬性
+    先檢查localStorage檔案 
+    依照localStorage裡的資料判斷各個data的likeStatus
+
+    接下來就照檔案渲染畫面
+    同時放兩個data在畫面上
+    用v-if判斷likeStates
+    決定他們在哪個Wrap渲染
+
+    畫面中的likeStatus每次變動都是直接響應data裡的資料
+    同時 也要變動localStorage的資料
+    沒有就新增 有就砍掉
+    重點是只能放county 或者該物件獨一無二的資料
+    不能放整個item 因為此時item已經有likeStatus屬性
+    這樣會造成onMOunted檢查localStorage時
+    尚無設定likeStatus屬性的原生data物件 和 已經有likeStatus的local資料不同
+    即使他們都是同個county
+
+    */
+    let {createApp,ref,watch,computed,onMounted} = Vue;
+    let app = createApp({
+      setup(){
+        let data = ref([])
+        let county = ref([]);
+        let currentCounty = ref("");
+        let localData = ref([])
+
+
+        function noCatch(asFn){
+          return asFn.catch((error)=>{
+            console.log('shit',error)
+          })
+        }
+
+        function toggleLike(item){
+          item.likeStates = !item.likeStates;
+          if (item.likeStates){
+            localData.value.push(item.county);
+    
+          }else{
+            localData.value.splice(localData.value.indexOf(item.county),1)
+    
+          }
+          let toLocal = JSON.stringify(localData.value);
+            localStorage.setItem('weatherStates',toLocal)
+        }
+
+        function setLocal(){
+          let temp = localStorage.getItem("weatherStates");
+          if (!temp){
+            localData.value = []
+          }else{
+            temp = JSON.parse(temp)
+            localData.value = temp;
+
+  
+          }
+        }
+        
+
+        onMounted(async ()=>{
+          let temp = await noCatch(fetch('https://data.moenv.gov.tw/api/v2/aqx_p_432?api_key=e8dd42e6-9b8b-43f8-991e-b3dee723a52d&limit=1000&sort=ImportDate%20desc&format=JSON'))
+          data.value = await temp.json();
+          data.value = data.value.records;
+          setLocal();
+          console.log('dasd',localData.value)
+          data.value.forEach((item)=>{
+            if (localData.value.includes(item.county)){
+              item['likeStates'] = true
+            }else{
+              item['likeStates'] = false
+            }
+            if (!county.value.includes(item.county)){
+              county.value.push(item.county)
+            }
+
+          })
+          currentCounty.value = county.value[0]
+  
+        })
+        
+
+        return{
+          data,currentCounty,county,toggleLike
+        }
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html>

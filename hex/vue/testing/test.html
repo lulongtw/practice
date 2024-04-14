@@ -1,65 +1,62 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://kit.fontawesome.com/33d145f0f9.js" crossorigin="anonymous"></script>
-  <title>Document</title>
-</head>
-<body>
-  <div id="app"></div>
-  <script type="module" src="./src/main.js"></script>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <script src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <title>Document</title>
-  <style>
-    .a{
-      background-color: green;
-    }
-    .b{
-      transform:rotate(45deg);
-      width:50px;
-    }
-    .c{
-      width:30px;height:30px;
-      border:1px solid black;
-    }
-  </style>
 </head>
 <body>
   <div id="app">
-    <div :class="[obj,'c']"></div>
-    <input type="checkbox" v-model="clr">clr
-    <br>
-    <input type="checkbox" v-model="rtt">rtt
+
+    <hr>
+    <com1 :from="text"></com1>
+
   </div>
+  <script type="text/x-template" id="com1html">
+    {{sonText}}{{from}}
+  </script>
   <script>
-    let {createApp,ref,watch,computed} = Vue;
-    let app = createApp({
-      setup(){
-        let clr = ref(false);
-        let rtt = ref(false)
-        let obj = computed(()=>{
-          return {
-            a:clr.value,
-            b:rtt.value
+    let {createApp,watch,ref} = Vue;
+
+    let com1 = {
+      template:"#com1html",
+      props:{
+        from:{
+          type:Number,
+          validator:(val)=>{
+         
+            return val>10
+          },
+          default:()=>{
+            return 9999
           }
-        })
+        }
+      },
+      setup(props){
+        let sonText = ref("");
+        watch(()=>props.from,
+          (newVal)=>{
+            console.log(newVal)
+          }
+        )
         return{
-          obj,clr,rtt
+          sonText
         }
       }
-    })
+    }
+
+    let app = createApp({
+      components:{com1:com1},
+      setup(){
+        let text = ref(3)
+        return{
+          text
+        }
+      }
+    });
+
     app.mount("#app")
   </script>
 </body>

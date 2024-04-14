@@ -41,6 +41,7 @@
         template: "#apphtml",
         setup() {
          onMounted(()=>{
+          //在onMounted之後才能操作DOM元素
           let qq = document.querySelector("#qq");
           qq.textContent = "sad";
           qq.style.color = "red"
