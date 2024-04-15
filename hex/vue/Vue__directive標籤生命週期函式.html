@@ -51,7 +51,22 @@
       mounted:(el)=>{...}
     }
     使用駝峰命名蔽掉- 在標籤上表示就是v-sex 並且省略了directives
-    
+    回頭看按 
+    乍看之下兩邊寫法不一樣
+    但其實只有插在駝峰命名而已
+    vSex:{
+      mounted:()=>{
+
+      }
+    }
+    寫法等同於
+    vSex:{
+      mounted(){
+
+      }
+    }
+    都一樣是物件 ＝＝
+    只是directives的hook都是ed 都是完成式
 
   -->
     <script type="text/x-template" id="apphtml">

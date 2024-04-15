@@ -3,8 +3,9 @@
   //取得在login ok時做好的cookie
 //在每次向伺服器送請求時加上cookie
   let cookies = document.cookie;
+  console.log(cookies)
   cookies = cookies.split("; ");
-  //console.log(cookies)
+
   cookies = cookies.map(item=>{
     return item.split("=")
   })

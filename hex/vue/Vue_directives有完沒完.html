@@ -10,20 +10,34 @@
     .red{
       background-color: red;
     }
+    .box1{
+      width:50px;height:50px;
+      border:1px solid black;
+
+    }
+    .box2{
+      background-color: blue;
+    }
   </style>
 </head>
 <body>
   <div id="app"></div>
   <script type="text/x-template" id="apphtml">
     <input type="text" v-model='QQQ' v-sex="'red'">
+    <div v-sleep='[["box1","box2"],"不要再按了"]'>click me</div>
   </script>
   <script>
     /*
     瘋掉  這節課上
-    使用directive動態引入參數  以及 vnode取得v-model
+    使用directive的hook的參數
+    binding 動態引入資料  
+    以及 
+    vnode 取得v-model
 
+    回頭看按 ：binding用法比較多 意思是動態引入資料或函式
+    在元素的生命週期使用
+    v-node看起來只能取得v-model和上下文資訊
 
-    使用directive動態引入參數
 
     v-directuve名 = "參數"
     在定義directive名內部使用 binding.value 取得引入的值
@@ -35,30 +49,61 @@
         sex:{
           mounted(el,binding){
             //透過binding參數取得引入的值
-            console.log(binding)
+            //console.log(binding)
             el.className = binding.value
           },
           updated(el,binding,vnode){
-            //這我也不知道衝三小
-            //繞個彎取得ｖ－ｍｏｄｅｌ
-            //上課是假設不知道這個v-model是什麼
+    
             //要從vnode.ctx.ctx取得
             //console.log(vnode.ctx.ctx.QQQ)
-            //console.log(vnode.ctx.ctx)
+            // console.log(binding)
+            // console.log(vnode)
+
             let obj = vnode.ctx.ctx;
+     
             for (let key in obj){
               console.log(obj[key])
             }
           }
+        },
+        sleep:{
+          /*
+          這個directives比較猛 他引入一個序列[["box1","box2"],"不要再按了"]
+          序列的第一組資料["box1","box2"]拿來決定style
+          第二組資料是 模擬防止多次點擊功能 印出的字
+          */
+          mounted(el,binding,vnode){
+            //引入多組class ["box1","box2"]
+            //console.log(binding.value)
+            binding.value[0].forEach(item=>{
+              el.classList.add(item)
+            });
+            /*
+            以下是模擬防止多次點擊
+            */
+            let timeOut;//建立執行timeout的變數
+            el.addEventListener('click',()=>{//給該DOM元素上click事件
+              clearTimeout(timeOut);//清除之前點擊觸發的所有timeout
+              timeOut = setTimeout(()=>{ //每500毫秒執行setTimeout
+                console.log(binding.value[1])//印出
+              },500)
+            })
+            //這樣一來因為每次500毫秒內的點擊都會清出之前的timeout排序
+            //所以只會執行每500毫秒內最後一次指令
+          },
+          
         }
       },
       setup(){
-        let QQQ = ref("for test")
+        let QQQ = ref("for test");
+      
         return{
           QQQ
         }
       }
     });
+
+
   
     app.mount("#app");
   </script>

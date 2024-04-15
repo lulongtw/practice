@@ -17,23 +17,34 @@
     </script>
     <script>
       /*
-    mixin不是像繼承的概念  比較偏組合
-    因為mixin可以一次引入多組mixin
-    概念是如果有需多次利用程式
+      mixins的概念是引入其他組件的 函式 變數 等等
+      如何引入?
+      假設c組件要引入 a組件的函式 或變數
+      那在c組件設立   mixins:[a組件], 來引入a組件的setup()
+      然後在c組件的setup(){}中
+      let {函式 或 變數} = a組件.setup()
+      這樣c組件屆可以使用了   
+
+
+
+
+
+
+
     在組合式api 都需要使用setup(){return{}}
-    let a = {setup(){
+    let 組件a = {setup(){
       需多次利用程式1
       return{需多次利用程式1}
     }
-    let b = {setup(){
+    let 組件b = {setup(){
       需多次利用程式2
       return{需多次利用程式2}
     }
 
     然後c組件要使用a和b組件的函式和變數，就要
-    mixins:[a,b],
+    mixins:[組件a,組件b],     也就是說mixins飲入的是整個他媽的組件
     然後在setup(){}裡面
-    let {要用的函式與變數1} = a.setup();
+    let {要用的函式與變數1} = a.setup();  然後在引入整個組件的setup()
     let {要用的函式與變數2} = b.setup();
     最重要要return {要用的函式與變數1,要用的函式與變數2}
 

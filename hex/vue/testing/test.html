@@ -3,61 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/vuex@4.0.0/dist/vuex.global.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+
+  </style>
 </head>
 <body>
   <div id="app">
-
-    <hr>
-    <com1 :from="text"></com1>
-
+    {{obj.text}}
+    <com1></com1>
   </div>
   <script type="text/x-template" id="com1html">
-    {{sonText}}{{from}}
+    <input type="text" v-model=text @keyup.enter='renew'>
+    {{obj.text}}
+    <hr>
   </script>
+  <script type="text/x-template" id="com2html">
+
+
+  </script>
+  
   <script>
-    let {createApp,watch,ref} = Vue;
+    let {createApp,ref,watch,computed,inject,provide,reactive} = Vue;
 
     let com1 = {
       template:"#com1html",
-      props:{
-        from:{
-          type:Number,
-          validator:(val)=>{
-         
-            return val>10
-          },
-          default:()=>{
-            return 9999
-          }
+      setup(){
+        let obj = inject('obj');
+        let edit = inject('edit');
+        let text = ref("")
+        function renew(){
+          edit(text.value)
         }
-      },
-      setup(props){
-        let sonText = ref("");
-        watch(()=>props.from,
-          (newVal)=>{
-            console.log(newVal)
-          }
-        )
         return{
-          sonText
+          obj,text,edit,renew
         }
       }
-    }
+    };
+
+    let com2 = {
+      template:"#com2html",
+      setup(){
+        return{
+
+        }
+      }
+    };
+
 
     let app = createApp({
-      components:{com1:com1},
+      components:{com1:com1,com2:com2},
       setup(){
-        let text = ref(3)
+          let obj = reactive({
+            text:"幹破你娘老雞掰"
+          });
+          function edit(newWord){
+            obj.text = newWord
+          }
+          provide('obj',obj);
+          provide('edit',edit)
         return{
-          text
+          obj,edit
         }
       }
-    });
-
+    })
     app.mount("#app")
   </script>
 </body>
 </html>
+

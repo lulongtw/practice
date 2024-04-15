@@ -1,20 +1,34 @@
+
+
 import {createRouter,createWebHashHistory} from "vue-router";
-import com1 from "@/com1.vue";
-import com2 from "@/com2.vue";
+import Dashboard from "@/components/Dashboard.vue";
+import ForBuyer from "@/components/ForBuyer.vue";
+import ForSeller from "@/components/ForSeller.vue";
+import Login from "@/components/Login.vue";
 
 const router = createRouter({
   history:createWebHashHistory(),
-  linkActiveClass:'act',
-  box:"/com1",
   routes:[
     {
-      path:"/com1",
-      component:com1
-    },{
-      name:"com2",
-      path:"/com2/:id",
-      component:com2
-    }
+      path:"/",
+      component:Dashboard,
+      children:[
+        {
+          path:"ForSeller",
+          component:ForSeller,
+          meta:{requiredAuth:true}
+        },
+        {
+          path:"ForBuyer",
+          component:ForBuyer
+        }
+      ]
+    },
+    {
+      path:"/login",
+      component:Login
+    },
+
   ]
 });
 

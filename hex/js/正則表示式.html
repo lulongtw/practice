@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .ok{
+      background-color: blue;
+    }
+    .notok{
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <input type="text">
+  <script>
+    /*
+    網路上可以抓到一堆正則表示是
+    但是在js裡面正則表示式 要用//包裹 即可完整表達
+    也可透過new RegExp("")來表達
+    但使用 new RegExp("")表達會讓正則表示式 包裹在""字串裡面
+    所以要把正則表示式的\ 都替換成 \\
+
+    */
+    let input = document.querySelector("input");
+    input.addEventListener("input",(e)=>{
+      //let ok = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+      let emailRegex = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+      e.target.value.search(ok)!=-1?e.target.className='ok':e.target.className='notok'
+    })
+  </script>
+</body>
+</html>
