@@ -1,10 +1,8 @@
-
-
 import {createRouter,createWebHashHistory} from "vue-router";
-import Dashboard from "@/components/Dashboard.vue";
-import ForBuyer from "@/components/ForBuyer.vue";
-import ForSeller from "@/components/ForSeller.vue";
 import Login from "@/components/Login.vue";
+import Dashboard from "@/components/Dashboard.vue";
+import Seller from "@/components/Seller.vue";
+import Buyer from "@/components/Buyer.vue";
 
 const router = createRouter({
   history:createWebHashHistory(),
@@ -14,21 +12,18 @@ const router = createRouter({
       component:Dashboard,
       children:[
         {
-          path:"ForSeller",
-          component:ForSeller,
+          path:"seller",
+          component:Seller,
           meta:{requiredAuth:true}
-        },
-        {
-          path:"ForBuyer",
-          component:ForBuyer
+        },{
+          path:"buyer",
+          component:Buyer
         }
       ]
-    },
-    {
+    },{
       path:"/login",
       component:Login
-    },
-
+    }
   ]
 });
 

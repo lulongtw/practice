@@ -73,6 +73,7 @@ function uploadPic(e){
   let headAPI = import.meta.env.VITE_headAPI;
   let myAPI = import.meta.env.VITE_myAPI;
   let url = `${headAPI}/api${myAPI}/admin/upload`;
+  console.log(form)
   noCatch(axios.post(url,form
   //現代化的chrome不需特地設置header
   // ,{

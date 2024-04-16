@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .red{
+    color:red
+  }
+</style>
+<body>
+  <div id="a">
+    <input type="text">
+    <hr>
+    <son v-bind:dadmsg='msg' :dadclr='color' :fromDad=""></son>
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+
+  <script type="text/x-template" id="sonhtml">
+    <div v-bind:class='dadclr'>{{dadmsg}}</div>
+    <!--在重申一次  v-bind和{{}}
+    意思是讓你可以在html直接拿取js的資料
+    -->
+  </script>
+
+
+
+  <script>
+
+
+    let son = {
+      template:"#sonhtml",
+      props:["dadmsg","dadclr"],//建立了v-bind 不要忘記設props   記得要變字串
+    }
+
+
+
+    
+    
+    let app = Vue.createApp({
+      setup(){
+        let msg = "來自爸爸fsaf的聲音"
+        let color = "red";
+        let text = ref("")
+        return{
+          msg,color,text
+        }
+      },
+      components:{son:son},
+  
+    });
+    app.mount("#a")
+
+
+
+  </script>
+</body>
+</html>

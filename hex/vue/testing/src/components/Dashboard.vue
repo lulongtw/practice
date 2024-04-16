@@ -1,12 +1,19 @@
 <script setup>
   import {useRouter} from "vue-router";
+  import {headAPI,myAPI,getData} from "@/functions.js"
 
   let router = useRouter();
 
+  async function logOut(){
+    let url = headAPI + "/logout";
+    let res = await getData(url,'post')
+    if (res.data.success){
+      router.push("/")
+    }
+  }
 </script>
-
-<template>
-   <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <template>
+ <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
       <symbol id="check2" viewBox="0 0 16 16">
         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
       </symbol>
@@ -22,40 +29,7 @@
       </symbol>
     </svg>
 
-    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-      <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
-              id="bd-theme"
-              type="button"
-              aria-expanded="false"
-              data-bs-toggle="dropdown"
-              aria-label="Toggle theme (auto)">
-        <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
-        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#sun-fill"></use></svg>
-            Light
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
-            Dark
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
-            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#circle-half"></use></svg>
-            Auto
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-      </ul>
-    </div>
+  
 
     
 <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -140,71 +114,101 @@
         <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a @click.prevent="router.push('/ForBuyer')" class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
+              <a @click.prevent="router.push('/')" class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
                 <svg class="bi"><use xlink:href="#house-fill"/></svg>
-                buyer
+                Dashboard
               </a>
             </li>
             <li class="nav-item">
-              <a @click.prevent="router.push('/ForSeller')" class="nav-link d-flex align-items-center gap-2" href="#">
+              <a @click.prevent="router.push('/seller')" class="nav-link d-flex align-items-center gap-2" href="#">
                 <svg class="bi"><use xlink:href="#file-earmark"/></svg>
-                seller
+                Seller
               </a>
             </li>
             <li class="nav-item">
-              <a  @click.prevent="" class="nav-link d-flex align-items-center gap-2" href="#">
+              <a @click.prevent="router.push('/buyer')" class="nav-link d-flex align-items-center gap-2" href="#">
                 <svg class="bi"><use xlink:href="#cart"/></svg>
-                no
-              </a>
-            </li>
-            <li class="nav-item">
-              <a  @click.prevent="" class="nav-link d-flex align-items-center gap-2" href="#">
-                <svg class="bi"><use xlink:href="#people"/></svg>
-              no
-              </a>
-            </li>
-            <li class="nav-item">
-              <a  @click.prevent="" class="nav-link d-flex align-items-center gap-2" href="#">
-                <svg class="bi"><use xlink:href="#graph-up"/></svg>
-             no
-              </a>
-            </li>
-            <li class="nav-item">
-              <a  @click.prevent="" class="nav-link d-flex align-items-center gap-2" href="#">
-                <svg class="bi"><use xlink:href="#puzzle"/></svg>
-            no
+                Buyer
               </a>
             </li>
           </ul>
-       
-    
+
+
           <hr class="my-3">
 
           <ul class="nav flex-column mb-auto">
-
+ 
             <li class="nav-item">
-              <a @click.prevent="router.push('/login')" class="nav-link d-flex align-items-center gap-2" href="#">
+              <a @click.prevent="logOut" class="nav-link d-flex align-items-center gap-2" href="#">
                 <svg class="bi"><use xlink:href="#door-closed"/></svg>
-                Sign outd
+                Sign out
               </a>
             </li>
           </ul>
         </div>
-        
       </div>
-      
     </div>
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <router-view></router-view>
-    </main>
 
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      dash
+      <br>
+      <router-view></router-view>
+
+    </main>
   </div>
 </div>
-
-</template>
-
+  </template>
 <style scoped>
-      .bd-placeholder-img {
+.bi {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+}
+
+/*
+ * Sidebar
+ */
+
+@media (min-width: 768px) {
+  .sidebar .offcanvas-lg {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 48px;
+  }
+  .navbar-search {
+    display: block;
+  }
+}
+
+.sidebar .nav-link {
+  font-size: .875rem;
+  font-weight: 500;
+}
+
+.sidebar .nav-link.active {
+  color: #2470dc;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  background-color: rgba(0, 0, 0, .25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+.navbar .form-control {
+  padding: .75rem 1rem;
+}
+
+ .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
         -webkit-user-select: none;
@@ -281,53 +285,5 @@
         display: block !important;
       }
 
-      .bi {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-}
-
-/*
- * Sidebar
- */
-
-@media (min-width: 768px) {
-  .sidebar .offcanvas-lg {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 48px;
-  }
-  .navbar-search {
-    display: block;
-  }
-}
-
-.sidebar .nav-link {
-  font-size: .875rem;
-  font-weight: 500;
-}
-
-.sidebar .nav-link.active {
-  color: #2470dc;
-}
-
-.sidebar-heading {
-  font-size: .75rem;
-}
-
-/*
- * Navbar
- */
-
-.navbar-brand {
-  padding-top: .75rem;
-  padding-bottom: .75rem;
-  background-color: rgba(0, 0, 0, .25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-}
-
-.navbar .form-control {
-  padding: .75rem 1rem;
-}
-
+  
 </style>

@@ -1,32 +1,41 @@
 <script setup>
+  import {ref,onMounted} from "vue";
+  import {headAPI,myAPI,getData} from "@/functions.js";
   import {useRouter} from "vue-router";
-  import axios from "axios";
-  import {ref} from "vue";
+
+  let rememberMe = ref(false);
+  let obj = ref(  {
+    "username": "",
+    "password": ""
+  });
+  onMounted(()=>{
+    let fromLocal = localStorage.getItem('loginInfo');
+    if (fromLocal){
+      obj.value = JSON.parse(fromLocal)
+    }
+  })
 
   let router = useRouter();
-  let username = ref("");
-  let password = ref("")
 
-  function login(){
-    let headAPI = import.meta.env.VITE_headAPI
-    let api = headAPI+'/admin/signin';
-    let toSend = {
-      "username": username.value,
-    "password": password.value
+  async function logIn(){
+    if (rememberMe.value){
+      let toLocal = JSON.stringify(obj.value)
+      localStorage.setItem('loginInfo',toLocal)
     }
-    let temp
-    axios.post(api,toSend).then((res)=>{
-      if (res.data.success){
-        router.push("/ForSeller")
-      }
-    }).catch((error)=>{
-      console.log("shit",error)
-    })
+    let toSend = obj.value;
+    let url = headAPI + "/admin/signin";
+    let res = await getData(url,"post",toSend);
+    if (res.data.success){
+      let token = res.data.token;
+      let expired = res.data.expired;
+      
+      document.cookie = `renewToken=${token};expires=${expired}}`
+      router.push('/seller')
+    }
   }
-</script>
 
+</script>
 <template>
-<div class="qq d-flex align-items-center py-4 bg-body-tertiary">
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
       <symbol id="check2" viewBox="0 0 16 16">
         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -41,35 +50,37 @@
       <symbol id="sun-fill" viewBox="0 0 16 16">
         <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
       </symbol>
-    </svg> 
+    </svg>
+
+
+    
 <main class="form-signin w-100 m-auto">
   <form>
-<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+  <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
     <div class="form-floating">
-      <input v-model="username" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <input v-model="obj.username" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
       <label for="floatingInput">Email address</label>
     </div>
     <div class="form-floating">
-      <input v-model="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <input v-model="obj.password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
       <label for="floatingPassword">Password</label>
     </div>
 
     <div class="form-check text-start my-3">
-      <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+      <input v-model="rememberMe" class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
       <label class="form-check-label" for="flexCheckDefault">
         Remember me
       </label>
     </div>
-    <button @click="login" class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+    <button @click.prevent="logIn" class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+    <div @click.prevent="router.push('/')">go to dash</div>
     <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
-    <div @click="router.push('/')">go to dashboard</div>
   </form>
 </main>
-
-</div>
+    
+  
 </template>
-
 <style>
 
 .bd-placeholder-img {
@@ -173,4 +184,6 @@
 main{
   height:100vh;
 }
+
+
 </style>

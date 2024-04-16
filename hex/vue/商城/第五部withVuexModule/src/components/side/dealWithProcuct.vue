@@ -24,6 +24,7 @@
     let url = `${headAPI}/api${myAPI}/admin/upload`;
     await noCatch(axios.post(url,toUploadData)
     .then(res=>{
+      console.log(res)
       picIsLoading.value = false
       data.value.imageUrl = res.data.imageUrl;
     })
