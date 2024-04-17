@@ -1,9 +1,9 @@
 <script setup>
-  import {ref,onMounted,watch} from "vue";
+  import {ref,onMounted,watch,inject} from "vue";
   import {headAPI,myAPI,getData} from "@/functions.js";
   import {useRouter} from "vue-router";
   import {Modal} from "bootstrap";
-
+  
   let props = defineProps(['fromDad']);
   let emits = defineEmits(['callDad']);
   let data = ref(props.fromDad);
@@ -11,7 +11,9 @@
   let modalTitle = ref("");
   let picUrl = ref("");
   let act = ref("");
+  let showStatus = inject('showStatus');
 
+ 
 
   watch(()=>props.fromDad,
     (newVal)=>{
@@ -58,25 +60,31 @@
     }
     //console.log(toSend)
     let res = await getData(url,method,toSend);
-    console.log(res)
+   // console.log(res)
+    let timeStamp = new Date().getTime();
+
+    showStatus({content:res.data.message,stamp:timeStamp})
     let modalId = document.querySelector("#modal3in1");
     let modalDOM = Modal.getOrCreateInstance(modalId);
     emits('callDad')
     modalDOM.hide();
   }
 
+  let spin = ref(false)
   async function uploadFile(e){
-    console.log(e.target.files)
+    //console.log(e.target.files)
+    spin.value = true
     let file = e.target.files[0];
     let form = new FormData();
     form.append("file-to-upload",file);
-    
-    console.log(form)
+
     let url = `${headAPI}/api${myAPI}/admin/upload`;
     let res = await getData(url,'post',form);
-    console.log(res)
-    
-
+    //console.log(res);
+    if (res.data.success){
+      data.value.imageUrl = res.data.imageUrl
+    }
+    spin.value = false
   }
 
 
@@ -110,7 +118,8 @@
               <div>或上傳圖片</div>
               <input @change="uploadFile($event)" type="file" >
             </label>
-            <img :src="data.imageUrl" />
+            <div v-if="spin"><i class="fa-solid fa-spinner fa-spin"></i></div>
+            <img v-else :src="data.imageUrl"/>
           </div>
         </div>
         <div class="wordWrap">
@@ -178,7 +187,7 @@
   </div>
 </div>
 </template>
-<style>
+<style scoped>
   .modalWrap{
     padding:15px;
     display:flex;

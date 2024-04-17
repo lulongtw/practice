@@ -2,7 +2,10 @@ import {createApp} from 'vue';
 import App from "@/App.vue";
 import router from "./router";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.css"
+import "bootstrap/dist/css/bootstrap.css";
+import loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
+
 
 axios.defaults.withCredentials = true;
 
@@ -25,5 +28,5 @@ router.beforeEach(async(to)=>{
 })
 
 app.use(router);
-
+app.component("loading",loading)
 app.mount("#app")

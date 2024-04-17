@@ -1,15 +1,20 @@
 <script setup>
   import {useRouter} from "vue-router";
-  import {headAPI,myAPI,getData} from "@/functions.js"
+  import {headAPI,myAPI,getData} from "@/functions.js";
+  import {inject} from "vue";
 
   let router = useRouter();
 
+  let toggleLoading = inject('toggleLoading')
+
   async function logOut(){
+    toggleLoading()
     let url = headAPI + "/logout";
     let res = await getData(url,'post')
     if (res.data.success){
       router.push("/")
     }
+    toggleLoading()
   }
 </script>
   <template>

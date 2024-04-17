@@ -1,5 +1,5 @@
 <script setup>
-  import {ref,onMounted} from "vue";
+  import {ref,onMounted,inject} from "vue";
   import {headAPI,myAPI,getData} from "@/functions.js";
   import {useRouter} from "vue-router";
 
@@ -8,6 +8,7 @@
     "username": "",
     "password": ""
   });
+  let toggleLoading = inject('toggleLoading')
   onMounted(()=>{
     let fromLocal = localStorage.getItem('loginInfo');
     if (fromLocal){
@@ -18,6 +19,7 @@
   let router = useRouter();
 
   async function logIn(){
+    toggleLoading()
     if (rememberMe.value){
       let toLocal = JSON.stringify(obj.value)
       localStorage.setItem('loginInfo',toLocal)
@@ -32,6 +34,7 @@
       document.cookie = `renewToken=${token};expires=${expired}}`
       router.push('/seller')
     }
+    toggleLoading()
   }
 
 </script>

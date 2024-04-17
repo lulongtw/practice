@@ -1,25 +1,41 @@
 <script setup>
-  import {ref,onMounted} from "vue";
-  import {headAPI,myAPI,getData} from "@/functions.js";
+  import {ref,onMounted,inject,watch} from "vue";
+  import {headAPI,myAPI,getData,getDot} from "@/functions.js";
   import {useRouter} from "vue-router";
   import {Modal} from "bootstrap";
   import modal3in1 from "@/modal/modal3in1.vue";
+  import Page from "@/components/Pages.vue";
 
   let data = ref([]);
   let toSon = ref("")
-
-
-
+  let toggleLoading = inject('toggleLoading');
+  let currentPage = ref(1)
+  let pagination = ref("");
+  
+  
   onMounted(async()=>{
     await getProduct()
   })
+  watch(()=>currentPage.value,
+    async(newVal)=>{
+      await getProduct()
+    }
+  )
+
 
   async function getProduct(){
-    let url = `${headAPI}/api${myAPI}/admin/products?page=:page`;
+    toggleLoading()
+    let url = `${headAPI}/api${myAPI}/admin/products?page=${currentPage.value}`;
     let res = await(getData(url,'get'));
     if (res.data.success){
-      data.value = res.data.products
+      data.value = res.data.products;
+      pagination.value = res.data.pagination
     }
+    toggleLoading()
+  }
+
+  function cngPage(newPage){
+    currentPage.value = newPage
   }
 
   function callMadal(method,data){
@@ -62,8 +78,8 @@
       <tr v-for="(item,idx) in data">
         <td>{{item.category}}</td>
         <td>{{item.title}}</td>
-        <td>{{item.origin_price}}</td>
-        <td>{{item.price}}</td>
+        <td>{{getDot(item.origin_price)}}</td>
+        <td>{{getDot(item.origin_price)}}</td>
         <td>{{item.is_enabled?'啟用':'未啟用'}}</td>
         <td>
           <button @click="callMadal('edit',item)" type="button" class="btn btn-outline-success">edit</button>
@@ -72,7 +88,7 @@
       </tr>
     </tbody>
   </table>
-    
+    <Page :fromDad="pagination" @turnPage="cngPage"></Page>
   
 </template>
 <style scoped>
@@ -87,4 +103,5 @@
     border:1px solid black;
     padding:5px 10px;
   }
+  
 </style>
