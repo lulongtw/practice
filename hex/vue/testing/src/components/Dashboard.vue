@@ -136,8 +136,20 @@
                 Buyer
               </a>
             </li>
+            <li class="nav-item">
+              <a @click.prevent="router.push('/buyerCart')" class="nav-link d-flex align-items-center gap-2" href="#">
+                <svg class="bi"><use xlink:href="#cart"/></svg>
+                BuyerCart
+              </a>
+            </li>
+            <li class="nav-item">
+              <a @click.prevent="router.push('/buyerInfo')" class="nav-link d-flex align-items-center gap-2" href="#">
+                <svg class="bi"><use xlink:href="#cart"/></svg>
+                buyerInfo
+              </a>
+            </li>
           </ul>
-
+     
 
           <hr class="my-3">
 

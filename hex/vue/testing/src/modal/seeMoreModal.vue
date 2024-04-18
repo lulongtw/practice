@@ -32,7 +32,7 @@
       showStatus({content:res.data.message,stamp:timeStamp})
      
     }
-    //console.log(res);
+    toggleLoading()
     
   }
 

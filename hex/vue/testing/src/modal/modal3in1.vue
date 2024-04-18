@@ -137,7 +137,7 @@
           </div>
           <div class="unit">
             <label>
-              <div>分類</div>
+              <div>單位</div>
               <input type="text" v-model="data.unit">
             </label>
           </div>

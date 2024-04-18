@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/4.1.17/vee-validate.min.js"></script>
+  <script type="module"></script>
+  <title>Document</title>
+  <style>
+    .ok{
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!--
+      幹你娘搞好久你他媽的逼
+      又被html不能大小寫搞到  注入有大寫的v-validate組件爆炸 你他媽雞掰
+      
+      1.引入v-validate的cdn 然後直接引入組件 至app內
+
+      1.5 field相當於打包的input 
+
+      2.v-validate的form  的submit  只有在所有的內部field標籤的rule都回傳true時  才會執行
+        意思就是全部都ok才會submit
+
+      3.針對field設置規則:rule=函式a
+      
+      4.函式a決定該field回傳值  還有與該filed相同name的errormessage的值
+
+
+    -->
+    <vform @submit="handleSubmit">
+      <field name="emayer" :rules="check" placeholder="email" ></field>
+      <error-message name="emayer"></error-message>
+      <button>click</button>
+    </vform>
+  </div>
+  <script>
+    let {createApp} = Vue;
+    
+    let app = createApp({
+      components:{
+        vform: VeeValidate.Form,
+        field: VeeValidate.Field,
+        errorMessage: VeeValidate.ErrorMessage
+      },
+      setup(){
+        console.log()
+        function handleSubmit(val){
+          
+          console.log('ok')
+        }
+        function check(val){
+          if (!val){
+            return '沒有東西'
+          }
+          let ok = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+          return ok.test(val)?true:'invalid'
+          //return val.search(ok)!=-1?true:'invalid'
+        }
+        return{
+          check,handleSubmit
+        }
+      }
+    })
+    app.mount("#app")
+  </script>
+</body>
+</html>
