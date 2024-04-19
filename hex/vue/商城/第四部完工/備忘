@@ -3,6 +3,16 @@ v-validate
 表單驗證的鬼東西
 使用方法  要先安裝 
 
+他媽useForm()要先let!!!!!!!!!!!!!
+他媽useForm()要先let!!!!!!!!!!!!!
+他媽useForm()要先let!!!!!!!!!!!!!
+他媽useForm()要先let!!!!!!!!!!!!!
+他媽useForm()要先let!!!!!!!!!!!!!
+不能比 useField還要下面
+不然會抓不到value
+
+
+
 第一步
 npm i vee-validate 和  npm install @vee-validate/rules
 引入套件 與 套件既有的規則
@@ -57,7 +67,7 @@ input 的name和useField的第一個參數相呼應
 https://vee-validate.logaretm.com/v4/guide/i18n/
 npm install @vee-validate/i18n
 import {configuare} from "vee-validate";
-import {localize} from "vee-validate/i18n";
+import {localize} from "@vee-validate/i18n";
 
 configuare({
   generateMessage:localize("zh-tw",{
