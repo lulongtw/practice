@@ -56,7 +56,7 @@
 		if (res.data.success){
 			data.value = res.data.products;
 			pageInfo.value = res.data.pagination;
-			console.log(pageInfo.value)
+			//console.log(pageInfo.value)
 		}
 		toggleLoading()
 	}

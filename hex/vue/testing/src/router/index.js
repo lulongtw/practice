@@ -4,7 +4,8 @@ import Dashboard from "@/components/Dashboard.vue";
 import Seller from "@/components/Seller.vue";
 import Buyer from "@/components/Buyer.vue";
 import BuyerCart from "@/components/BuyerCart.vue";
-import BuyerInfo from "@/components/BuyerInfo.vue"
+import BuyerInfo from "@/components/BuyerInfo.vue";
+import Coupon from "@/components/Coupon.vue";
 
 const router = createRouter({
   history:createWebHashHistory(),
@@ -26,8 +27,10 @@ const router = createRouter({
         },{
           path:"buyerInfo",
           component:BuyerInfo
-        }
-        
+        },{
+          path:'coupon',
+          component:Coupon
+        },
       ]
     },{
       path:"/login",

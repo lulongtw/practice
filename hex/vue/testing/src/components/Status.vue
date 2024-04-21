@@ -24,6 +24,7 @@
           if (item.stamp==value){
             idx = lst.value.indexOf(item);
             lst.value.splice(idx,1)
+            return
           }
         })
 

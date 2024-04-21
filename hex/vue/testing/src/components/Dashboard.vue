@@ -131,6 +131,12 @@
               </a>
             </li>
             <li class="nav-item">
+              <a @click.prevent="router.push('/coupon')" class="nav-link d-flex align-items-center gap-2" href="#">
+                <svg class="bi"><use xlink:href="#file-earmark"/></svg>
+                Coupon
+              </a>
+            </li>
+            <li class="nav-item">
               <a @click.prevent="router.push('/buyer')" class="nav-link d-flex align-items-center gap-2" href="#">
                 <svg class="bi"><use xlink:href="#cart"/></svg>
                 Buyer
