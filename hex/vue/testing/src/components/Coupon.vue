@@ -34,12 +34,7 @@ async function getCoupon(){
   }
   toggleLoading()
 }
-function callModal(act,target){
-  switch (act){
-    case "add":
-      toSonData.value = {act:'add',data:[]};
-      break
-  }
+function callModal(){
   let id = document.querySelector("#couponModal");
   let modalDOM = Modal.getOrCreateInstance(id);
   modalDOM.show()
@@ -69,18 +64,13 @@ async function sendRequest(item){
   }
   toggleLoading()
   await getCoupon()
-
-
-
-
-
 }
 
 
 </script>
 <template>
-  <couponModal :fromDad="toSonData"></couponModal>
-  <button @click="callModal('add')" type="button" class="btn btn-warning">新增</button>
+  <couponModal ></couponModal>
+  <button @click="callModal" type="button" class="btn btn-warning">新增</button>
     <table>
       <thead>
         <th>名稱</th>
@@ -116,7 +106,7 @@ async function sendRequest(item){
                 <button @click="editCoupon(item)" type="button" class="btn btn-success"
                 style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
                 >編輯</button>
-                <button @click="callModal('del',item)" type="button" class="btn btn-danger"
+                <button @click="console.log('del')" type="button" class="btn btn-danger"
                 style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
                   >刪除</button>
               </div>

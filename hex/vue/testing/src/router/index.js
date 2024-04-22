@@ -29,7 +29,8 @@ const router = createRouter({
           component:BuyerInfo
         },{
           path:'coupon',
-          component:Coupon
+          component:Coupon,
+          meta:{requiredAuth:true}
         },
       ]
     },{
