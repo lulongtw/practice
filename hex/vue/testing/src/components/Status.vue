@@ -33,7 +33,7 @@
     mounted(el,binding){
       setTimeout(()=>{
         del(binding.value)
-      },10000)
+      },2000)
    
     }
   }

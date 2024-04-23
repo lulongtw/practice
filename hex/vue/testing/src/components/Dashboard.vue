@@ -149,9 +149,9 @@
               </a>
             </li>
             <li class="nav-item">
-              <a @click.prevent="router.push('/buyerInfo')" class="nav-link d-flex align-items-center gap-2" href="#">
+              <a @click.prevent="router.push('/pay')" class="nav-link d-flex align-items-center gap-2" href="#">
                 <svg class="bi"><use xlink:href="#cart"/></svg>
-                buyerInfo
+                Pay
               </a>
             </li>
           </ul>

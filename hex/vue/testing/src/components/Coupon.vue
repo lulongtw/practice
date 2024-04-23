@@ -66,10 +66,24 @@ async function sendRequest(item){
   await getCoupon()
 }
 
+async function delCoupon(item){
+  toggleLoading()
+  let url = `${headAPI}/api${myAPI}/admin/coupon/${item.id}`;
+  let method = 'delete';
+  let res = await getData(url,method);
+
+  if (res.data.success){
+    let timeStamp = new Date().getTime()
+    showStatus({content:res.data.message,stamp:timeStamp})
+  }
+  toggleLoading();
+  await getCoupon()
+}
+
 
 </script>
 <template>
-  <couponModal ></couponModal>
+  <couponModal @toDad="getCoupon"></couponModal>
   <button @click="callModal" type="button" class="btn btn-warning">新增</button>
     <table>
       <thead>
@@ -106,7 +120,7 @@ async function sendRequest(item){
                 <button @click="editCoupon(item)" type="button" class="btn btn-success"
                 style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
                 >編輯</button>
-                <button @click="console.log('del')" type="button" class="btn btn-danger"
+                <button @click="delCoupon(item)" type="button" class="btn btn-danger"
                 style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
                   >刪除</button>
               </div>

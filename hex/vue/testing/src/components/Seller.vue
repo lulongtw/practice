@@ -58,8 +58,41 @@
   
     modalDOM.show()
   }
+  // let ordLst = ref({});
+
+  // onMounted(async()=>{
+  //   toggleLoading()
+  //   let url = `${headAPI}/api${myAPI}/admin/orders?page=:page`;
+  //   let method = 'get';
+  //   let res = await(getData(url,method));
+  //   if (res.data.success){
+  //     ordLst.value = res.data.orders;
+  
+  //   }
+  //   toggleLoading()
+  // })
+  // async function editOrder(item){
+  //   toggleLoading()
+  //   let url = `${headAPI}/api${myAPI}/admin/order/${item.id}`;
+  //   let method = 'put';
+  //   item.user = {
+  //         "name": "北七阿科",
+  //         "email": "test@gmail.com",
+  //         "tel": "0912346768",
+  //         "address": "台灣選擇"
+  //       }
+  //   let toSend = {'data':item}
+  //   console.log(toSend)
+  //   let res = await(getData(url,method,toSend));
+  //       console.log(res)
+  //   toggleLoading()
+  // }
 </script>
 <template>
+  <!-- <div v-for="(item,idx) in ordLst">
+    <div @click="console.log(item)">{{'show'+idx}}</div>
+    <div  @click="editOrder(item)">{{'edit'+idx}}</div>
+  </div> -->
   <div @click="console.log(data)">dasd</div>
   <modal3in1 :fromDad="toSon" @callDad="getProduct"></modal3in1>
   <button @click="callMadal('add')" type="button" class="btn btn-primary">新增商品</button>

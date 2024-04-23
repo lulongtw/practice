@@ -10,11 +10,19 @@
   <script>
 
 
-//神先.toISOString
+
+
+
+
 let unixTimestamp = 941414400
 
+//把unix變文字 .toISOString()
 let ans = new Date(unixTimestamp*1000).toISOString().split("T")[0]
 console.log(ans)
+
+//把文字變unix .getTime()
+let stringans= new Date(ans).getTime()/1000;
+console.log(stringans)
 
 
 

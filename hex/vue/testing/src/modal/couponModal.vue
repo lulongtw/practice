@@ -8,44 +8,37 @@
 
 
 // 不能亂用.boolean
-//不能在button設submit的click
+//button要在form內
+//不能在button設submit的click  該click無法submit
 //所有schema的name都要用上
+//v-model要綁在Field標籤 而不是input標籤 透過Field的v-slot field 屬性傳給input
 
   let emits = defineEmits(['toDad']);
   let data = ref({});
+  let toggleLoading = inject('toggleLoading')
+  let showStatus = inject('showStatus')
 
-
- function onSubmit(val){
-    // let url = `${headAPI}/api${myAPI}/admin/coupon`;
-    // let method = 'post';
-    // data.value.due_date = new Date(data.value.due_date).getTime()/1000;
-    // console.log(data.value);
-    // let target = document.querySelector("#couponModal");
-    // let modalDOM = Modal.getOrCreateInstance(target);
-    // data.value = {}
-    // console.log('g')
-    console.log('val',val);
-    console.log('data.value',data.value);
-
-
-    data.value = {}
-    document.querySelectorAll("#couponModal input").forEach(input => {
-      // console.log(input)
-  if (input.type === 'checkbox') {
-    input.checked = false;
-  } else {
-    input._value = '';
-    console.dir(input)
+async function onSubmit(val){
+  let target = document.querySelector("#couponModal");
+  let modalDOM = Modal.getOrCreateInstance(target);
+  modalDOM.hide()
+  toggleLoading()
+  let url = `${headAPI}/api${myAPI}/admin/coupon`;
+  let method = 'post';
+  data.value.due_date = new Date(data.value.due_date).getTime()/1000;
+  let toSend = {'data':data.value}
+  let res = await getData(url,method,toSend);
+  if (res.data.success){
+    let timeStamp = new Date().getTime();
+    showStatus({content:res.data.message,stamp:timeStamp})
   }
-});
-
-  
-    
+  data.value = {}
+  toggleLoading()    
+  emits('toDad')
   }
   const schema = yup.object().shape({
     title:yup.string().required('必須名稱'),
     code:yup.string().required('必須優惠碼'),
-
     percent:yup.string().required('必須百分比').test('百分比數字','數字',(val)=>{
       return !isNaN(val)
     }),
@@ -67,28 +60,27 @@
 
             <Form :validation-schema="schema" @submit="onSubmit">
             <label for="">標題
-              <Field v-slot="{field,errors}" name="title">
-                <input v-bind="field" type="text" v-model="data.title">
-                {{errors}}
+              <Field v-slot="{field,errors}" name="title"  v-model="data.title" >
+                <input v-bind="field" type="text" :class="['ok',{'nono':errors.length>0}]">
               </Field>
               
           </label>
           <ErrorMessage name="title"></ErrorMessage>
           <label for="">優惠密碼
-            <Field v-slot="{field,errors}" name="code">
-              <input  v-bind="field" type="text" v-model="data.code">
+            <Field v-slot="{field,errors}" name="code"  v-model="data.code">
+              <input  v-bind="field" type="text" :class="['ok',{'nono':errors.length>0}]">
             </Field>
           </label>
           <ErrorMessage name="code"></ErrorMessage>
           <label for="">到期日
-            <Field v-slot="{field,errors}" name="duedate">
-              <input  v-bind="field"  type="date" v-model="data.due_date">
+            <Field v-slot="{field,errors}" name="duedate"  v-model="data.due_date">
+              <input  v-bind="field"  type="date" :class="['ok',{'nono':errors.length>0}]">
             </Field>
           </label>
           <ErrorMessage name="duedate"></ErrorMessage>
           <label for="">折扣百分比
-            <Field v-slot="{field,errors}" name="percent">
-              <input v-bind="field"  type="text" v-model="data.percent">
+            <Field v-slot="{field,errors}" name="percent"  v-model="data.percent">
+              <input v-bind="field"  type="text" :class="['ok',{'nono':errors.length>0}]">
             </Field>
           </label>
           <ErrorMessage name="percent"></ErrorMessage>
@@ -98,12 +90,11 @@
 
           </label>
     
-          <!-- <button  @click.prevent="sendNewCoupon" ></button> -->
+            <div class="modal-footer">
           <button   class="btn btn-primary">Save changes</button>
-          <!-- <div class="modal-footer">
-        <button @click.prevent=""  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button @click.prevent="onSubmit"  class="btn btn-primary">Save changes</button>
-      </div> -->
+          <button @click.prevent=""  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+
         </Form>
         </div>
  
@@ -118,7 +109,13 @@
   input,label{
     width:100%;
   }
-  label{
 
+  .ok{
+    border-color: greenyellow;
+  background-color: #eeffe0;
+  }
+  .nono{
+    border-color: red;
+  background-color: #ffe0e0;
   }
 </style>

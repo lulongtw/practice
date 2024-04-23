@@ -6,6 +6,7 @@ import Buyer from "@/components/Buyer.vue";
 import BuyerCart from "@/components/BuyerCart.vue";
 import BuyerInfo from "@/components/BuyerInfo.vue";
 import Coupon from "@/components/Coupon.vue";
+import Pay from "@/components/Pay.vue";
 
 const router = createRouter({
   history:createWebHashHistory(),
@@ -31,7 +32,10 @@ const router = createRouter({
           path:'coupon',
           component:Coupon,
           meta:{requiredAuth:true}
-        },
+        },{
+          path:'pay',
+          component:Pay
+        }
       ]
     },{
       path:"/login",

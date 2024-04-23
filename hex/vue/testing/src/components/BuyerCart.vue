@@ -3,11 +3,13 @@
   import {headAPI,myAPI,getData,getDot} from "@/functions.js";
   import {useRouter} from "vue-router";
 	import {Modal} from "bootstrap";
+  import BuyerInfo from "./BuyerInfo.vue";
 
   let data = ref([]);
 
   let showStatus = inject('showStatus');
   let toggleLoading = inject('toggleLoading');
+  let useCoupon = ref(false)
 
   onMounted(async ()=>{
     await getCarts()
@@ -19,8 +21,12 @@
     let res = await getData(url,method);
     if (res.data.success){
       data.value = res.data.data;
-      console.log(data.value)
+      console.log(data.value);
+      useCoupon.value = data.value.carts.some(item=>{
+        return item.coupon
+      })
     }
+
     toggleLoading()
   }
 
@@ -54,7 +60,9 @@
             <i class="fa-solid fa-paw"></i>
           </div>
         </td>
-        <td>{{item.product.title}}</td>
+        <td>{{item.product.title}}
+          <div :style="{color:'green'}" v-if="item.coupon">有套喔</div>
+        </td>
         <td>{{item.qty}}</td>
         <td>{{getDot(item.product.price)}}</td>
       </tr>
@@ -62,11 +70,16 @@
         <td></td>
         <td></td>
         <td>總計</td>
-        <td>{{getDot(data.final_total)}}</td>
+        <td>{{getDot(Math.round(data.total))}}</td>
       </tr>
+
+      
     </tbody>
   </table>
-
+  <div v-if="useCoupon" :style="{fontSize:'30px',color:'green',textAlign:'end'}">
+        只要{{getDot(Math.round(data.final_total))}}
+      </div>
+    <BuyerInfo @couponCng="getCarts"></BuyerInfo>
 </template>
 
 <style scoped>
