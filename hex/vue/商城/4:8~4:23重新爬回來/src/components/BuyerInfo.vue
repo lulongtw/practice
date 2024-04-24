@@ -6,6 +6,8 @@ import {useRouter} from "vue-router";
 import {Form,Field,ErrorMessage} from "vee-validate";
 import * as yup from "yup";
 
+
+let router = useRouter();
 let cartInfo = ref([]);
 let couponCode = ref("");
 let toggleLoading = inject('toggleLoading')
@@ -47,6 +49,7 @@ async function useCoupon(){
 }
 async function onSubmit(val){
   toggleLoading()
+  let id
   let url = `${headAPI}/api${myAPI}/order`;
   let method = 'post';
   let toSend =     {
@@ -62,11 +65,16 @@ async function onSubmit(val){
     };
   let res = await getData(url,method,toSend);
   if (res.data.success){
-    console.log(res)
+    id = res.data.orderId
     let timeStamp = new Date().getTime()
     showStatus({content:res.data.message,stamp:timeStamp})
+    toggleLoading()
+    router.push(`/singlePay/${id}`);
+    return
+
   }
-  toggleLoading()
+  toggleLoading();
+ 
 }
 
 </script>

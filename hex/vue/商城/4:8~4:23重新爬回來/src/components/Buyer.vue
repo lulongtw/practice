@@ -31,6 +31,7 @@
 		let res = await getData(url,method,toSend);
 		if (res.data.success){
 			let timeStamp = new Date().getTime();
+			console.log('buyer',timeStamp)
       showStatus({content:res.data.message,stamp:timeStamp})
 		}
 		toggleLoading()

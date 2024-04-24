@@ -21,11 +21,12 @@ import Page from "@/components/Pages.vue";
   provide('toggleLoading',()=>{
     isLoading.value = !isLoading.value
   })
-  let statesLst = ref([])
+  let statesLst = ref({})
   provide('showStatus',(newVal)=>{
     //console.log(statesLst.value.length,statesLst.value)
-   // console.log(newVal)
-    statesLst.value.push(newVal);
+    // console.log('app',newVal)
+    // statesLst.value.unshift(newVal);
+    statesLst.value = newVal
     
     //console.log(statesLst.value.length,statesLst.value)
   });

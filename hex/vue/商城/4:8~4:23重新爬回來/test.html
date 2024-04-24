@@ -8,8 +8,16 @@
 </head>
 <body>
   <script>
-    let a = 'dsad';
-    console.log(a.length)
+    let lst = [1,2,3];
+    console.log(lst.indexOf(2))
+    console.log('-----------')
+    lst.forEach(item=>{
+      console.log(item)
+      console.log(lst.indexOf(item))
+      
+      lst[lst.indexOf(item)]++
+    });
+    console.log(lst)
   </script>
 </body>
 </html>
