@@ -22,8 +22,13 @@
     let toSend = { "data": { "product_id":currentItem.value.id,"qty":qty.value } }
     let res = await getData(url,method,toSend);
     if (res.data.success){
+   
+      url = `/api/:api_path/cart`
+      method = 'get';
+      store.dispatch('getCartList',{url,method});
+      qty.value = 1
       hideModal('#lookDetailModal')
-       console.log(res)
+
     }
   }
   

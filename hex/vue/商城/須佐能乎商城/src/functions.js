@@ -24,7 +24,7 @@ async function getData(url,method,toSend){
   // console.log(res)
   if (res.data.message){
     let stamp = new Date().getTime()
-    console.log({'message':res.data.message,'stamp':stamp})
+    // console.log({'message':res.data.message,'stamp':stamp})
     store.commit('renewMessages',{'message':res.data.message,'stamp':stamp})
   }
   store.commit('toggleIsLoading')

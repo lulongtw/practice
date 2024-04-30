@@ -33,7 +33,7 @@
   watch(()=>store.state.cartList,
     (newVal)=>{
       cartList.value = newVal;
-      console.log(cartList.value)
+     // console.log(cartList.value)
     }
   )
 
@@ -111,6 +111,9 @@ showCartLst
   }
   footer{
     text-align: center;
+  }
+  .category{
+    z-index:0;
   }
   
 

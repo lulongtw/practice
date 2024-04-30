@@ -9,17 +9,35 @@
 
   let products = ref([]);
   let currentCategory = ref(store.state.currentCategory);
-  let currentItem = ref({})
+  let currentItem = ref({});
+
+
+  let currentCategoryLength = ref("");
+  let currentPage = ref(0);
+
+//1 , 5, 9  %4==1
+
+  let currentShow = computed(()=>{
+    if ( products.value[currentCategory.value]){
+      let ans = products.value[currentCategory.value].slice(currentPage.value,currentPage.value+2);
+    return ans
+    }
+  });
+  let pages = computed(()=>{
+    return Math.ceil(currentCategoryLength.value/2)
+  })
+
 
   watch(()=>store.state.currentCategory,
     (newVal)=>{
-      currentCategory.value = newVal
+      currentCategory.value = newVal;
+      currentCategoryLength.value = products.value[currentCategory.value].length
+   
     }
   )
   watch(()=>store.state.allProducts,
     (newVal)=>{
       products.value = newVal;
-
     }
   )
   function lookDetail(item){
@@ -32,15 +50,20 @@
     let toSend = { "data": { "product_id":item.id,"qty":1 } };
     let res = await getData(url,method,toSend);
     if (res.data.success){
-      //  console.log(res)
+       url = `/api/:api_path/cart`
+       method = 'get';
+      store.dispatch('getCartList',{url,method});
     }
+  }
+  function goPage(page){
+    currentPage.value = page*2+1
   }
 </script>
 
 <template>
   <LookDetailModal :currentItem="currentItem"></LookDetailModal>
   <div class="productsWrap">
-      <div  v-for="(item,idx) in products[currentCategory]" class="item">
+      <div  v-for="(item,idx) in currentShow" class="item">
         <div class="pic"><img :src="item.imageUrl"></div>
         <div class="name">{{item.title}}</div>
         <div class="content">{{item.content}}</div>
@@ -56,6 +79,14 @@
         </div>
       </div>
   </div>
+
+  <nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li @click="goPage(item-1)" class="page-item" v-for="item in pages"><a class="page-link" href="#">{{item}}</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
 </template>
 <style scoped>
   .productsWrap{

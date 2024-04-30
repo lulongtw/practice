@@ -1,6 +1,7 @@
 import {createStore} from "vuex";
 import {getData,getUrl} from "@/functions.js"
 import loginModule from "./loginModule";
+import cartLstModule from "./cartLstModule";
 
 
 const store = createStore({
@@ -9,7 +10,7 @@ const store = createStore({
       allProducts:[],
       isLoading:false,
       sellerProductList:{},
-      currentCategory:"衣服",
+      currentCategory:"",
       messages:{},
       cartList:[]
     }
@@ -47,6 +48,7 @@ const store = createStore({
           temp[item.category].push(item)
         })
         context.commit('renewAllProducts',temp);
+        context.commit('renewCurrentCategory',Object.keys(temp)[0])
       }
     },
     async getSellerProductList(context,payload){
@@ -61,8 +63,9 @@ const store = createStore({
         context.commit('renewCartList',res.data.data.carts);
       }
     }
+
   },modules:{
-    loginModule
+    loginModule,cartLstModule
   }
 })
 
