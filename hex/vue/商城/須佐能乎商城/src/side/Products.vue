@@ -13,16 +13,19 @@
 
 
   let currentCategoryLength = ref("");
-  let currentPage = ref(0);
+  let currentPage = ref(1);
 
 //1 , 5, 9  %4==1
 
   let currentShow = computed(()=>{
     if ( products.value[currentCategory.value]){
-      let ans = products.value[currentCategory.value].slice(currentPage.value,currentPage.value+2);
+      console.log(currentPage.value)
+      let ans = products.value[currentCategory.value].slice((currentPage.value-1)*2,(currentPage.value-1)*2+2);
+
     return ans
     }
   });
+
   let pages = computed(()=>{
     return Math.ceil(currentCategoryLength.value/2)
   })
@@ -30,6 +33,7 @@
 
   watch(()=>store.state.currentCategory,
     (newVal)=>{
+      currentPage.value = 1;
       currentCategory.value = newVal;
       currentCategoryLength.value = products.value[currentCategory.value].length
    
@@ -56,8 +60,15 @@
     }
   }
   function goPage(page){
-    currentPage.value = page*2+1
+    currentPage.value = page
   }
+
+  function goPrev(){
+    currentPage.value = currentPage.value!==1?currentPage.value-=1:1
+  } 
+  function goNext(){
+    currentPage.value = currentPage.value!==pages.value?currentPage.value+=1:pages.value
+  } 
 </script>
 
 <template>
@@ -82,9 +93,9 @@
 
   <nav aria-label="Page navigation example">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li @click="goPage(item-1)" class="page-item" v-for="item in pages"><a class="page-link" href="#">{{item}}</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    <li @click='goPrev' class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li @click="goPage(item)" class="page-item" v-for="item in pages"><a class="page-link" href="#">{{item}}</a></li>
+    <li @click="goNext" class="page-item"><a class="page-link" href="#">Next</a></li>
   </ul>
 </nav>
 </template>
