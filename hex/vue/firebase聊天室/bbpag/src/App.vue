@@ -6,13 +6,16 @@
   let data = ref(store.state.data);
   let currentContent = ref("");
   let currentName = ref("");
-  let revData = computed(()=>{
-    let newData = {};
-    Object.keys(data.value).reverse().forEach(item=>{
-      newData[item] = data.value[item]
-    })
-    return newData
-  })
+  let nameHolder = ref('誰');
+  let contentHolder = ref("說什麼");
+
+  // let revData = computed(()=>{
+  //   let newData = {};
+  //   Object.keys(data.value).reverse().forEach(item=>{
+  //     newData[item] = data.value[item]
+  //   })
+  //   return newData
+  // })
   
   watch(()=>store.state.data,
     (newVal)=>{
@@ -20,9 +23,11 @@
     }
   )
 
-  onMounted(()=>{
+  onMounted(async ()=>{
     store.dispatch("onValueData");
-    store.dispatch("onValueCount")
+    store.dispatch("onValueCount");
+    await store.dispatch('addViewer')
+
   })
     
   function check(name){
@@ -41,37 +46,53 @@
     return await getNewCount()
   }
   async function getNewCount(){
-    let count = store.state.count +9;
+    let count = store.state.count +160;
     await store.dispatch('setNewCount',count);
     return count
   }
 
   async function send(){
-    store.dispatch('sent',{
+    if (!currentName.value){
+      nameHolder.value = "要說你是誰";}
+    else if (!currentContent.value){
+      contentHolder.value = "你沒說你想說什麼"
+    }
+    else{
+      nameHolder.value = "誰";
+      contentHolder.value = "說什麼"
+      let time = new Date();
+      store.dispatch('sent',{
       'name':currentName.value,
       'cnt':currentContent.value,
+      'time':`${time.getMonth()+1}-${time.getDate()}-${time.getHours()}`,
       'count':await getCount()
     })
+      currentContent.value = ""
+    }
+    
   }
 </script>
 <template>
   <div class="wrap">
-    <div class="input-group mb-3">
+    <div class="cntWrap">
+  <div :style="{backgroundColor: `rgb(${item.count%255}, 0, 0, 0.15)`}" 
+    :class="['cnt',item.name==currentName?'now':'']" v-for="item in data">
   
-  <input v-model="currentName" type="text" class="form-control" placeholder="誰" aria-label="Example text with button addon" aria-describedby="button-addon1">
+    <div><span>{{item.name}}</span> 說:<div>{{item.cnt}}</div></div>
+    <div class="date">{{item.time}}</div>
+  </div>
+</div>
+    <div class="input-group mb-3">
+      
+  <textarea  @keyup.enter="send" v-model="currentName" type="text" class="form-control" :placeholder="nameHolder" aria-label="Example text with button addon" aria-describedby="button-addon1"></textarea>
 </div>
 
 <div class="input-group mb-3">
-  <input v-model="currentContent" type="text" class="form-control" placeholder="說什麼" aria-label="Recipient's username" aria-describedby="button-addon2">
-  <button @click="send" class="btn btn-outline-secondary" type="button" id="button-addon2">send</button>
+  <textarea v-model="currentContent" type="text" class="form-control" :placeholder="contentHolder" aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
+  <button  @click="send" class="btn btn-outline-secondary" type="button" id="button-addon2">send</button>
 </div>
 
-<div class="cntWrap">
-  <div :class="['cnt',{'other':check(item.name)}]" v-for="item in revData">
-    <img :src="`https://picsum.photos/id/${item.count}/60/60`" alt="">
-    <div>{{item.name}} 說: {{item.cnt}}</div>
-  </div>
-</div>
+
   </div>
 
 </template>
@@ -81,21 +102,34 @@
     margin:20px auto;
   }
   .cntWrap{
-    margin-top: 20px;
-    padding:10px;
+    margin-bottom: 20px;
+    padding:15px;
     border:1px solid rgb(187, 187, 187);
     border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+
   }
+
   .cnt{
     padding:10px;
-    border-bottom:1px solid  rgb(187, 187, 187);
     margin-bottom:20px;
-    display:flex;
-    align-items: center;
-    justify-content: space-between;
     gap:30px;
+    line-height:27px;
+    white-space:pre-wrap;
+    border-radius:10px;
+    width:90%;
+
   }
-  .other{
-    flex-direction: row-reverse;
+  span{
+    font-weight: 800;
+  }
+  .now{
+    position: relative;
+    left:calc(10%);
+  }
+  .date{
+    text-align: end;
   }
 </style>

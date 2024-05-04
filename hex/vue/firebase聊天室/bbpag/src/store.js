@@ -1,15 +1,17 @@
 import {createStore} from "vuex";
 import getDatabase from "@/firebase.js";
-import {onValue,set,ref,push} from "firebase/database";
+import {onValue,set,ref,push,get} from "firebase/database";
 
 let dataRef = ref(getDatabase,'data');
 let countRef = ref(getDatabase,'count');
+let viewRef = ref(getDatabase,'view')
 
 const store = createStore({
   state(){
     return{
       data:{},
       count:0,
+      view:0
     }
   },
   mutations:{
@@ -33,13 +35,27 @@ const store = createStore({
         context.commit('renewCount',temp)
       })
     },
+    async addViewer(context,newVal){
+      let temp
+      await get(viewRef).then(snapshot=>{
+        temp = snapshot.val();  
+
+      });
+      let time = new Date();
+      let viewData = {
+        'count':++temp.count,
+        'time':String(time)
+      }
+
+      set(viewRef,viewData)
+    },
     sent(context,payload){
-      console.log(payload)
+ 
       let newData = push(dataRef);
       set(newData,payload)
     },
     setNewCount(context,payload){
-      console.log(payload)
+
       set(countRef,payload)
     }
   }
