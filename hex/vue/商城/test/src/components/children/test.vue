@@ -61,6 +61,7 @@
   //所以就是這樣
   //然後這變用setTimeOut是因為好像有時間問題
   //沒有setTimeout 第一次delete會追蹤不到 高度依然是一開始的高度
+  //根本天才  怎麼想到的
   //就是那個  //console.log(height)
   watch(()=>store.state.AllCarts,
     ()=>{

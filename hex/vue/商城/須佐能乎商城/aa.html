@@ -7,13 +7,21 @@
   <title>Document</title>
 </head>
 <body>
+  <input type="text">
+  <div>qwqdwddqd</div>
   <script>
-    let lst = [1,2,3,4,5,6,7,8,9];
-    let ans = lst.slice(0,4);
-    let ans1 = lst.slice(4,8);
-    let ans2 = lst.slice(8,12)
-    console.log(ans,ans1,ans2)
-    // console.log(lst)
+    let input = document.querySelector("input");
+    let div = document.querySelector("div");
+
+    div.addEventListener('click',()=>{
+      let lst = input.value.split("");
+console.log(lst.every(item=>{
+ 
+        return !isNaN(item)
+      }))
+
+
+    })
   </script>
 </body>
 </html>

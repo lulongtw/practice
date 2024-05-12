@@ -5,6 +5,7 @@
   import {Modal} from "bootstrap";
   import {showModal,hideModal,getData} from "@/functions.js";
   import * as yup from "yup"
+import router from "@/router";
 
   let cartLst = ref(store.state.cartList)
   watch(()=>store.state.cartList,
@@ -19,16 +20,20 @@
     let res = store.dispatch('delSingleItem',{url,method})
   }
   
+  function goCheckOut(){
+    router.push("/checkOut")
+  }
 </script>
 
 <template>
   <div class="cartLst">
-    <div class="item" v-for="(item,idx) in cartLst">
+    <div class="item" v-for="(item,idx) in cartLst.carts">
       <td @click="delThisItem(item.id)"><i class="fa-regular fa-trash-can"></i></td>
       <td> {{item.product.title}}</td>
       <td><span>{{item.qty}}{{item.product.unit}}</span></td>
       <td>${{item.product.price}}元</td>
     </div>
+    <div @click="goCheckOut" class="checkout"><i class="fa-solid fa-paw"></i> checkout</div>
   </div>
 
 </template>
@@ -60,5 +65,11 @@
   width:60%;
   text-align:center;
 }
-
+.checkout{
+  padding:3px;
+  background-color: yellow;
+  border-radius:13px;
+  margin:13px;
+  text-align: center;
+}
 </style>

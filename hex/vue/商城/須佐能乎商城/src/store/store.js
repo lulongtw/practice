@@ -2,6 +2,7 @@ import {createStore} from "vuex";
 import {getData,getUrl} from "@/functions.js"
 import loginModule from "./loginModule";
 import cartLstModule from "./cartLstModule";
+import checkOutModule from "./checkOutModule"
 
 
 const store = createStore({
@@ -60,12 +61,13 @@ const store = createStore({
     async getCartList(context,payload){
       let res = await getData(payload.url,payload.method);
       if (res.data.success){
-        context.commit('renewCartList',res.data.data.carts);
+        // context.commit('renewCartList',res.data.data.carts);
+        context.commit('renewCartList',res.data.data);
       }
     }
 
   },modules:{
-    loginModule,cartLstModule
+    loginModule,cartLstModule,checkOutModule
   }
 })
 

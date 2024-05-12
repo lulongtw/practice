@@ -18,10 +18,12 @@
 //1 , 5, 9  %4==1
 
   let currentShow = computed(()=>{
+    // console.log(products.value);
+    // console.log(currentCategory.value)
     if ( products.value[currentCategory.value]){
-      console.log(currentPage.value)
+      // console.log(currentPage.value)
       let ans = products.value[currentCategory.value].slice((currentPage.value-1)*2,(currentPage.value-1)*2+2);
-
+      // console.log(ans)
     return ans
     }
   });
@@ -60,6 +62,7 @@
     }
   }
   function goPage(page){
+
     currentPage.value = page
   }
 
@@ -93,9 +96,9 @@
 
   <nav aria-label="Page navigation example">
   <ul class="pagination">
-    <li @click='goPrev' class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li @click="goPage(item)" class="page-item" v-for="item in pages"><a class="page-link" href="#">{{item}}</a></li>
-    <li @click="goNext" class="page-item"><a class="page-link" href="#">Next</a></li>
+    <li @click.prevent='goPrev' class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li @click.prevent="goPage(item)" class="page-item" v-for="item in pages"><a class="page-link" href="#">{{item}}</a></li>
+    <li @click.prevent="goNext" class="page-item"><a class="page-link" href="#">Next</a></li>
   </ul>
 </nav>
 </template>
