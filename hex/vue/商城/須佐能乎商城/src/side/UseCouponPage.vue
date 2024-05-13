@@ -27,7 +27,7 @@
     let styles = window.getComputedStyle(crtLstTarget);
     height = styles.getPropertyValue("height");
     crtLstTarget.style.height = "0px";
-    console.log(height)
+
   })
 
   function showCrtLst(){
@@ -57,8 +57,8 @@
 </script>
 
 <template>
-     <div class="money">
-      <span @click="showCrtLst">顯示購物車內容</span>
+     <div @click="showCrtLst" class="money">
+      <span >顯示購物車內容</span>
       <span>{{crtLst.final_total}}</span>
     </div>
     <div class="crtLstTarget">

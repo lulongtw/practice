@@ -5,22 +5,12 @@
   import {Modal} from "bootstrap";
   import {showModal} from "@/functions.js";
   import {getData} from "@/functions.js";
-import router from "@/router";
+  import router from "@/router";
 
-  let currentPage = ref(1);
-  let data = ref({});
-
-  watch(()=>store.state.sellerProductList,
-    (newVal)=>{
-      console.log(newVal)
-    }
-  )
-
-  onMounted(async()=>{
-    let url = `/api/:api_path/admin/products?page=${currentPage}`;
-    let method = 'get'
-    store.dispatch('getSellerProductList',{url,method})
+  onMounted(()=>{
+    router.push('/sellerMain/productsLst')
   })
+
 
   async function logOut(){
     let url = '/logout';
@@ -189,15 +179,20 @@ import router from "@/router";
      </div>
  
      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-       dash
        <br>
-       <router-view></router-view>
+       <div class="viewWrap">
+        <router-view></router-view>
+       </div>
  
      </main>
    </div>
  </div>
    </template>
 <style scoped>
+.viewWrap{
+  width:min(90%,900px);
+  margin:10px auto;
+}
 .bi {
   display: inline-block;
   width: 1rem;

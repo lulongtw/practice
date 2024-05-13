@@ -7,9 +7,11 @@ import CheckOut from "@/buyer/CheckOut.vue";
 import BuildOrderListPage from "@/side/BuildOrderListPage.vue";
 import UseCouponPage from "@/side/UseCouponPage.vue";
 import PayPage from "@/side/PayPage.vue";
+import ProductsLst from "@/seller/ProductsLst.vue"
 
 const router = createRouter({
   history:createWebHashHistory(),
+  
   routes:[
     {
       path:"/",
@@ -38,7 +40,13 @@ const router = createRouter({
     },{
       path:"/sellerMain",
       component:SellerMain,
-      meta:{requiredAuth:true}
+      meta:{requiredAuth:true},
+      children:[
+        {
+          path:'productsLst',
+          component:ProductsLst
+        }
+      ]
     },{
       path:'/login',
       component:Login

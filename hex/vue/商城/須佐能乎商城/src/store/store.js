@@ -3,6 +3,8 @@ import {getData,getUrl} from "@/functions.js"
 import loginModule from "./loginModule";
 import cartLstModule from "./cartLstModule";
 import checkOutModule from "./checkOutModule"
+import router from "@/router"
+
 
 
 const store = createStore({
@@ -13,7 +15,8 @@ const store = createStore({
       sellerProductList:{},
       currentCategory:"",
       messages:{},
-      cartList:[]
+      cartList:[],
+      orderLst:[]
     }
   },
   mutations:{
@@ -34,10 +37,14 @@ const store = createStore({
     },
     renewCartList(state,newVal){
       state.cartList = newVal
+    },
+    renewOrderList(state,newVal){
+      state.orderLst = newVal
     }
 
   },
   actions:{
+    //把商品料整理成以分類為鍵 相關分類身品為值 的物件
     async fetchAllProducts(context,payload){
       let res = await getData(payload.url,payload.method);
       if (res.data.success){
@@ -52,17 +59,46 @@ const store = createStore({
         context.commit('renewCurrentCategory',Object.keys(temp)[0])
       }
     },
+    //這應該沒用吧？
     async getSellerProductList(context,payload){
       let res = await getData(payload.url,payload.method);
       if (res.data.success){
         context.commit('renewSellerProductList',res.data.products);
       }
     },
+    //取得當前購物車資料
     async getCartList(context,payload){
       let res = await getData(payload.url,payload.method);
       if (res.data.success){
-        // context.commit('renewCartList',res.data.data.carts);
         context.commit('renewCartList',res.data.data);
+      }
+    },
+    //建立含買家資料的訂單
+    async checkout(context,payload){
+      let res = await getData(payload.url,payload.method,payload.toSend);
+      if (res.data.success){
+        router.push('/checkOut/payPage')
+      }
+    },
+    //取得所有訂單
+    async getOrderList(context,payload){
+      let res = await getData(payload.url,payload.method);
+      if (res.data.success){
+        context.commit('renewOrderList',res.data);
+        //  還要更新cartLst 因為建立訂單會消除購物車
+        let url = `/api/:api_path/cart`
+        let method = 'get';
+        store.dispatch('getCartList',{url,method});
+      }
+    },
+    //真正付錢在這
+    async pay(context,payload){
+      let res = await getData(payload.url,payload.method);
+      if (res.data.success){
+        let url = '/api/:api_path/orders?page=:page';
+        let method = 'get'
+        store.dispatch('getOrderList',{url,method})
+        router.push("/buyerShop")
       }
     }
 

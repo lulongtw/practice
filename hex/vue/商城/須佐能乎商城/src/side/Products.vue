@@ -82,11 +82,11 @@
         <div class="name">{{item.title}}</div>
         <div class="content">{{item.content}}</div>
         <div class="buttons">
-          <button @click="lookDetail(item)" type="button" class="btn btn-primary"
+          <button @click="lookDetail(item)" type="button" class="btn btn-outline-warning"
            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"  data-bs-toggle="modal" data-bs-target="#lookDetailModal">
-              看仔細
+              <span :style="{color:'black'}">看仔細</span>
           </button>
-          <button @click="addToCart(item)" type="button" class="btn btn-danger"
+          <button @click="addToCart(item)" type="button" class="btn btn-warning"
             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
             直購霸狗！
           </button>
@@ -129,13 +129,21 @@
   }
   .buttons{
     padding:10px;
-    background-color: rgb(214, 214, 214);
+    border-top: 1px solid rgb(165, 165, 165);
     border-radius:0px 0px 30px 0px;
     display:flex;
     justify-content: space-evenly;
   }
+  nav{
+    margin:30px auto;
+  }
+
   @media (max-width:800px){
     .productsWrap{
+      justify-content: center;
+    }
+    nav{
+      display: flex;
       justify-content: center;
     }
   }

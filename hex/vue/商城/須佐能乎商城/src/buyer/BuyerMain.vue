@@ -54,11 +54,15 @@
   <GoToSellerModal></GoToSellerModal>
   <header>
     <div @click="showModal('#GoToSellerModal')"><i class="fa-solid fa-paw"></i>肥狗超商</div>
-    <div @click="()=>{ showCartLst = !showCartLst}" class="cart">
+    <div :style="{position:'relative'}">
+      <div @click="()=>{ showCartLst = !showCartLst}" class="cart">
       <i class="fa-solid fa-cart-shopping"></i>
       <template v-if="cartList.carts"> {{cartList.carts.length}}</template>
+    </div>
       <CartLst v-if="showCartLst"></CartLst>
     </div>
+
+
   </header>
   <div class="buyerMainWrap">
     <router-view v-slot="{ Component }">
@@ -69,8 +73,8 @@
 
   </div>
   <footer>
-    <div>© Copright 2017 六角血拼賣賣  Instagrame  Facebook About</div>
-    <div>Made with Bootstrap5</div>
+    <div>© Copright 2024 Internation Fego Best .Co</div>
+    <div>Made with FegoPower</div>
   </footer>
  
 
@@ -86,12 +90,13 @@
   header{
     display:flex;
     justify-content: space-between;
+    align-items: center;
     padding:10px 50px;
     position: sticky ;
     top:0;
     margin: 0 auto;
     background-color: rgb(236, 212, 164);
-    z-index:999999
+    z-index:888
   }
   header>div{
     font-size: 1.3rem;

@@ -1,0 +1,79 @@
+<script setup>
+  import {ref,watch,computed,onMounted,inject,provide} from "vue";
+  import store from "@/store/store.js";
+  import {useRouter} from "vue-router";
+  import {Modal} from "bootstrap";
+  import {showModal,hideModal,getData} from "@/functions.js";
+  import * as yup from "yup";
+
+  import SanTiModal from "@/modal/SanTiModal.vue"
+
+
+  let data = ref({});
+
+  watch(()=>store.state.sellerProductList,
+    (newVal)=>{
+      console.log(newVal);
+      data.value = newVal
+    }
+  )
+
+  onMounted(()=>{
+    let url = `/api/:api_path/admin/products/all`;
+    let method = 'get'
+    store.dispatch('getSellerProductList',{url,method})
+  })
+</script>
+
+<template>
+  <SanTiModal></SanTiModal>
+  <table>
+    <thead>
+      <tr>
+        <th>名字</th>
+        <th>分類</th>
+        <th>描述</th>
+        <th>價錢</th>
+        <th>動作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(item,idx) in data" :key="idx">
+        <td>{{item.title}}</td>
+        <td>{{item.category}}</td>
+        <td>{{item.content}}</td>
+        <td>{{item.price}}</td>
+        <td>
+          <div>
+            <button type="button" class="btn btn-success"
+            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;">
+            edit
+          </button>
+          <button type="button" class="btn btn-danger"
+            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;">
+            del
+          </button>
+          </div>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</template>
+<style scoped>
+  table{
+    width:100%;
+    border-collapse: collapse;
+    border:1px solid gray;
+    text-align: center;
+  }
+  th,td{
+    border:1px solid gray;
+    padding:5px 8px;
+  }
+  tr>td:last-of-type>div{
+    display: flex;
+    gap:10px;
+  }
+
+</style>

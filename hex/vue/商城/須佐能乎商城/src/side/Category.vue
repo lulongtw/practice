@@ -36,11 +36,10 @@
   <div class="list-group">
        <a @click.prevent="store.commit('renewCurrentCategory',item)" 
        v-for="(item,idx) in categories" href="#" 
-       :class="['list-group-item', 'list-group-item-action',{'active':currentCategory==item}]">
+       :class="['list-group-item', 'list-group-item-action',{'list-group-item-warning':currentCategory==item}]">
+              <!-- list-group-item-action list-group-item-warning" -->
          {{item}}
        </a>
-
-
      
       </div>
 

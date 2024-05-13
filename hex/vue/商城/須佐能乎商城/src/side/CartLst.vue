@@ -27,6 +27,7 @@ import router from "@/router";
 
 <template>
   <div class="cartLst">
+    <div v-if="cartLst.carts.length==0" :style="{ textAlign: 'center' ,color:'gray'}">購物車裡面沒東西</div>
     <div class="item" v-for="(item,idx) in cartLst.carts">
       <td @click="delThisItem(item.id)"><i class="fa-regular fa-trash-can"></i></td>
       <td> {{item.product.title}}</td>
@@ -47,7 +48,7 @@ import router from "@/router";
     padding:10px;
     border:1px solid black;
     background-color: white;
-    height:300px;
+    max-height:300px;
     overflow: scroll;
   }
 .item{
