@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vee-validate/i18n": "^4.12.8",
+    "@vee-validate/rules": "^4.12.8",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
     "vee-validate": "^4.12.8",

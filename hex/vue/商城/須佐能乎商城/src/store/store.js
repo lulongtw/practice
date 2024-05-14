@@ -100,6 +100,15 @@ const store = createStore({
         store.dispatch('getOrderList',{url,method})
         router.push("/buyerShop")
       }
+    },
+    async uploadImg(context,payload){
+      let res
+       res = await getData(payload.url,payload.method,payload.toSend);
+      return res
+    },
+    async editProduct(context,payload){
+      let res = await getData(payload.url,payload.method,payload.toSend);
+      console.log(res)
     }
 
   },modules:{

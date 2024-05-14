@@ -9,11 +9,12 @@
   import SanTiModal from "@/modal/SanTiModal.vue"
 
 
-  let data = ref({});
+  let data = ref();
+  let toSon = ref();
 
   watch(()=>store.state.sellerProductList,
     (newVal)=>{
-      console.log(newVal);
+      //console.log(newVal);
       data.value = newVal
     }
   )
@@ -23,10 +24,19 @@
     let method = 'get'
     store.dispatch('getSellerProductList',{url,method})
   })
+
+  function modalEmerge(act,item){
+    toSon.value = {act,item};
+    let target = document.querySelector("#SanTiModal");
+    let modalDOM = Modal.getOrCreateInstance(target);
+    modalDOM.show()
+  }
 </script>
 
 <template>
-  <SanTiModal></SanTiModal>
+  <div @click="console.log(data)">fsaf</div>
+  <SanTiModal :payload="toSon"></SanTiModal>
+  <button @click="modalEmerge('add',{})" type="button" class="btn btn-primary">Primary</button>
   <table>
     <thead>
       <tr>
@@ -45,11 +55,11 @@
         <td>{{item.price}}</td>
         <td>
           <div>
-            <button type="button" class="btn btn-success"
+            <button @click="modalEmerge('edit',item)" type="button" class="btn btn-success"
             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;">
             edit
           </button>
-          <button type="button" class="btn btn-danger"
+          <button @click="modalEmerge('del',item)" type="button" class="btn btn-danger"
             style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;">
             del
           </button>
