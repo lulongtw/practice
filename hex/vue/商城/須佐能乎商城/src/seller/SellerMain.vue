@@ -123,20 +123,20 @@
            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
          </div>
          <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
-           <!-- <ul class="nav flex-column">
+           <ul class="nav flex-column">
              <li class="nav-item">
-               <a @click.prevent="router.push('/')" class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
+               <a @click.prevent="router.push('/sellerMain/productsLst')" class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="#">
                  <svg class="bi"><use xlink:href="#house-fill"/></svg>
-                 Dashboard
+                 productsLst
                </a>
              </li>
              <li class="nav-item">
-               <a @click.prevent="router.push('/seller')" class="nav-link d-flex align-items-center gap-2" href="#">
+               <a @click.prevent="router.push('/sellerMain/couponsLst')" class="nav-link d-flex align-items-center gap-2" href="#">
                  <svg class="bi"><use xlink:href="#file-earmark"/></svg>
-                 Seller
+                 couponsLst
                </a>
              </li>
-             <li class="nav-item">
+             <!-- <li class="nav-item">
                <a @click.prevent="router.push('/coupon')" class="nav-link d-flex align-items-center gap-2" href="#">
                  <svg class="bi"><use xlink:href="#file-earmark"/></svg>
                  Coupon
@@ -159,8 +159,8 @@
                  <svg class="bi"><use xlink:href="#cart"/></svg>
                  Pay
                </a>
-             </li>
-           </ul> -->
+             </li> -->
+           </ul>
       
  
            <hr class="my-3">
@@ -181,7 +181,11 @@
      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
        <br>
        <div class="viewWrap">
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
        </div>
  
      </main>

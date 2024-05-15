@@ -1,10 +1,11 @@
 <script setup>
-  import {ref,watch,computed,onMounted,inject,provide} from "vue";
+  import {ref,watch,computed,onMounted,onActivated,inject,provide} from "vue";
   import store from "@/store/store.js";
   import {useRouter} from "vue-router";
   import {Modal} from "bootstrap";
   import {showModal,hideModal,getData} from "@/functions.js";
-  import * as yup from "yup"
+  import * as yup from "yup";
+  import { nextTick } from 'vue';
   let height
   let crtLstTarget
   let crtLst = ref(store.state.cartList);
@@ -21,18 +22,35 @@
       },0)
     }
   )
+  /*
+    setTimeout()
+    nextTick(() => {
+      crtLstTarget.style.height = show.value ? height : "0px";
+    });
+  */
   
   onMounted(()=>{
     crtLstTarget = document.querySelector(".crtLstTarget");
     let styles = window.getComputedStyle(crtLstTarget);
     height = styles.getPropertyValue("height");
-    crtLstTarget.style.height = "0px";
+    crtLstTarget.style.height = show.value?height:"0px";
 
+  })
+
+  onActivated(()=>{
+    //不這樣的話衝新整理會爆炸
+    setTimeout(()=>{
+      crtLstTarget.style.height = "auto";
+    let styles = window.getComputedStyle(crtLstTarget);
+    height = styles.getPropertyValue("height");
+    crtLstTarget.style.height = show.value?height:"0px";
+    },0)
   })
 
   function showCrtLst(){
     show.value = !show.value;
     crtLstTarget.style.height = show.value?height:"0px"
+  
   } 
 
 
@@ -59,7 +77,7 @@
 <template>
      <div @click="showCrtLst" class="money">
       <span >顯示購物車內容</span>
-      <span>{{crtLst.final_total}}</span>
+      <span>{{Math.floor(crtLst.final_total)}}</span>
     </div>
     <div class="crtLstTarget">
       <table>
@@ -69,7 +87,7 @@
             <th></th>
             <th>商品名稱</th>
             <th>數量</th>
-            <th>小記</th>
+            <th>小計</th>
           </tr>
         </thead>
         <tbody>
@@ -82,8 +100,8 @@
           </tr>
           <tr>
             <td colspan="5" class="coupon">
-              輸入coupon<input @keyup.enter="useCoupon" type="text">
-              <div>運費$60</div>合計${{crtLst.final_total+60}}
+              輸入coupon<input @keyup.enter="useCoupon" type="text" placeholder="fego">
+              <div>運費$60</div>合計${{Math.floor(crtLst.final_total+60)}}
             </td>
   
           </tr>

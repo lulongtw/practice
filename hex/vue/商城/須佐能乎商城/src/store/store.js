@@ -16,7 +16,9 @@ const store = createStore({
       currentCategory:"",
       messages:{},
       cartList:[],
-      orderLst:[]
+      orderLst:[],
+      couponLst:{},
+      currentPage:1
     }
   },
   mutations:{
@@ -40,6 +42,12 @@ const store = createStore({
     },
     renewOrderList(state,newVal){
       state.orderLst = newVal
+    },
+    renewCouponLst(state,newVal){
+      state.couponLst = newVal
+    },
+    renewCurrentPage(state,newVal){
+      state.currentPage = newVal
     }
 
   },
@@ -77,6 +85,9 @@ const store = createStore({
     async checkout(context,payload){
       let res = await getData(payload.url,payload.method,payload.toSend);
       if (res.data.success){
+        let url = '/api/:api_path/orders?page=:page';
+        let method = 'get'
+        await store.dispatch('getOrderList',{url,method})
         router.push('/checkOut/payPage')
       }
     },
@@ -97,7 +108,7 @@ const store = createStore({
       if (res.data.success){
         let url = '/api/:api_path/orders?page=:page';
         let method = 'get'
-        store.dispatch('getOrderList',{url,method})
+        await store.dispatch('getOrderList',{url,method})
         router.push("/buyerShop")
       }
     },
@@ -108,8 +119,58 @@ const store = createStore({
     },
     async editProduct(context,payload){
       let res = await getData(payload.url,payload.method,payload.toSend);
-      console.log(res)
-    }
+      if (res.data.success){
+        let url = `/api/:api_path/admin/products/all`;
+        let method = 'get'
+        store.dispatch('getSellerProductList',{url,method})
+      }
+    },
+    async createProduct(context,payload){
+      let res =  await getData(payload.url,payload.method,payload.toSend);
+      if (res.data.success){
+        let url = `/api/:api_path/admin/products/all`;
+        let method = 'get'
+        store.dispatch('getSellerProductList',{url,method})
+      }
+    },
+    async deleteProduct(context,payload){
+      let res = await getData(payload.url,payload.method);
+      if (res.data.success){
+        let url = `/api/:api_path/admin/products/all`;
+        let method = 'get'
+        store.dispatch('getSellerProductList',{url,method})
+      }
+    },
+    async getCouponLst(context,payload){
+      let res = await getData(payload.url,payload.method);
+      if (res.data.success){
+        context.commit('renewCouponLst',res.data);
+      }
+    },
+    async editCoupon(context,payload){
+      let res = await getData(payload.url,payload.method,payload.toSend);
+      if (res.data.success){
+        let url = `/api/:api_path/admin/coupons?page=${store.state.currentPage}`;
+        let method = 'get'
+        store.dispatch('getCouponLst',{url,method})
+      }
+    },
+    async deleteCoupon(context,payload){
+      let res = await getData(payload.url,payload.method);
+      if (res.data.success){
+        let url = `/api/:api_path/admin/coupons?page=${store.state.currentPage}`;
+        let method = 'get'
+        store.dispatch('getCouponLst',{url,method})
+      }
+    },
+    async createCoupon(context,payload){
+      let res = await getData(payload.url,payload.method,payload.toSend);
+      if (res.data.success){
+        let url = `/api/:api_path/admin/coupons?page=${store.state.currentPage}`;
+        let method = 'get'
+        store.dispatch('getCouponLst',{url,method})
+      }
+    },
 
   },modules:{
     loginModule,cartLstModule,checkOutModule

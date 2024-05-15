@@ -10,7 +10,8 @@
   let messagesLst = ref([])
   let isLoading = ref(false)
   let cookies = document.cookie.split("; ");
-  let toSendCookie
+  let toSendCookie;
+
 
   watch(()=>store.state.messages,
     (newVal)=>{
@@ -27,11 +28,23 @@
       toSendCookie = temp[1]
     }
   })
+
+
+  
   axios.defaults.headers.common.authorization = toSendCookie;
 
   watch(()=>store.state.isLoading,
     (newVal)=>{
-      isLoading.value = newVal
+      let timeOut
+      if (!newVal){
+        clearTimeout(timeOut)
+        isLoading.value = true
+        setTimeout(()=>{
+          isLoading.value = false
+        },1000)
+      }else{
+        isLoading.value = newVal
+      }
     }
   )
   function delMsg(stamp){

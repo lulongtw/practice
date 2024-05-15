@@ -57,7 +57,7 @@
     </thead>
     <tbody>
       <tr v-for="(item,idx) in orderLst.orders" :key="idx">
-        <td>{{item.create_at}}</td>
+        <td>{{new Date(item.create_at*1000).toISOString().split("T")[0]}}</td>
         <td>{{item.user.name}}</td>
         <td><button @click="showCartLst(item.products)" type="button" class="btn btn-outline-success">看明細</button></td>
         <td><button  @click.prevent="pay(item)" :class="['btn',check(item.is_paid)]" :disabled="item.is_paid">{{item.is_paid?'已付款':'去付款'}}</button></td>

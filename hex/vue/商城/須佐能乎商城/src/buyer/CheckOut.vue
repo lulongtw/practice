@@ -87,14 +87,16 @@
   }
   .step a {
     display: block;
-    background-color: blue;
+    background-color: rgb(246, 246, 246);
+    border:1px solid rgb(236, 212, 164);
     padding: 5px 15px;
-    color: white;
+    color: rgb(0, 0, 0);
     text-decoration: none;
   }
    /* 特异性加强，确保激活时样式能覆盖 */
   .step a.active { /* 这里加入router-link-exact-active是为了更明确指出激活状态 */
-    background-color: green;
+    background-color: rgb(240, 187, 81);
+    border:1px solid rgb(236, 212, 164);
     color: white;
   }
   .butnWrap{

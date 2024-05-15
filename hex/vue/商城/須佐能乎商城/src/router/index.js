@@ -7,7 +7,8 @@ import CheckOut from "@/buyer/CheckOut.vue";
 import BuildOrderListPage from "@/side/BuildOrderListPage.vue";
 import UseCouponPage from "@/side/UseCouponPage.vue";
 import PayPage from "@/side/PayPage.vue";
-import ProductsLst from "@/seller/ProductsLst.vue"
+import ProductsLst from "@/seller/ProductsLst.vue";
+import CouponsLst from "@/seller/CouponsLst.vue"
 
 const router = createRouter({
   history:createWebHashHistory(),
@@ -45,6 +46,9 @@ const router = createRouter({
         {
           path:'productsLst',
           component:ProductsLst
+        },{
+          path:'couponsLst',
+          component:CouponsLst
         }
       ]
     },{

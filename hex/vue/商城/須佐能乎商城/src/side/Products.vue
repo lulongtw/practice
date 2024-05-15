@@ -7,36 +7,44 @@
   import LookDetailModal from "@/modal/lookDetailModal.vue"
   import * as yup from "yup"
 
+  //  所有已分類商品資料
   let products = ref([]);
+  //當前分類
   let currentCategory = ref(store.state.currentCategory);
+  //看仔細按鈕 呼叫modal傳給modal的props
   let currentItem = ref({});
 
-
+  //當前分類商品的數量
   let currentCategoryLength = ref("");
+  //當前分類商品頁數號碼
   let currentPage = ref(1);
 
 //1 , 5, 9  %4==1
 
+
   let currentShow = computed(()=>{
-    // console.log(products.value);
-    // console.log(currentCategory.value)
+    //確定取得 所有商品 當前分類 後  (不這樣在一開始[]尚未取得資料會報錯)
     if ( products.value[currentCategory.value]){
-      // console.log(currentPage.value)
+      //對當前分類商品進行拆分
+      //使用.slice 與當前頁面 篩出目標頁面資料
       let ans = products.value[currentCategory.value].slice((currentPage.value-1)*2,(currentPage.value-1)*2+2);
-      // console.log(ans)
     return ans
     }
   });
 
   let pages = computed(()=>{
+    //運算當前選擇分類可以分成多少頁
     return Math.ceil(currentCategoryLength.value/2)
   })
 
 
   watch(()=>store.state.currentCategory,
     (newVal)=>{
+      //STORE換page要把頁數回1
       currentPage.value = 1;
+      //追蹤目前選擇的分類
       currentCategory.value = newVal;
+      //運算當前選擇分類有幾個
       currentCategoryLength.value = products.value[currentCategory.value].length
    
     }
@@ -62,7 +70,8 @@
     }
   }
   function goPage(page){
-
+    //更動目前頁面
+    //因為透過computed currentShow 所以不用watch即可響應
     currentPage.value = page
   }
 
@@ -96,9 +105,9 @@
 
   <nav aria-label="Page navigation example">
   <ul class="pagination">
-    <li @click.prevent='goPrev' class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li @click.prevent="goPage(item)" class="page-item" v-for="item in pages"><a class="page-link" href="#">{{item}}</a></li>
-    <li @click.prevent="goNext" class="page-item"><a class="page-link" href="#">Next</a></li>
+    <li @click.prevent='goPrev' :class="['page-item',{'disabled':currentPage==1}]"><a class="page-link" href="#">Previous</a></li>
+    <li @click.prevent="goPage(item)" :class="['page-item',{'active':currentPage==item}]" v-for="item in pages"><a class="page-link" href="#">{{item}}</a></li>
+    <li @click.prevent="goNext" :class="['page-item',{'disabled':currentPage==pages}]"><a class="page-link" href="#">Next</a></li>
   </ul>
 </nav>
 </template>

@@ -45,7 +45,7 @@
   let act = ref("");
   let originData = ref()
   let props = defineProps(["payload"]);
-  let uploadUrl = ref("");
+  
 
   watch(() => props.payload, (newVal) => {
   //喔喔喔喔  幹還可以這樣
@@ -67,7 +67,6 @@
   // 创建一个深拷贝来避免直接修改原始对象
   
   data.value = JSON.parse(JSON.stringify(newVal.item));
-  originData.value = JSON.parse(JSON.stringify(newVal.item)); // 假设你也想保留原始数据的副本
   act.value = newVal.act;
 }, { deep: true });
 
@@ -92,8 +91,8 @@
       let method = 'post';
       let res = await store.dispatch('uploadImg',{url,method,toSend});
       if (res.data.success){
-        console.log(res.data.imageUrl)
-        uploadUrl.value = res.data.imageUrl
+        // console.log(res.data.imageUrl)
+        data.value.imageUrl = res.data.imageUrl
       }
       console.log(res)
     }
@@ -121,15 +120,25 @@
           'data':val
         };
         store.dispatch('editProduct',{url,method,toSend});
-        return
+        break
+      case 'add' :
+        url = '/api/:api_path/admin/product';
+        method = 'post';
+        toSend = {
+          'data':val
+        }
+        store.dispatch('createProduct',{url,method,toSend});
+        break
+      case 'del' :
+        url = `/api/:api_path/admin/product/${data.value.id}`;
+        method = 'delete';
+        store.dispatch('deleteProduct',{url,method});
+      
     }
-   
+    hideModal('#SanTiModal')
   }
 
-  function resume(){
-    console.log(originData.value)
-    data.value = originData.value
-  }
+
 
 </script>
 
@@ -142,7 +151,6 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div @click="console.log(data)">fsadsad</div>
       <Form  :validation-schema="schema" @submit="onSubmit">
   
         <div class="modal-body">
@@ -160,6 +168,7 @@
               <label>或 上傳圖片
                   <input @change="uploadFile($event)" type="file"  >
               </label>
+              <img :src="data.imageUrl" alt="">
             </div>
             <div  v-if="data" class="contentWrap">
               <label class="fatty" for="">標題
@@ -223,13 +232,12 @@
           <div v-else>你確定要刪除此筆資料?</div>
           <div class="modal-footer">
          
-            <button @click.prevent="resume" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button  class="btn btn-primary" >送出</button>
+            <button  type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button v-if="act!='del'"  class="btn btn-primary" >送出</button>
+            <button v-else @click="onSubmit"  class="btn btn-primary" >送出</button>
           </div>
         </div>
       </Form>
-      <!-- <input type="text" v-if="data.item" v-model="data.item.title" @keyup.enter="send"> -->
-
     </div>
   </div>
 </div>

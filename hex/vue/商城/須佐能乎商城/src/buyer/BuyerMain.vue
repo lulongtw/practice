@@ -1,5 +1,5 @@
 <script setup>
-  import {ref,watch,computed,onMounted} from "vue";
+  import {ref,watch,computed,onMounted, onActivated} from "vue";
   import store from "@/store/store.js";
   import {useRouter} from "vue-router";
   import {Modal} from "bootstrap";
@@ -30,6 +30,9 @@
   
     router.push("/buyerShop")
   })
+  onActivated(()=>{
+    router.push("/buyerShop")
+  })
 
 
 
@@ -57,7 +60,7 @@
     <div :style="{position:'relative'}">
       <div @click="()=>{ showCartLst = !showCartLst}" class="cart">
       <i class="fa-solid fa-cart-shopping"></i>
-      <template v-if="cartList.carts"> {{cartList.carts.length}}</template>
+      <template v-if="cartList.carts"> <span  :style="{padding:'3px',backgroundColor:'rgb(236, 212, 164)',borderRadius:'10px',marginLeft:'3px'}">{{cartList.carts.length}}</span></template>
     </div>
       <CartLst v-if="showCartLst"></CartLst>
     </div>

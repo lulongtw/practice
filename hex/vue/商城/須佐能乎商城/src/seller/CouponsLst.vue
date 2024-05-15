@@ -17,22 +17,31 @@
   let currentPage = ref(store.state.currentPage);
   let pagination = ref({});
   let {handleSubmit,resetForm} = useForm();
+  let act = ref('')
   let onSubmit = handleSubmit((val)=>{
+    console.log(val)
+    //聖這邊 搞 建立 和edit的行為
+    /*
+      act變數  在點擊按鈕時改act
+      近來onSubmit看act寫程式
+    */ 
 
-    let url = '/api/:api_path/admin/coupon';
-    let method = 'post';
-    val.due_date = new Date(val.due_date).getTime()/1000
-    let toSend = {
-      'data':val
-    };
+    //建立行為
+    // let url = '/api/:api_path/admin/coupon';
+    // let method = 'post';
+    // val.due_date = new Date(val.due_date).getTime()/1000
+    // let toSend = {
+    //   'data':val
+    // };
 
-    store.dispatch('createCoupon',{url,method,toSend});
-    exitCreate()
+    // store.dispatch('createCoupon',{url,method,toSend});
+    // exitCreate()
   })
   
   defineRule('required',required);
   defineRule('onlyNum',(val)=>{
-    return val.split("").every(item=>{
+
+    return String(val).split("").every(item=>{
       return !isNaN(item)
     })
   });
@@ -77,7 +86,13 @@
   function edit(item){
     currentEdit.value = item.id;
     editItem.value = item;
-    originalItem.value = JSON.parse(JSON.stringify(item))
+    originalItem.value = JSON.parse(JSON.stringify(item));
+
+    nameVal.value = item.title;
+    codeVal.value = item.code;
+    percentVal.value = item.percent;
+    dateVal.value = item.due_date;
+    ableVal.value = item.is_enabled;
   }
   function exitEdit(item){
     let idx = data.value.indexOf(item);
@@ -164,7 +179,9 @@
         <td><input :class="{'err':dateErr}" name="due_date" type="date" v-model="dateVal">
           {{dateErr}}
         </td>
-        <td><input type="checkbox" name="is_enabled" :true-value="1" :false-value="0"  v-model="ableVal"></td>
+        <td>
+          <input type="checkbox" name="is_enabled" :true-value="1" :false-value="0"  v-model="ableVal">
+        </td>
         <td>
           <div>
           <button  type="submit" class="btn btn-success"
@@ -189,11 +206,21 @@
           <td>{{item.is_enabled=="1"?'啟用':'沒用'}}</td>
         </template>
         <template v-else>
-          <td><input @keyup.enter="sendEdit(editItem)" type="text" v-model="editItem.title"></td>
-          <td><input @keyup.enter="sendEdit(editItem)" type="text" v-model="editItem.code"></td>
-          <td><input @keyup.enter="sendEdit(editItem)" type="text" v-model="editItem.percent"></td>
-          <td><input @keyup.enter="sendEdit(editItem)" type="date" v-model="editItem.due_date"></td>
-          <td><input @keyup.enter="sendEdit(editItem)" type="checkbox" v-model="editItem.is_enabled" :true-value="1" :false-value="0"></td>
+          <td><input :class="{'err':nameErr}" name="name" type="text" v-model="nameVal">
+          {{nameErr}}
+        </td>
+        <td><input :class="{'err':codeErr}" name="title" type="text" v-model="codeVal">
+          {{codeErr}}
+        </td>
+        <td><input :class="{'err':percentErr}" name="percent" type="text" v-model="percentVal">
+          {{percentErr}}
+        </td>
+        <td><input :class="{'err':dateErr}" name="due_date" type="date" v-model="dateVal">
+          {{dateErr}}
+        </td>
+        <td>
+          <input type="checkbox" name="is_enabled" :true-value="1" :false-value="0"  v-model="ableVal">
+        </td>
         </template>
           <td>
             <div v-if="currentEdit!=item.id">
@@ -207,7 +234,7 @@
             </button>
             </div>
             <div v-else>
-              <button @click="sendEdit(editItem)" type="button" class="btn btn-success"
+              <button  type="submit" class="btn btn-success"
               style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;">
               send
             </button>

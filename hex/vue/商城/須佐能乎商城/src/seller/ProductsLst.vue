@@ -9,8 +9,11 @@
   import SanTiModal from "@/modal/SanTiModal.vue"
 
 
-  let data = ref();
+  let data = ref({});
   let toSon = ref();
+  let revData = computed(()=>{
+    return Object.values(data.value).reverse()
+  })
 
   watch(()=>store.state.sellerProductList,
     (newVal)=>{
@@ -34,9 +37,9 @@
 </script>
 
 <template>
-  <div @click="console.log(data)">fsaf</div>
+  
   <SanTiModal :payload="toSon"></SanTiModal>
-  <button @click="modalEmerge('add',{})" type="button" class="btn btn-primary">Primary</button>
+  <button @click="modalEmerge('add',{})" type="button" class="btn btn-primary">建立產品</button>
   <table>
     <thead>
       <tr>
@@ -44,15 +47,17 @@
         <th>分類</th>
         <th>描述</th>
         <th>價錢</th>
+        <th>啟用狀態</th>
         <th>動作</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(item,idx) in data" :key="idx">
+      <tr v-for="(item,idx) in revData" :key="idx">
         <td>{{item.title}}</td>
         <td>{{item.category}}</td>
         <td>{{item.content}}</td>
         <td>{{item.price}}</td>
+        <td>{{item.is_enabled?'啟用':'未啟用'}}</td>
         <td>
           <div>
             <button @click="modalEmerge('edit',item)" type="button" class="btn btn-success"
