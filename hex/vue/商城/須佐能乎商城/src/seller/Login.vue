@@ -53,11 +53,11 @@
 
     <div class="form-floating">
       <input v-model="obj.username" type="email" class="form-control" id="floatingInput" placeholder="lulongyoyo@gmail.com">
-      <label for="floatingInput">Email address</label>
+      <label :style="{opacity:'0.5'}"  for="floatingInput">輸入 lulongyoyo@gmail.com</label>
     </div>
     <div class="form-floating">
       <input  v-model="obj.password" type="password" class="form-control" id="floatingPassword" placeholder="as1234as1234">
-      <label for="floatingPassword">Password</label>
+      <label :style="{opacity:'0.5'}" for="floatingPassword">輸入 as1234as1234</label>
     </div>
 
     <div class="form-check text-start my-3">
@@ -67,13 +67,29 @@
       </label>
     </div>
     <button @click.prevent="checkUser" class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-    <p @click="router.push('/')" class="mt-5 mb-3 text-body-secondary">回敲龐肥狗購購購</p>
+    <p  @click="router.push('/')" class="mt-5 mb-3 text-body-secondary"><i class="fa-solid fa-paw"></i>回敲龐肥狗購購購主頁</p>
   </form>
 </main>
 
     </body>
 </template>
 <style scoped>
+p{
+  font-size: 1.5rem;
+  transition:transition 1s;
+}
+p:hover{
+  cursor:pointer;
+  animation: jump 1s infinite;
+
+}
+@keyframes jump{
+  0%{transform:translate(0px,0px)}
+
+  50%{transform:translate(0px,-20px)}
+  100%{transform:translate(0px,0px)}
+
+}
 
 .bd-placeholder-img {
   font-size: 1.125rem;

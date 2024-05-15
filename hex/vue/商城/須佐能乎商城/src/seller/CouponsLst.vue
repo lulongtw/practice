@@ -8,39 +8,95 @@
   import { required } from '@vee-validate/rules';
   import { localize } from '@vee-validate/i18n';
 
+/*
+yup和useField不同點在於
+
+yup的v-model是外界let的
+要使用必須在外面let 然後在標籤上使用取得
+
+而useField在建立時就已經建立v-model
+
+
+所以如果是用yup
+一開始就建立currentProcessData變數  
+在create和edit時  也就是在createCoupon() 和edit()
+就將空值 或是 要edit的值賦予給currentProcessData
+幹這樣yup好像比較簡單吼= = 
+*/ 
+
+/*
+  一開始卡在
+  edit與create公用form 
+  以及 
+  edit需要拿本地既有資料呈現 而不是像以前表單是空白開始
+
+  先講edit
+  input標籤的  v-model 和 name 一樣都是用useField的
+  而不是使用editItem的
+  這樣才能確保在表單送出時拿到的東西是有用且一致的
+  但咬怎樣把空白表單變成editItem的資料
+  就是在edit被觸發時 
+  將editItem取得的資料復職給useField定義的value  （這部分在function edit() 執行）
+
+  至於edit和create共用onSubmit
+  就是透過觸發edit和create按鈕時，定義行為 (act)  
+  最後在onSubmit時switch檢查act決定行為
+*/ 
+
+
   let data = ref([]);
-  let currentEdit = ref("");
+  //取得按下去後 該行coupon的資料
+  //在html內使用Edititem.id與迭代的item.id決定是否變edit input
   let editItem = ref({});
+
+  //因為edit直接操作本地資料的v-model 
+  //如果有改動，即使沒有送遠端的情況下
+  //仍會改動本地資料 形成 遠端本地不一致情形
+  //所以要在在close按鈕上 加上恢復本資料的行為
   let originalItem = ref({});
-  let newCouponData = ref({});
+
+  //決定是否出現新的一行來做新coupon
   let showCreateCoupon = ref(false);
+
+  //因為都是同一個表單 但共用一個submit  所以用此決定不同的遠端行為
+  let act = ref('')
+
   let currentPage = ref(store.state.currentPage);
   let pagination = ref({});
   let {handleSubmit,resetForm} = useForm();
-  let act = ref('')
+
+  //所有送遠端行為統一在這邊
   let onSubmit = handleSubmit((val)=>{
-    console.log(val)
-    //聖這邊 搞 建立 和edit的行為
-    /*
-      act變數  在點擊按鈕時改act
-      近來onSubmit看act寫程式
-    */ 
-
-    //建立行為
-    // let url = '/api/:api_path/admin/coupon';
-    // let method = 'post';
-    // val.due_date = new Date(val.due_date).getTime()/1000
-    // let toSend = {
-    //   'data':val
-    // };
-
-    // store.dispatch('createCoupon',{url,method,toSend});
-    // exitCreate()
+    let url;
+    let method;
+    let toSend;
+    val.due_date = new Date(val.due_date).getTime() / 1000
+    switch (act.value){
+      case "edit":
+        url = `/api/:api_path/admin/coupon/${editItem.value.id}`;
+        method = 'put';
+          toSend = {
+          'data':val
+        }
+        store.dispatch('editCoupon',{url,method,toSend})
+        //將選擇到的那行 由input 變成 td
+        editItem.value = "";
+        break
+      case 'create':
+        url = '/api/:api_path/admin/coupon';
+        method = 'post';
+        toSend = {
+          'data':val
+         };
+        store.dispatch('createCoupon',{url,method,toSend});
+        //
+        exitCreate()
+        break
+    }
   })
   
   defineRule('required',required);
   defineRule('onlyNum',(val)=>{
-
     return String(val).split("").every(item=>{
       return !isNaN(item)
     })
@@ -53,7 +109,6 @@
     },
   }),
 });
-  
 
   let {value:nameVal,errorMessage:nameErr} = useField('title',"required");
   let {value:codeVal,errorMessage:codeErr} = useField('code','required');
@@ -84,57 +139,50 @@
   )
   
   function edit(item){
-    currentEdit.value = item.id;
+    showCreateCoupon.value = false;
+    act.value = 'edit'
     editItem.value = item;
     originalItem.value = JSON.parse(JSON.stringify(item));
-
     nameVal.value = item.title;
     codeVal.value = item.code;
     percentVal.value = item.percent;
     dateVal.value = item.due_date;
     ableVal.value = item.is_enabled;
+
   }
   function exitEdit(item){
+    act.value = ""
+    //將可能更動的資料恢復原狀
     let idx = data.value.indexOf(item);
     data.value[idx] = originalItem.value
-    currentEdit.value = "";
     editItem.value = "";
   }
-  function sendEdit(item){
-    let url = `/api/:api_path/admin/coupon/${item.id}`;
-    let method = 'put';
-    item.due_date = new Date(item.due_date).getTime() / 1000
-    let toSend = {
-      'data':item
-    }
-    console.log(url,method,toSend)
-    store.dispatch('editCoupon',{url,method,toSend})
-    currentEdit.value = "";
-    editItem.value = "";
-  }
+
   function del(item){
     let url = `/api/:api_path/admin/coupon/${item.id}`;
     let method = 'delete';
     store.dispatch('deleteCoupon',{url,method})
   }
   function createCoupon(){
+    act.value = 'create';
+    editItem.value = ""
+    //不resetForm 會看到上次的資料
+    //而且因為共用一組useField 也就是v-model create會看到edit的資料
+    //useField 需要依靠 let {resetForm} = useForm() 來取得resetForm
+
+    //但是yup在submit的函式中自動引入表單value 以及 {resetForm} 參數功能
+    //如下面一行註解
+    //function onSubmit(values, { resetForm }) {
+    //  resetForm()   yup直接透過參數引入  屌吧
+    //}
+
     resetForm()
     showCreateCoupon.value = true;
 
   }
-  function sendCreate(){
-    let url = '/api/:api_path/admin/coupon';
-    let method = 'post';
-    newCouponData.value.due_date = new Date(newCouponData.value.due_date).getTime()/1000
-    let toSend = {
-      'data':newCouponData.value
-    };
-    store.dispatch('createCoupon',{url,method,toSend});
-    exitCreate()
-  }
   function exitCreate(){
+    act.value = ""
     showCreateCoupon.value = false;
-    newCouponData.value = {}
   }
   function goPage(check,page){
     if (check){
@@ -151,7 +199,7 @@
 </script>
 
 <template>
-  <button @click="createCoupon" type="button" class="btn btn-primary">Primary</button>
+  <button @click="createCoupon" type="button" class="btn btn-primary">建立coupon</button>
   <form @submit.prevent="onSubmit" >
   <table>
     <thead>
@@ -168,16 +216,16 @@
 
       <tr v-if="showCreateCoupon">
         <td><input :class="{'err':nameErr}" name="name" type="text" v-model="nameVal">
-          {{nameErr}}
+          <span :style="{color:'red',fontSize:'10px'}">{{nameErr}}</span>
         </td>
         <td><input :class="{'err':codeErr}" name="title" type="text" v-model="codeVal">
-          {{codeErr}}
+          <span :style="{color:'red',fontSize:'10px'}">{{codeErr}}</span>
         </td>
         <td><input :class="{'err':percentErr}" name="percent" type="text" v-model="percentVal">
-          {{percentErr}}
+          <span :style="{color:'red',fontSize:'10px'}">{{percentErr}}</span>
         </td>
         <td><input :class="{'err':dateErr}" name="due_date" type="date" v-model="dateVal">
-          {{dateErr}}
+          <span :style="{color:'red',fontSize:'10px'}">{{dateErr}}</span>
         </td>
         <td>
           <input type="checkbox" name="is_enabled" :true-value="1" :false-value="0"  v-model="ableVal">
@@ -198,7 +246,7 @@
       </tr>
   
       <tr  v-for="(item,idx) in data" :key="item.id">
-        <template v-if="currentEdit!=item.id">
+        <template v-if="editItem.id!=item.id">
           <td>{{item.title}}</td>
           <td>{{item.code}}</td>
           <td>{{item.percent}}</td>
@@ -207,23 +255,23 @@
         </template>
         <template v-else>
           <td><input :class="{'err':nameErr}" name="name" type="text" v-model="nameVal">
-          {{nameErr}}
+            <span :style="{color:'red',fontSize:'10px'}">{{nameErr}}</span>
         </td>
         <td><input :class="{'err':codeErr}" name="title" type="text" v-model="codeVal">
-          {{codeErr}}
+          <span :style="{color:'red',fontSize:'10px'}">{{codeErr}}</span>
         </td>
         <td><input :class="{'err':percentErr}" name="percent" type="text" v-model="percentVal">
-          {{percentErr}}
+          <span :style="{color:'red',fontSize:'10px'}">{{percentErr}}</span>
         </td>
         <td><input :class="{'err':dateErr}" name="due_date" type="date" v-model="dateVal">
-          {{dateErr}}
+          <span :style="{color:'red',fontSize:'10px'}">{{dateErr}}</span>
         </td>
         <td>
           <input type="checkbox" name="is_enabled" :true-value="1" :false-value="0"  v-model="ableVal">
         </td>
         </template>
           <td>
-            <div v-if="currentEdit!=item.id">
+            <div v-if="editItem.id!=item.id">
               <button @click="edit(item)" type="button" class="btn btn-info"
               style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .25rem; --bs-btn-font-size: .75rem;">
               edit
@@ -254,7 +302,7 @@
     <li @click.prevent="goPage(pagination.has_pre,currentPage-1)" :class="['page-item',{'disabled':!pagination.has_pre}]">
       <a class="page-link">Previous</a>
     </li>
-    <li @click.prevent="goPage(true,item)" class="page-item" v-for="item in pagination.total_pages">
+    <li @click.prevent="goPage(true,item)" :class="['page-item',{'active':currentPage==item}]" v-for="item in pagination.total_pages">
       <a class="page-link" href="#">{{item}}</a>
     </li>
 
@@ -283,5 +331,7 @@
     display: flex;
     gap:10px;
   }
-
+  .err{
+    border:1px solid red;
+  }
 </style>

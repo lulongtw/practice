@@ -5,14 +5,24 @@
   import {Modal} from "bootstrap";
   import {showModal,hideModal,getData} from "@/functions.js";
   import * as yup from "yup"
-import router from "@/router";
+  import router from "@/router";
 
-  let cartLst = ref(store.state.cartList)
+  let cartLst = ref(store.state.cartList);
+
+  let emits = defineEmits(['hideMe'])
+
   watch(()=>store.state.cartList,
     (newVal)=>{
       cartLst.value = newVal
     }
   )
+
+  onMounted(()=>{
+    let target = document.querySelector('#target');
+    target.addEventListener('mouseleave',()=>{
+      emits('hideMe')
+    })
+  })
   
   function delThisItem(id){
     let url = `/api/:api_path/cart/${id}`;
@@ -26,7 +36,7 @@ import router from "@/router";
 </script>
 
 <template>
-  <div class="cartLst">
+  <div class="cartLst" id="target">
     <div v-if="cartLst.carts.length==0" :style="{ textAlign: 'center' ,color:'gray'}">購物車裡面沒東西</div>
     <div class="item" v-for="(item,idx) in cartLst.carts">
       <td @click="delThisItem(item.id)"><i class="fa-regular fa-trash-can"></i></td>

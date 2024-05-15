@@ -7,7 +7,15 @@
   import * as yup from "yup";
   import {Field,Form,ErrorMessage} from "vee-validate";
 
-  let router = useRouter()
+  let router = useRouter();
+  // let data = ref({
+  //   'name':'',
+  //   'email':"",
+  //   'phone':"",
+  //   'address':'',
+  //   'message':''
+  // })
+  let data = ref({})
 
   function namestring(val){
     let lst = val.split("");
@@ -38,30 +46,33 @@
     message:yup.string()
   })
 
-  function onSubmit(val){
-    let url = '/api/:api_path/order';
-    let method = 'post';
-    let toSend = {
-      "data": {
-        "user": {
-          "name": val.name,
-          "email": val.email,
-          "tel": val.phone,
-          "address": val.address
-        },
-        "message": val.message?val.message:'沒訊息,她離開你了'
-      }
+//yup在submit的函式中自動引入表單value 以及 {resetForm} 參數功能
+//useField 則是需要依靠 let {resetForm} = useForm() 來取得resetForm
+function onSubmit(values, { resetForm }) {
+  let url = '/api/:api_path/order';
+  let method = 'post';
+  let toSend = {
+    "data": {
+      "user": {
+        "name": values.name,
+        "email": values.email,
+        "tel": values.phone,
+        "address": values.address
+      },
+      "message": values.message ? values.message : '沒訊息,她離開你了'
     }
-
-     store.dispatch('checkout',{url,method,toSend})
   }
+  store.dispatch('checkout', { url, method, toSend });
+  resetForm();
+}
+
   
 </script>
 
 <template>
  <Form :validation-schema="schema" @submit="onSubmit">
   <label for="">大名
-    <Field name="name" v-slot="{field,errors}">
+    <Field name="name" v-model="data.name" v-slot="{field,errors}">
       <input type="text" :placeholder="errors[0]" v-bind="field" :class="{'error':errors.length>0}">
     </Field>
     <div class="ermsg">
@@ -69,13 +80,13 @@
     </div>
   </label>
   <label for="">伊妹兒
-    <Field name="email" v-slot="{field,errors}">
+    <Field name="email" v-model="data.email" v-slot="{field,errors}">
       <input type="text" :placeholder="errors[0]" v-bind="field" :class="{'error':errors.length>0}">
     </Field>
     <div class="ermsg"><ErrorMessage name="email"></ErrorMessage></div>
   </label>
   <label for="">手機
-    <Field name="phone" v-slot="{field,errors}">
+    <Field name="phone" v-model="data.phone" v-slot="{field,errors}">
       <input type="text" :placeholder="errors[0]" v-bind="field" :class="{'error':errors.length>0}">
     </Field>
     <div class="ermsg">
@@ -83,7 +94,7 @@
     </div>
   </label>
   <label for="">地址
-    <Field name="address" v-slot="{field,errors}">
+    <Field name="address" v-model="data.address" v-slot="{field,errors}">
       <input type="text" :placeholder="errors[0]" v-bind="field" :class="{'error':errors.length>0}">
     </Field>
     <div class="ermsg">
@@ -91,7 +102,7 @@
     </div>
   </label>
   <label for="">留言
-    <Field name="message" v-slot="{field,errors}">
+    <Field name="message" v-model=data.message v-slot="{field,errors}">
       <textarea v-bind="field" :class="{'error':errors.length>0}"></textarea>
     </Field>
   </label>
