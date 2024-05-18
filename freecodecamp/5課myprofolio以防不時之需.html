@@ -154,7 +154,13 @@
       .create,.fcc{
         grid-column:2;
       }
-
+      .show{
+    
+        width:100px;
+        padding:10px ;
+        background-color:  rgb(46, 46, 78);
+        margin:10px auto
+      }
  
       .ninja{
         color:transparent;
@@ -169,6 +175,11 @@
           grid-template-columns:1fr 1fr;
         }
       }
+      @media only screen and (max-width:700px){
+                #gallery{
+          grid-template-columns:1fr;
+        }
+      } 
     </style>
   </head>
   <body>
@@ -187,7 +198,7 @@
         <div class="intro">these are some of my works</div>
         <img src>
         <div id="gallery">
-          <a href="" target="_blank" 
+          <a href="#" target="_blank" onclick="event.preventDefault()"
             ><img
               width="600"
               height="400"
@@ -199,7 +210,7 @@
               >
             </div>
           </a>
-          <a href="" target="_blank" 
+          <a href="#" onclick="event.preventDefault()" target="_blank" 
             ><img
               width="600"
               height="400"
@@ -211,7 +222,7 @@
               >
             </div>
           </a>
-          <a href="" target="_blank"
+          <a href="#" onclick="event.preventDefault()" target="_blank"
             ><img
               width="600"
               height="400"
@@ -223,7 +234,7 @@
               >
             </div>
           </a>
-          <a href="" target="_blank"
+          <a href="#" onclick="event.preventDefault()" target="_blank"
             ><img
               width="600"
               height="400"
@@ -235,7 +246,7 @@
               >
             </div>
           </a>
-          <a href="" target="_blank"
+          <a href="#" onclick="event.preventDefault()" target="_blank"
             ><img
               width="600"
               height="400"
@@ -247,7 +258,7 @@
               >
             </div>
           </a>
-          <a href="" target="_blank"
+          <a href="#" onclick="event.preventDefault()" target="_blank"
             ><img
               width="600"
               height="400"
@@ -261,7 +272,7 @@
           </a>
         </div>
 
-        <a href="" target="_blank"><div class="show">show all &gt</div></a>
+        <a href="#" onclick="event.preventDefault()" target="_blank"><div class="show">show all &gt</div></a>
       </section>
 
       <section id="contact">
