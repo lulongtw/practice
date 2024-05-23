@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js" integrity="sha512-JSCFHhKDilTRRXe9ak/FJ28dcpOJxzQaCd3Xg8MyF6XFjODhy/YMCM8HW0TFDckNHWUewW+kfvhin43hKtJxAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
   <title>Document</title>
 </head>
 <body>
@@ -21,6 +23,7 @@
     <input type="text">
     <input type="submit" value="送出"><!--也可以在html設onclick="func(event)" 注意必須(event)不能簡寫 也要加上()-->
   </form>
+    <button onclick="getData2()">用axios送</button>
   <script>
     let email = document.querySelector("[type='email']");
     let password = document.querySelector("[type='text']");
@@ -66,6 +69,39 @@
 // 在 xml.response 中，你得到的是伺服器傳送回來的響應資料。在你的例子中，
 // 使用 JSON.parse(xml.response) 對響應進行解析，因為伺服器的響應通常以 JSON 格式返回。
 
+
+
+/*
+用axios送
+要命定then catch
+因為輸入不符格式的資訊會做成錯誤碼
+讓axios誤以為沒有成功  所以要用catch抓取錯誤碼
+也就是說
+let temp = await axios.post(url,data)
+這樣只有在輸入正確格式且沒有被註冊走的情況下才會被印出來
+其他情況如果沒有設制catch抓錯誤資料會直接顯示錯誤
+*/
+async function axiosData(){
+      axios.post('https://hex-escape-room.herokuapp.com/api/user/signup',`email=${email.value}&password=${password.value}`)
+      .then(res=>{
+        console.log('res',res)
+      }).catch(err=>{
+        console.log('err',err.response.data.message)
+      })
+    }
+    //這是fetch版
+    async function fetchData(){
+      let headers = {"Content-Type": "application/x-www-form-urlencoded"}
+      let body = `email=${email.value}&password=${password.value}`
+
+      let temp = await fetch('https://hex-escape-room.herokuapp.com/api/user/signup',{
+        method:'POST',
+        headers:headers,
+        body:body
+      });
+      let res = await temp.json();
+      return res
+    }
   </script>
 </body>
 </html>

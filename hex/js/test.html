@@ -4,27 +4,65 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js" integrity="sha512-JSCFHhKDilTRRXe9ak/FJ28dcpOJxzQaCd3Xg8MyF6XFjODhy/YMCM8HW0TFDckNHWUewW+kfvhin43hKtJxAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    input[type='email']{
+      background-color: red;
+    }
+    div[class='a']{
+      color:red
+    }
+  </style>
   <title>Document</title>
 </head>
 <body>
+  <div class="a">test</div>
+  <input type="email">
+  <br>
+  <input type="password">
+  <br>
+  <button >ssend</button>
   <script>
-      let lst = [
-    {age:1},{age:6},{age:21},{age:12},{age:2}
-  ]
-  class newLst extends Array{
-    constructor(item){
-      super(...item)
-    }
-  }
+    let email = document.querySelector('[type="email"]');
+    let password = document.querySelector("[type='password']");
+    let url = "https://hex-escape-room.herokuapp.com/api/user/signup";
+    let btn = document.querySelector('button');
 
-  let lst2 = new newLst(lst);
-  let x = lst2.reduce((accu,item)=>{
-    return accu+item.age
-  },0)
-  console.log(x)
-  let s = [...lst2]
-  let y = s.filter(item=>item.age>20);
-  console.log(y)
+    btn.addEventListener('click',axiosData)
+
+
+
+    //是headers 不是header
+    //必須JSON.stringify才能傳出去
+    async function fetchData(){
+      let headers = {"Content-type":"application/json"}
+      let body = JSON.stringify({
+        email:email.value,
+        password:password.value,
+      });
+      let method = 'post'
+      let temp = await fetch(url,{method,headers,body
+      });
+      let res = await temp.json();
+      console.log(res)
+      return res
+    }
+
+    //不用搞headers
+    //但是錯誤碼兩邊都要抓
+    //不然抓不到錯誤訊息
+    async function axiosData(){
+      axios.post(url,{
+        email:email.value,
+        password:password.value
+      }).then(res=>{
+        console.log('res',res.data.message)
+      }).catch(err=>{
+        console.log('err',err.response.data.message)
+      })
+    }
+
+  
   </script>
 </body>
 </html>

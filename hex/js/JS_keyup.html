@@ -8,7 +8,7 @@
 <body>
   <label for="inputField">输入框：</label>
   <input type="text" id="inputField">
-  <div onkeyup.enter="func"></div>
+  <div onkeyup="func()">ascasc</div>
 
   <script>
     // 获取输入框元素
@@ -20,6 +20,11 @@
       // 在键盘按键释放时触发的处理代码
       console.log('Key released:', event.key);
     });
+    function func(){
+      //這沒有用 
+      //因為非input不會被keyup事件觸發
+      console.log('dd')
+    }
   </script>
 </body>
 </html>

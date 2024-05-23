@@ -22,6 +22,7 @@
     let email = document.querySelector("[type='email']");
     let password = document.querySelector("[type='text']");
     let submit = document.querySelector("[type='submit']");
+    let url = "https://hex-escape-room.herokuapp.com/api/user/signup";
     let xml = new XMLHttpRequest();
 
     submit.addEventListener("click",(e)=>{
@@ -32,6 +33,15 @@
         email:email.value,
         password:password.value,
       }
+      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;
+      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;
+      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;
+      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;
+      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;
+      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;
+      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;
+      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;
+      //非字串記得JSON.stringify;//非字串記得JSON.stringify;//非字串記得JSON.stringify;
       info = JSON.stringify(info);//非字串記得JSON.stringify;
       xml.send(info);
     })
@@ -41,6 +51,22 @@
       let ans = JSON.parse(xml.response);
       div.textContent = ans.message;
       document.body.appendChild(div)
+    }
+
+    //使用fetch
+    async function fetchData(){
+      let headers = {"Content-type":"application/json"}
+      let body = JSON.stringify({
+        email:email.value,
+        password:password.value,
+      });
+      let method = 'post'
+
+      let temp = await fetch(url,{method,headers,body
+      });
+      let res = await temp.json();
+      console.log(res)
+      return res
     }
   </script>
 </body>
